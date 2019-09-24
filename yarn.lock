@@ -602,7 +602,17 @@ acorn@^6.0.1:
   resolved "https://registry.yarnpkg.com/acorn/-/acorn-6.3.0.tgz#0087509119ffa4fc0a0041d1e93a417e68cb856e"
   integrity sha512-/czfa8BwS88b9gWQVhc8eknunSA2DoJpJyTQkhheIf5E48u1N0R4q/YxxsAeqRrmK9TQ/uYfgLDfZo91UlANIA==
 
-ajv@^6.5.5:
+ajv-errors@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/ajv-errors/-/ajv-errors-1.0.1.tgz#f35986aceb91afadec4102fbd85014950cefa64d"
+  integrity sha512-DCRfO/4nQ+89p/RK43i8Ezd41EqdGIU4ld7nGF8OQ14oc/we5rEntLCUa7+jrn3nn83BosfwZA0wb4pon2o8iQ==
+
+ajv-keywords@^3.4.0:
+  version "3.4.1"
+  resolved "https://registry.yarnpkg.com/ajv-keywords/-/ajv-keywords-3.4.1.tgz#ef916e271c64ac12171fd8384eaae6b2345854da"
+  integrity sha512-RO1ibKvd27e6FEShVFfPALuHI3WjSVNeK5FIsmme/LYRNxjKuNj+Dt7bucLa6NdSv3JcVTyMlm9kGR84z1XpaQ==
+
+ajv@^6.10.0, ajv@^6.5.5:
   version "6.10.2"
   resolved "https://registry.yarnpkg.com/ajv/-/ajv-6.10.2.tgz#d3cea04d6b017b2894ad69040fec8b623eb4bd52"
   integrity sha512-TXtUUEYHuaTEbLZWIKUr5pmBuhDLy+8KYtPYdcV8qC+pOZL+NKqYwvWSRrVXHn+ZmRRAu8vJTAznH7Oag6RVRw==
@@ -1973,6 +1983,16 @@ form-data@~2.3.2:
     combined-stream "^1.0.6"
     mime-types "^2.1.12"
 
+fp-ts@^1.0.0:
+  version "1.19.5"
+  resolved "https://registry.yarnpkg.com/fp-ts/-/fp-ts-1.19.5.tgz#3da865e585dfa1fdfd51785417357ac50afc520a"
+  integrity sha512-wDNqTimnzs8QqpldiId9OavWK2NptormjXnRJTQecNjzwfyp6P/8s/zG8e4h3ja3oqkKaY72UlTjQYt/1yXf9A==
+
+fp-ts@^2.0.0:
+  version "2.0.5"
+  resolved "https://registry.yarnpkg.com/fp-ts/-/fp-ts-2.0.5.tgz#9560d8a6a4f53cbda9f9b31ed8d1458e41939e07"
+  integrity sha512-opI5r+rVlpZE7Rhk0YtqsrmxGkbIw0dRNqGca8FEAMMnjomXotG+R9QkLQg20onx7R8qhepAn4CCOP8usma/Xw==
+
 fragment-cache@^0.2.1:
   version "0.2.1"
   resolved "https://registry.yarnpkg.com/fragment-cache/-/fragment-cache-0.2.1.tgz#4290fad27f13e89be7f33799c6bc5a0abfff0d19"
@@ -2475,6 +2495,13 @@ invariant@^2.2.4:
   integrity sha512-phJfQVBuaJM5raOpJjSfkiD6BpbCE4Ns//LaXl6wGYtUBY83nWS6Rf9tXm2e8VaK60JEjYldbPif/A2B1C2gNA==
   dependencies:
     loose-envify "^1.0.0"
+
+io-ts@^1.10.2:
+  version "1.10.4"
+  resolved "https://registry.yarnpkg.com/io-ts/-/io-ts-1.10.4.tgz#cd5401b138de88e4f920adbcb7026e2d1967e6e2"
+  integrity sha512-b23PteSnYXSONJ6JQXRAlvJhuw8KOtkqa87W4wDtvMrud/DTJd5X+NpOOI+O/zZwVq6v0VLAaJ+1EDViKEuN9g==
+  dependencies:
+    fp-ts "^1.0.0"
 
 is-accessor-descriptor@^0.1.6:
   version "0.1.6"
@@ -3330,6 +3357,18 @@ load-json-file@^6.2.0:
     parse-json "^5.0.0"
     strip-bom "^4.0.0"
     type-fest "^0.6.0"
+
+loas3@^0.1.4:
+  version "0.1.4"
+  resolved "https://registry.yarnpkg.com/loas3/-/loas3-0.1.4.tgz#b90ea7bea307d8b51a519abd3b43bb4d8ca7033b"
+  integrity sha512-J/60WWhWSzz0RmsUKAPcT4CDuglj5rc9Vr20nkaCZPUkiVLHUlBFaMGY5yK7aTK//BopBpdfnUXNfzjwYUKoww==
+  dependencies:
+    ajv "^6.10.0"
+    ajv-errors "^1.0.1"
+    ajv-keywords "^3.4.0"
+    fp-ts "^2.0.0"
+    io-ts "^1.10.2"
+    prettier "^1.18.2"
 
 locate-path@^3.0.0:
   version "3.0.0"
@@ -4207,6 +4246,11 @@ prepend-http@^1.0.1:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/prepend-http/-/prepend-http-1.0.4.tgz#d4f4562b0ce3696e41ac52d0e002e57a635dc6dc"
   integrity sha1-1PRWKwzjaW5BrFLQ4ALlemNdxtw=
+
+prettier@^1.18.2:
+  version "1.18.2"
+  resolved "https://registry.yarnpkg.com/prettier/-/prettier-1.18.2.tgz#6823e7c5900017b4bd3acf46fe9ac4b4d7bda9ea"
+  integrity sha512-OeHeMc0JhFE9idD4ZdtNibzY0+TPHSpSSb9h8FqtP+YnoZZ1sl8Vc9b1sasjfymH3SonAF4QcA2+mzHPhMvIiw==
 
 pretty-bytes@^5.1.0:
   version "5.3.0"

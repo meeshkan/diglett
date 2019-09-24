@@ -1,11 +1,11 @@
 {
-  "name": "api-client-cli",
+  "name": "api-hitter",
   "version": "0.0.0",
   "author": "Meeshkan",
   "bin": {
-    "api-client-cli": "./bin/run"
+    "api-hitter": "./bin/run"
   },
-  "bugs": "https://github.com/meeshkan/api-client-cli/issues",
+  "bugs": "https://github.com/meeshkan/api-hitter/issues",
   "dependencies": {
     "@oclif/command": "^1",
     "@oclif/config": "^1",
@@ -15,6 +15,7 @@
     "chalk": "^2.4.2",
     "debug": "^4.1.1",
     "js-yaml": "^3.13.1",
+    "loas3": "^0.1.4",
     "tslib": "^1"
   },
   "devDependencies": {
@@ -37,7 +38,7 @@
     "/npm-shrinkwrap.json",
     "/oclif.manifest.json"
   ],
-  "homepage": "https://github.com/meeshkan/api-client-cli",
+  "homepage": "https://github.com/meeshkan/api-hitter",
   "keywords": [
     "oclif"
   ],
@@ -50,7 +51,7 @@
       "@oclif/plugin-help"
     ]
   },
-  "repository": "meeshkan/api-client-cli",
+  "repository": "meeshkan/api-hitter",
   "scripts": {
     "start": "node bin/run",
     "postpack": "rm -f oclif.manifest.json",
