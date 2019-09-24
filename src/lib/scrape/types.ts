@@ -1,4 +1,4 @@
-const RESTMethodTypes = ["get", "head", "post", "put", "patch", "delete", "options", "trace"] as const;
+export const RESTMethodTypes = ["get", "head", "post", "put", "patch", "delete", "options", "trace"] as const;
 
 export type HTTPMethod = typeof RESTMethodTypes[number];
 
