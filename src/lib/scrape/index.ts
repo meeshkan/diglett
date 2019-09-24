@@ -1,3 +1,4 @@
+import chalk from "chalk";
 import debug from "debug";
 import * as fs from "fs";
 import * as path from "path";
@@ -13,6 +14,7 @@ const readOpenAPI = (openapiPath: string): OpenAPI => {
   const fullPath = path.resolve(process.cwd(), openapiPath);
 
   if (!fs.existsSync(fullPath)) {
+    throw Error(`File not found: ${chalk.bold.magenta(fullPath)}`);
   }
 
   const extension = path.extname(fullPath);

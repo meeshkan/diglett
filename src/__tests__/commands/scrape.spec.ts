@@ -7,6 +7,6 @@ describe("Scrape command", () => {
     expect(spy).toHaveBeenCalled();
   });
   it("throws when given a path to non-existing openapi yaml", async () => {
-    await expect(Scrape.run(["dfhsdgsd.yaml"])).rejects.toThrow("no such file");
+    await expect(Scrape.run(["dfhsdgsd.yaml"])).rejects.toThrow("File not found");
   });
 });
