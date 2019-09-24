@@ -1,6 +1,7 @@
 import chalk from "chalk";
 import debug from "debug";
 import * as fs from "fs";
+import * as $RefParser from "json-schema-ref-parser";
 import { flatMap } from "lodash";
 import * as path from "path";
 import * as jsYaml from "js-yaml";
@@ -12,7 +13,7 @@ interface ScrapeResult {}
 /**
  * A template for creating requests
  */
-type RequestOperation = {
+type RequestTemplate = {
   method: types.HTTPMethod;
   path: string;
   body?: RequestBody;
@@ -21,12 +22,12 @@ type RequestOperation = {
 
 const debugLog = debug("api-client:scrape");
 
-function parseRequest(op: {
+export function parseRequest(op: {
   name: types.HTTPMethod;
   operation: Operation;
   pathItem: PathItem;
   pathName: string;
-}): RequestOperation {
+}): RequestTemplate {
   const parameters = (op.pathItem.parameters || []).concat(...(op.operation.parameters || [])) as Parameter[]; // TODO References
   const requestBody = op.operation.requestBody;
   return {
@@ -37,7 +38,13 @@ function parseRequest(op: {
   };
 }
 
-const extractOpsForPath = ({ pathItem, pathName }: { pathItem: PathItem; pathName: string }): RequestOperation[] => {
+export const extractOpsForPath = ({
+  pathItem,
+  pathName,
+}: {
+  pathItem: PathItem;
+  pathName: string;
+}): RequestTemplate[] => {
   const ops = Object.keys(pathItem);
 
   if (ops.length === 0) {
@@ -53,7 +60,7 @@ const extractOpsForPath = ({ pathItem, pathName }: { pathItem: PathItem; pathNam
   return operations.map(op => parseRequest({ ...op, pathItem, pathName }));
 };
 
-const extractOps = (openapi: OpenAPIObject): RequestOperation[] => {
+export const extractOps = (openapi: OpenAPIObject): RequestTemplate[] => {
   const serverUrls = (openapi.servers && openapi.servers.map(value => value.url)) || [];
 
   if (serverUrls.length === 0) {
@@ -73,7 +80,7 @@ const extractOps = (openapi: OpenAPIObject): RequestOperation[] => {
   return pathOps;
 };
 
-const readOpenAPI = (openapiPath: string): OpenAPIObject => {
+export const readOpenAPI = async (openapiPath: string): Promise<OpenAPIObject> => {
   const fullPath = path.resolve(process.cwd(), openapiPath);
 
   if (!fs.existsSync(fullPath)) {
@@ -86,24 +93,23 @@ const readOpenAPI = (openapiPath: string): OpenAPIObject => {
     throw Error(`Found extension ${extension}, expected y(a)ml.`);
   }
 
-  const content = fs.readFileSync(fullPath, { encoding: "utf-8" });
+  const parsed = await $RefParser.parse(fullPath);
+  const schema = await $RefParser.dereference(parsed);
 
-  const parsed = jsYaml.safeLoad(content);
-
-  if (!isOpenAPIObject(parsed)) {
+  if (!isOpenAPIObject(schema)) {
     throw Error(`Not an OpenAPI object`);
   }
 
-  return parsed;
+  return schema;
 };
 
 const scrape = async (openapiPath: string, config: any): Promise<ScrapeResult[]> => {
-  const openapi = readOpenAPI(openapiPath);
+  const openapi = await readOpenAPI(openapiPath);
   debugLog("Got OpenAPI", JSON.stringify(openapi));
 
-  const operations = extractOps(openapi);
+  const requestTemplates = extractOps(openapi);
 
-  return operations;
+  return requestTemplates;
 };
 
 export default scrape;
