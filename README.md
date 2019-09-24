@@ -30,6 +30,7 @@ USAGE
 <!-- commands -->
 * [`api-client-cli hello [FILE]`](#api-client-cli-hello-file)
 * [`api-client-cli help [COMMAND]`](#api-client-cli-help-command)
+* [`api-client-cli scrape [FILE]`](#api-client-cli-scrape-file)
 
 ## `api-client-cli hello [FILE]`
 
@@ -67,4 +68,20 @@ OPTIONS
 ```
 
 _See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v2.2.1/src/commands/help.ts)_
+
+## `api-client-cli scrape [FILE]`
+
+describe the command here
+
+```
+USAGE
+  $ api-client-cli scrape [FILE]
+
+OPTIONS
+  -f, --force
+  -h, --help       show CLI help
+  -n, --name=name  name to print
+```
+
+_See code: [src/commands/scrape.ts](https://github.com/meeshkan/api-client-cli/blob/v0.0.0/src/commands/scrape.ts)_
 <!-- commandsstop -->
