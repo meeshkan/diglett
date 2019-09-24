@@ -24,7 +24,7 @@ export default class Scrape extends Command {
       `Reading from file "${chalk.bold.magenta(openapi)}" with configuration from "${chalk.bold.magenta(config)}"`
     );
 
-    const scrapeResult = scrape(openapi, config);
+    const scrapeResult = await scrape(openapi, config);
 
     this.log(`Result: ${JSON.stringify(scrapeResult)}`);
   }
