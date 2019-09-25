@@ -1,7 +1,6 @@
 import { flatten, fromPairs } from "lodash";
-import { RequestTemplate, ISerializedRequest, isProtocol } from "./types";
+import { RequestTemplate, isProtocol } from "./types";
 import * as url from "url";
-import * as jsst from "json-schema-strictly-typed";
 import { RequestSchema } from "./types";
 import { Schema } from "loas3/dist/generated/full";
 
@@ -32,7 +31,7 @@ const gen = (template: RequestTemplate): RequestSchema[] => {
 
       const pathParameters = findParameters(path);
 
-      const parameters = fromPairs(
+      const parameterNameToSchema = fromPairs(
         pathParameters.map(parameter => {
           const param = template.parameters.find(param => param.name === parameter);
           if (!param) {
@@ -58,12 +57,12 @@ const gen = (template: RequestTemplate): RequestSchema[] => {
           method: template.method,
           host: serverUrl.hostname!,
           path,
-          pathname: path, // TODO Fill in parameters
+          pathname: path,
           protocol,
           query: {}, // TODO Fill in
           body: undefined, // TODO  Fill in
         },
-        parameters, // TODO Resolve and update
+        parameters: parameterNameToSchema,
       };
       return requestSchema;
     })

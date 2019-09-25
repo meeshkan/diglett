@@ -2,6 +2,7 @@ import chalk from "chalk";
 import debug from "debug";
 import { Command, flags } from "@oclif/command";
 import create from "../lib/create";
+import * as jsYaml from "js-yaml";
 
 const debugLog = debug("api-hitter");
 
@@ -29,6 +30,7 @@ export default class Create extends Command {
 
     const createResult = await create(openapi, config);
 
-    this.log(JSON.stringify(createResult, null, 2));
+    // Hack to avoid JSYaml exception with undefined type
+    this.log(jsYaml.safeDump(JSON.parse(JSON.stringify(createResult))));
   }
 }
