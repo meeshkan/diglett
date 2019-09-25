@@ -2,8 +2,8 @@ import chalk from "chalk";
 import debug from "debug";
 import * as fs from "fs";
 import * as $RefParser from "json-schema-ref-parser";
-import { flatten } from "lodash";
 import * as path from "path";
+import { flatten } from "lodash";
 import {
   isParameter,
   isOpenAPIObject,
@@ -18,23 +18,7 @@ import {
 import * as types from "./types";
 import { Fold, Iso, Lens, Optional, Prism, Traversal, fromTraversable } from "monocle-ts";
 import { array, getMonoid } from "fp-ts/lib/Array";
-
-export interface CreateResult {}
-
-// "Operation"
-export type PartialRequestTemplate = {
-  method: types.HTTPMethod;
-  body?: RequestBody;
-  parameters: Parameter[];
-  servers: Server[];
-};
-
-/**
- * A template for creating requests, operation plus top-level stuff
- */
-export type RequestTemplate = PartialRequestTemplate & {
-  path: string;
-};
+import gen from "./gen";
 
 const debugLog = debug("api-client:scrape");
 
@@ -43,7 +27,7 @@ export function parseRequest(op: {
   operation: Operation;
   pathItem: PathItem;
   pathName: string;
-}): PartialRequestTemplate {
+}): types.PartialRequestTemplate {
   const parameters = (op.operation.parameters || []) as Parameter[];
   const requestBody = op.operation.requestBody;
   const servers = op.operation.servers || [];
@@ -61,7 +45,7 @@ export const extractOpsForPath = ({
 }: {
   pathItem: PathItem;
   pathName: string;
-}): PartialRequestTemplate[] => {
+}): types.PartialRequestTemplate[] => {
   const ops = Object.keys(pathItem);
 
   if (ops.length === 0) {
@@ -91,7 +75,7 @@ const pathsT: Traversal<OpenAPIObject, [PathName, PathItem]> = Lens.fromProp<Ope
   .composeIso(recordToArrayI<PathItem>())
   .composeTraversal(fromTraversable(array)<[PathName, PathItem]>());
 
-export const extractOps = (openapi: OpenAPIObject): RequestTemplate[] => {
+export const extractOps = (openapi: OpenAPIObject): types.RequestTemplate[] => {
   const servers = serversO
     .composeTraversal(fromTraversable(array)<Server>())
     .asFold()
@@ -111,19 +95,21 @@ export const extractOps = (openapi: OpenAPIObject): RequestTemplate[] => {
     .composePrism(Prism.fromPredicate<Parameter | Reference, Parameter>(isParameter)) // No references expected
     .asFold();
 
-  const templates: RequestTemplate[] = pathsT.asFold().foldMap(getMonoid<RequestTemplate>())(([pathName, pathItem]) => {
-    const templatesForPath = extractOpsForPath({ pathName, pathItem });
-    /**
-     * Add servers and parameters from top-levels
-     */
-    const filled: RequestTemplate[] = templatesForPath.map(op => ({
-      ...op,
-      path: pathName,
-      parameters: parametersF.getAll(pathItem).concat(...op.parameters),
-      servers: op.servers.concat(...servers),
-    }));
-    return filled;
-  })(openapi);
+  const templates: types.RequestTemplate[] = pathsT.asFold().foldMap(getMonoid<types.RequestTemplate>())(
+    ([pathName, pathItem]) => {
+      const templatesForPath = extractOpsForPath({ pathName, pathItem });
+      /**
+       * Add servers and parameters from top-levels
+       */
+      const filled: types.RequestTemplate[] = templatesForPath.map(op => ({
+        ...op,
+        path: pathName,
+        parameters: parametersF.getAll(pathItem).concat(...op.parameters),
+        servers: op.servers.concat(...servers),
+      }));
+      return filled;
+    }
+  )(openapi);
 
   return templates;
 };
@@ -151,13 +137,15 @@ export const readOpenAPI = async (openapiPath: string): Promise<OpenAPIObject> =
   return schema;
 };
 
-const scrape = async (openapiPath: string, config: any): Promise<CreateResult[]> => {
-  const openapi = await readOpenAPI(openapiPath);
-  debugLog("Got OpenAPI", JSON.stringify(openapi));
-
+export const generateFrom = (openapi: OpenAPIObject): types.CreateResult => {
   const requestTemplates = extractOps(openapi);
-
-  return requestTemplates;
+  return flatten(requestTemplates.map(template => gen(template)));
 };
 
-export default scrape;
+const create = async (openapiPath: string, config: any): Promise<types.CreateResult> => {
+  const openapi = await readOpenAPI(openapiPath);
+  debugLog("Got OpenAPI", JSON.stringify(openapi));
+  return generateFrom(openapi);
+};
+
+export default create;

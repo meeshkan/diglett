@@ -1,5 +1,5 @@
 import * as path from "path";
-import { extractOps, readOpenAPI } from "../../lib/create";
+import create, { extractOps, generateFrom, readOpenAPI } from "../../lib/create";
 import { OpenAPIObject } from "loas3/dist/generated/full";
 
 describe("Extracting request templates", () => {
@@ -21,5 +21,27 @@ describe("Extracting request templates", () => {
       const expectedServer = { url: "http://petstore.swagger.io/v1" };
       expect(first).toHaveProperty("servers", [expectedServer]);
     });
+  });
+});
+
+describe("creating requests from OpenAPI", () => {
+  let petstore: OpenAPIObject;
+
+  beforeAll(async () => {
+    petstore = await readOpenAPI(path.join(__dirname, "..", "resources", "petstore.yaml"));
+  });
+
+  it("generates three requests from petstore", () => {
+    const requests = generateFrom(petstore);
+    expect(requests).toHaveLength(3);
+  });
+
+  it("generates request with no parameters as fixed", () => {
+    const requests = generateFrom(petstore);
+    const req = requests[0];
+    expect(req).toHaveProperty("host", "petstore.swagger.io");
+    expect(req).toHaveProperty("path", "/v1/pets");
+    expect(req).toHaveProperty("protocol", "http");
+    expect(req).toHaveProperty("method", "get");
   });
 });
