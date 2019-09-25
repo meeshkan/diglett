@@ -1,9 +1,9 @@
 import chalk from "chalk";
 import { Command, flags } from "@oclif/command";
-import scrape from "../lib/scrape";
+import scrape from "../lib/create";
 
-export default class Scrape extends Command {
-  static description = "Scrape API based on OpenAPI specification";
+export default class Create extends Command {
+  static description = "Create a bunch of fake requests based on OpenAPI specification";
 
   static flags = {
     help: flags.help({ char: "h" }),
@@ -16,7 +16,7 @@ export default class Scrape extends Command {
   static args = [{ name: "openapi", description: "Path to OpenAPI specification", required: true }];
 
   async run() {
-    const { args, flags } = this.parse(Scrape);
+    const { args, flags } = this.parse(Create);
 
     const openapi = args.openapi;
     const config = flags.config;
