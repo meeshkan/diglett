@@ -21,15 +21,19 @@ import { array, getMonoid } from "fp-ts/lib/Array";
 
 export interface CreateResult {}
 
-/**
- * A template for creating requests
- */
-export type RequestTemplate = {
+// "Operation"
+export type PartialRequestTemplate = {
   method: types.HTTPMethod;
-  path: string;
   body?: RequestBody;
   parameters: Parameter[];
   servers: Server[];
+};
+
+/**
+ * A template for creating requests, operation plus top-level stuff
+ */
+export type RequestTemplate = PartialRequestTemplate & {
+  path: string;
 };
 
 const debugLog = debug("api-client:scrape");
@@ -39,13 +43,12 @@ export function parseRequest(op: {
   operation: Operation;
   pathItem: PathItem;
   pathName: string;
-}): RequestTemplate {
+}): PartialRequestTemplate {
   const parameters = (op.operation.parameters || []) as Parameter[];
   const requestBody = op.operation.requestBody;
   const servers = op.operation.servers || [];
   return {
-    body: requestBody as RequestBody, // TODO References
-    path: op.pathName,
+    body: requestBody as RequestBody | undefined,
     method: op.name,
     parameters,
     servers,
@@ -58,7 +61,7 @@ export const extractOpsForPath = ({
 }: {
   pathItem: PathItem;
   pathName: string;
-}): RequestTemplate[] => {
+}): PartialRequestTemplate[] => {
   const ops = Object.keys(pathItem);
 
   if (ops.length === 0) {
@@ -75,8 +78,6 @@ export const extractOpsForPath = ({
 };
 
 const serversO: Optional<OpenAPIObject, Server[]> = Optional.fromNullableProp<OpenAPIObject>()("servers");
-
-const serverUrlsT: Traversal<OpenAPIObject, Server> = serversO.composeTraversal(fromTraversable(array)<Server>());
 
 const recordToArrayI = <T>(): Iso<Record<string, T>, Array<[string, T]>> =>
   new Iso<Record<string, T>, Array<[string, T]>>(
@@ -100,21 +101,31 @@ export const extractOps = (openapi: OpenAPIObject): RequestTemplate[] => {
     throw Error(`No servers in specification`);
   }
 
+  const arrayT = fromTraversable(array);
+
+  /**
+   * A bit ridiculous way to get `parameters` from `pathItem` :D
+   */
   const parametersF: Fold<PathItem, Parameter> = Optional.fromNullableProp<PathItem>()("parameters")
-    .composeTraversal(fromTraversable(array)<Parameter | Reference>())
-    .composePrism(Prism.fromPredicate<Parameter | Reference, Parameter>(isParameter))
+    .composeTraversal(arrayT())
+    .composePrism(Prism.fromPredicate<Parameter | Reference, Parameter>(isParameter)) // No references expected
     .asFold();
 
-  const ops: RequestTemplate[] = pathsT.asFold().foldMap(getMonoid<RequestTemplate>())(([pathName, pathItem]) => {
-    const ops = extractOpsForPath({ pathName, pathItem });
-    return ops.map(op => ({
+  const templates: RequestTemplate[] = pathsT.asFold().foldMap(getMonoid<RequestTemplate>())(([pathName, pathItem]) => {
+    const templatesForPath = extractOpsForPath({ pathName, pathItem });
+    /**
+     * Add servers and parameters from top-levels
+     */
+    const filled: RequestTemplate[] = templatesForPath.map(op => ({
       ...op,
+      path: pathName,
       parameters: parametersF.getAll(pathItem).concat(...op.parameters),
       servers: op.servers.concat(...servers),
     }));
+    return filled;
   })(openapi);
 
-  return ops;
+  return templates;
 };
 
 export const readOpenAPI = async (openapiPath: string): Promise<OpenAPIObject> => {
