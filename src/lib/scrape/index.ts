@@ -8,12 +8,12 @@ import * as jsYaml from "js-yaml";
 import { isOpenAPIObject, OpenAPIObject, Operation, PathItem, Parameter, RequestBody } from "loas3/dist/generated/full";
 import * as types from "./types";
 
-interface ScrapeResult {}
+export interface ScrapeResult {}
 
 /**
  * A template for creating requests
  */
-type RequestTemplate = {
+export type RequestTemplate = {
   method: types.HTTPMethod;
   path: string;
   body?: RequestBody;
