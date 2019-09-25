@@ -1,14 +1,22 @@
 import * as path from "path";
 import create, { extractOps, generateFrom, readOpenAPI } from "../../lib/create";
 import { OpenAPIObject } from "loas3/dist/generated/full";
-import * as jsst from "json-schema-strictly-typed";
+
+const petstoreYaml = path.join(__dirname, "..", "resources", "petstore.yaml");
+
+describe("Creating request templates", () => {
+  it("creates three templates for petstore", async () => {
+    const templates = await create(petstoreYaml, {});
+    expect(templates).toHaveLength(3);
+  });
+});
 
 describe("Extracting request templates", () => {
   describe("for petstore", () => {
     let petstore: OpenAPIObject;
 
     beforeAll(async () => {
-      petstore = await readOpenAPI(path.join(__dirname, "..", "resources", "petstore.yaml"));
+      petstore = await readOpenAPI(petstoreYaml);
     });
 
     it("finds three operations for petstore", () => {
@@ -29,7 +37,7 @@ describe("creating requests from OpenAPI", () => {
   let petstore: OpenAPIObject;
 
   beforeAll(async () => {
-    petstore = await readOpenAPI(path.join(__dirname, "..", "resources", "petstore.yaml"));
+    petstore = await readOpenAPI(petstoreYaml);
   });
 
   it("generates three requests from petstore", () => {
