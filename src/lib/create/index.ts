@@ -4,11 +4,10 @@ import * as fs from "fs";
 import * as $RefParser from "json-schema-ref-parser";
 import { flatMap } from "lodash";
 import * as path from "path";
-import * as jsYaml from "js-yaml";
 import { isOpenAPIObject, OpenAPIObject, Operation, PathItem, Parameter, RequestBody } from "loas3/dist/generated/full";
 import * as types from "./types";
 
-export interface ScrapeResult {}
+export interface CreateResult {}
 
 /**
  * A template for creating requests
@@ -103,7 +102,7 @@ export const readOpenAPI = async (openapiPath: string): Promise<OpenAPIObject> =
   return schema;
 };
 
-const scrape = async (openapiPath: string, config: any): Promise<ScrapeResult[]> => {
+const scrape = async (openapiPath: string, config: any): Promise<CreateResult[]> => {
   const openapi = await readOpenAPI(openapiPath);
   debugLog("Got OpenAPI", JSON.stringify(openapi));
 
