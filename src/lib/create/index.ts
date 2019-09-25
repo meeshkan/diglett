@@ -2,10 +2,20 @@ import chalk from "chalk";
 import debug from "debug";
 import * as fs from "fs";
 import * as $RefParser from "json-schema-ref-parser";
-import { flatMap } from "lodash";
+import { flatten } from "lodash";
 import * as path from "path";
-import { isOpenAPIObject, OpenAPIObject, Operation, PathItem, Parameter, RequestBody } from "loas3/dist/generated/full";
+import {
+  isOpenAPIObject,
+  OpenAPIObject,
+  Operation,
+  PathItem,
+  Parameter,
+  RequestBody,
+  Server,
+} from "loas3/dist/generated/full";
 import * as types from "./types";
+import { Iso, Lens, Optional, Traversal, fromTraversable } from "monocle-ts";
+import { array, getMonoid } from "fp-ts/lib/Array";
 
 export interface CreateResult {}
 
@@ -59,8 +69,24 @@ export const extractOpsForPath = ({
   return operations.map(op => parseRequest({ ...op, pathItem, pathName }));
 };
 
+const serversO: Optional<OpenAPIObject, Server[]> = Optional.fromNullableProp<OpenAPIObject>()("servers");
+
+const serverUrlsT: Traversal<OpenAPIObject, Server> = serversO.composeTraversal(fromTraversable(array)<Server>());
+
+const recordToArrayI = <T>(): Iso<Record<string, T>, Array<[string, T]>> =>
+  new Iso<Record<string, T>, Array<[string, T]>>(
+    s => Object.entries(s),
+    a => a.reduce((q, r) => ({ ...q, [r[0]]: r[1] }), {})
+  );
+
+type PathName = string;
+
+const pathsT: Traversal<OpenAPIObject, [PathName, PathItem]> = Lens.fromProp<OpenAPIObject>()("paths")
+  .composeIso(recordToArrayI<PathItem>())
+  .composeTraversal(fromTraversable(array)<[PathName, PathItem]>());
+
 export const extractOps = (openapi: OpenAPIObject): RequestTemplate[] => {
-  const serverUrls = (openapi.servers && openapi.servers.map(value => value.url)) || [];
+  const serverUrls = serverUrlsT.asFold().getAll(openapi);
 
   if (serverUrls.length === 0) {
     throw Error(`No servers in specification`);
@@ -74,9 +100,11 @@ export const extractOps = (openapi: OpenAPIObject): RequestTemplate[] => {
 
   debugLog(`Found paths: ${pathNames.join(", ")}`);
 
-  const pathOps = flatMap(pathNames, pathName => extractOpsForPath({ pathName, pathItem: openapi.paths[pathName] }));
+  const ops: RequestTemplate[] = pathsT.asFold().foldMap(getMonoid<RequestTemplate>())(([pathName, pathItem]) =>
+    extractOpsForPath({ pathName, pathItem })
+  )(openapi);
 
-  return pathOps;
+  return ops;
 };
 
 export const readOpenAPI = async (openapiPath: string): Promise<OpenAPIObject> => {

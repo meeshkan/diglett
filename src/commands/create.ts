@@ -1,6 +1,6 @@
 import chalk from "chalk";
 import { Command, flags } from "@oclif/command";
-import scrape from "../lib/create";
+import create from "../lib/create";
 
 export default class Create extends Command {
   static description = "Create a bunch of fake requests based on OpenAPI specification";
@@ -24,8 +24,8 @@ export default class Create extends Command {
       `Reading from file "${chalk.bold.magenta(openapi)}" with configuration from "${chalk.bold.magenta(config)}"`
     );
 
-    const scrapeResult = await scrape(openapi, config);
+    const createResult = await create(openapi, config);
 
-    this.log(`Result: ${JSON.stringify(scrapeResult)}`);
+    this.log(`Result: ${JSON.stringify(createResult)}`);
   }
 }

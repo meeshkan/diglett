@@ -15,10 +15,12 @@
     "@types/lodash": "^4.14.139",
     "chalk": "^2.4.2",
     "debug": "^4.1.1",
+    "fp-ts": "^2.0.5",
     "js-yaml": "^3.13.1",
     "json-schema-ref-parser": "^7.1.1",
     "loas3": "^0.1.4",
     "lodash": "^4.17.15",
+    "monocle-ts": "^2.0.0",
     "tslib": "^1"
   },
   "devDependencies": {
