@@ -5,16 +5,18 @@ import * as $RefParser from "json-schema-ref-parser";
 import { flatten } from "lodash";
 import * as path from "path";
 import {
+  isParameter,
   isOpenAPIObject,
   OpenAPIObject,
   Operation,
   PathItem,
   Parameter,
+  Reference,
   RequestBody,
   Server,
 } from "loas3/dist/generated/full";
 import * as types from "./types";
-import { Iso, Lens, Optional, Traversal, fromTraversable } from "monocle-ts";
+import { Fold, Iso, Lens, Optional, Prism, Traversal, fromTraversable } from "monocle-ts";
 import { array, getMonoid } from "fp-ts/lib/Array";
 
 export interface CreateResult {}
@@ -26,7 +28,8 @@ export type RequestTemplate = {
   method: types.HTTPMethod;
   path: string;
   body?: RequestBody;
-  parameters: Array<Parameter>;
+  parameters: Parameter[];
+  servers: Server[];
 };
 
 const debugLog = debug("api-client:scrape");
@@ -37,13 +40,15 @@ export function parseRequest(op: {
   pathItem: PathItem;
   pathName: string;
 }): RequestTemplate {
-  const parameters = (op.pathItem.parameters || []).concat(...(op.operation.parameters || [])) as Parameter[]; // TODO References
+  const parameters = (op.operation.parameters || []) as Parameter[];
   const requestBody = op.operation.requestBody;
+  const servers = op.operation.servers || [];
   return {
     body: requestBody as RequestBody, // TODO References
     path: op.pathName,
     method: op.name,
     parameters,
+    servers,
   };
 }
 
@@ -86,23 +91,28 @@ const pathsT: Traversal<OpenAPIObject, [PathName, PathItem]> = Lens.fromProp<Ope
   .composeTraversal(fromTraversable(array)<[PathName, PathItem]>());
 
 export const extractOps = (openapi: OpenAPIObject): RequestTemplate[] => {
-  const serverUrls = serverUrlsT.asFold().getAll(openapi);
+  const servers = serversO
+    .composeTraversal(fromTraversable(array)<Server>())
+    .asFold()
+    .getAll(openapi);
 
-  if (serverUrls.length === 0) {
+  if (servers.length === 0) {
     throw Error(`No servers in specification`);
   }
 
-  const pathNames = Object.keys(openapi.paths);
+  const parametersF: Fold<PathItem, Parameter> = Optional.fromNullableProp<PathItem>()("parameters")
+    .composeTraversal(fromTraversable(array)<Parameter | Reference>())
+    .composePrism(Prism.fromPredicate<Parameter | Reference, Parameter>(isParameter))
+    .asFold();
 
-  if (pathNames.length === 0) {
-    throw Error(`No paths in specification`);
-  }
-
-  debugLog(`Found paths: ${pathNames.join(", ")}`);
-
-  const ops: RequestTemplate[] = pathsT.asFold().foldMap(getMonoid<RequestTemplate>())(([pathName, pathItem]) =>
-    extractOpsForPath({ pathName, pathItem })
-  )(openapi);
+  const ops: RequestTemplate[] = pathsT.asFold().foldMap(getMonoid<RequestTemplate>())(([pathName, pathItem]) => {
+    const ops = extractOpsForPath({ pathName, pathItem });
+    return ops.map(op => ({
+      ...op,
+      parameters: parametersF.getAll(pathItem).concat(...op.parameters),
+      servers: op.servers.concat(...servers),
+    }));
+  })(openapi);
 
   return ops;
 };
