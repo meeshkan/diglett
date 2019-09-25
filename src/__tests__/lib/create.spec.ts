@@ -1,6 +1,7 @@
 import * as path from "path";
 import create, { extractOps, generateFrom, readOpenAPI } from "../../lib/create";
 import { OpenAPIObject } from "loas3/dist/generated/full";
+import * as jsst from "json-schema-strictly-typed";
 
 describe("Extracting request templates", () => {
   describe("for petstore", () => {
@@ -32,16 +33,38 @@ describe("creating requests from OpenAPI", () => {
   });
 
   it("generates three requests from petstore", () => {
-    const requests = generateFrom(petstore);
-    expect(requests).toHaveLength(3);
+    const requestSchemas = generateFrom(petstore);
+    expect(requestSchemas).toHaveLength(3);
   });
 
   it("generates request with no parameters as fixed", () => {
-    const requests = generateFrom(petstore);
-    const req = requests[0];
+    const requestSchemas = generateFrom(petstore);
+    const requestSchema = requestSchemas[0];
+    const req = requestSchema.req;
     expect(req).toHaveProperty("host", "petstore.swagger.io");
     expect(req).toHaveProperty("path", "/v1/pets");
     expect(req).toHaveProperty("protocol", "http");
     expect(req).toHaveProperty("method", "get");
+    expect(requestSchema).toHaveProperty("parameters", {});
+  });
+
+  it("generates request with parameters", () => {
+    const requestSchemas = generateFrom(petstore);
+    const requestSchema = requestSchemas[2];
+    const req = requestSchema.req;
+    expect(req).toHaveProperty("host", "petstore.swagger.io");
+    expect(req).toHaveProperty("path", "/v1/pets/{petId}");
+    expect(req).toHaveProperty("protocol", "http");
+    expect(req).toHaveProperty("method", "get");
+
+    const expectedParameters = {
+      petId: {
+        required: true,
+        schema: {
+          type: "string",
+        },
+      },
+    };
+    expect(requestSchema).toHaveProperty("parameters", expectedParameters);
   });
 });

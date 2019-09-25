@@ -2508,6 +2508,11 @@ io-ts@^1.10.2:
   dependencies:
     fp-ts "^1.0.0"
 
+io-ts@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/io-ts/-/io-ts-2.0.1.tgz#1261c12f915c2f48d16393a36966636b48a45aa1"
+  integrity sha512-RezD+WcCfW4VkMkEcQWL/Nmy/nqsWTvTYg7oUmTGzglvSSV2P9h2z1PVeREPFf0GWNzruYleAt1XCMQZSg1xxQ==
+
 is-accessor-descriptor@^0.1.6:
   version "0.1.6"
   resolved "https://registry.yarnpkg.com/is-accessor-descriptor/-/is-accessor-descriptor-0.1.6.tgz#a9e12cb3ae8d876727eeef3843f8a0897b5c98d6"
@@ -3249,6 +3254,13 @@ json-schema-ref-parser@^7.1.1:
     call-me-maybe "^1.0.1"
     js-yaml "^3.13.1"
     ono "^5.0.1"
+
+json-schema-strictly-typed@^0.0.14:
+  version "0.0.14"
+  resolved "https://registry.yarnpkg.com/json-schema-strictly-typed/-/json-schema-strictly-typed-0.0.14.tgz#c965f7caf2b8a99d544d876704a533da4fb62184"
+  integrity sha512-tzOWiUkw/HxrwJJ2i3iOfRRwxVs27bNoZf4x1LJZCtIw6gptMnPAuFD7QPGXPQzyo1lWasrj2Mmlpldr6vK8mw==
+  dependencies:
+    io-ts "^2.0.1"
 
 json-schema-traverse@^0.4.1:
   version "0.4.1"

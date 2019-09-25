@@ -1,4 +1,4 @@
-import { Parameter, RequestBody, Server } from "loas3/dist/generated/full";
+import { Parameter, RequestBody, Schema, Server } from "loas3/dist/generated/full";
 
 export const RESTMethodTypes = ["get", "head", "post", "put", "patch", "delete", "options", "trace"] as const;
 
@@ -65,4 +65,31 @@ export type RequestTemplate = PartialRequestTemplate & {
   path: string;
 };
 
-export type CreateResult = ISerializedRequest[];
+export type CreateResult = RequestSchema[];
+
+export interface ParameterSchema {
+  required: boolean;
+  schema: Schema;
+}
+
+export const exampleSchema: RequestSchema = {
+  req: {
+    method: "get",
+    host: "petstore.swagger.io",
+    protocol: "https",
+    path: "/v1/pets/{petId}",
+    pathname: "/v1/pets/{petId}",
+    query: {},
+  },
+
+  parameters: {
+    petId: {
+      required: true,
+      schema: {
+        type: "string",
+      },
+    },
+  },
+};
+
+export type RequestSchema = { req: ISerializedRequest; parameters: Record<string, ParameterSchema> };
