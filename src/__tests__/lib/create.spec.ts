@@ -48,7 +48,7 @@ describe("creating requests from OpenAPI", () => {
     expect(requestSchema).toHaveProperty("parameters", {});
   });
 
-  it("generates request with parameters", () => {
+  it("generates request with parameters having schema", () => {
     const requestSchemas = generateFrom(petstore);
     const requestSchema = requestSchemas[2];
     const req = requestSchema.req;

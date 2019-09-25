@@ -1,6 +1,9 @@
 import chalk from "chalk";
+import debug from "debug";
 import { Command, flags } from "@oclif/command";
 import create from "../lib/create";
+
+const debugLog = debug("api-hitter");
 
 export default class Create extends Command {
   static description = "Create a bunch of fake requests based on OpenAPI specification";
@@ -20,12 +23,12 @@ export default class Create extends Command {
 
     const openapi = args.openapi;
     const config = flags.config;
-    this.log(
+    debugLog(
       `Reading from file "${chalk.bold.magenta(openapi)}" with configuration from "${chalk.bold.magenta(config)}"`
     );
 
     const createResult = await create(openapi, config);
 
-    this.log(`Result: ${JSON.stringify(createResult)}`);
+    this.log(JSON.stringify(createResult, null, 2));
   }
 }
