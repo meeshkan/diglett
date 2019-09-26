@@ -4,7 +4,7 @@ import * as url from "url";
 import { RequestSchema } from "./types";
 import { Schema } from "loas3/dist/generated/full";
 
-const PATH_PARAMETER_PATTERN = /(?:\/{(\w+)})/g;
+const PATH_PARAMETER_PATTERN = /(?:\/(?:{(\w+)}|:(\w+)))/g;
 
 /**
  * Find parameters from path and replace the string with jinja format
@@ -15,8 +15,9 @@ export const pathToJinja = (path: string): { path: string; parameters: string[] 
   const matches = [];
   let outPath = path;
   while (match != null) {
-    matches.push(match[1]);
-    outPath = outPath.replace(match[0], `/{{ ${match[1]} }}`);
+    const param = match[1] || match[2]; // Eww hack, I'm so bad at regex
+    matches.push(param);
+    outPath = outPath.replace(match[0], `/{{ ${param} }}`);
     match = PATH_PARAMETER_PATTERN.exec(path);
   }
   return { path: outPath, parameters: matches };
