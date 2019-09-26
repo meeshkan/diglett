@@ -18,7 +18,7 @@ describe("Creating templates command", () => {
   });
 
   it("does not throw when given a path to existing openapi yaml", async () => {
-    await GenerateTemplates.run(["src/__tests__/resources/petstore.yaml"]);
+    await GenerateTemplates.run(["openapi/petstore.yaml"]);
     expect(writtenStdout).toMatch(/^defaults/);
   });
   it("throws when given a path to non-existing openapi yaml", async () => {
