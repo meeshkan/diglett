@@ -1,12 +1,15 @@
+import * as fs from "fs";
+import * as jsYaml from "js-yaml";
 import * as path from "path";
 import create, { extractOps, generateFrom, readOpenAPI } from "../../lib/create";
 import { OpenAPIObject } from "loas3/dist/generated/full";
 
-const petstoreYaml = path.join(__dirname, "..", "resources", "petstore.yaml");
+const RESOURCES_DIR = path.resolve(__dirname, "..", "resources");
+const PETSTORE_YAML = path.join(RESOURCES_DIR, "petstore.yaml");
 
 describe("Creating request templates", () => {
   it("creates three templates for petstore", async () => {
-    const templates = await create(petstoreYaml, {});
+    const templates = await create(PETSTORE_YAML, {});
     expect(templates.templates).toHaveLength(3);
   });
 });
@@ -16,7 +19,7 @@ describe("Extracting request templates", () => {
     let petstore: OpenAPIObject;
 
     beforeAll(async () => {
-      petstore = await readOpenAPI(petstoreYaml);
+      petstore = await readOpenAPI(PETSTORE_YAML);
     });
 
     it("finds three operations for petstore", () => {
@@ -37,7 +40,7 @@ describe("creating requests from OpenAPI", () => {
   let petstore: OpenAPIObject;
 
   beforeAll(async () => {
-    petstore = await readOpenAPI(petstoreYaml);
+    petstore = await readOpenAPI(PETSTORE_YAML);
   });
 
   it("generates three requests from petstore", () => {
@@ -74,5 +77,13 @@ describe("creating requests from OpenAPI", () => {
       },
     };
     expect(requestSchema).toHaveProperty("parameters", expectedParameters);
+  });
+
+  it("should produce the expected template", () => {
+    const expectedTemplate = jsYaml.safeLoad(
+      fs.readFileSync(path.join(__dirname, "..", "resources", "templates.yaml")).toString()
+    );
+    const requestSchemas = generateFrom(petstore);
+    expect(requestSchemas).toEqual(expectedTemplate);
   });
 });

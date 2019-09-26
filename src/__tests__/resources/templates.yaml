@@ -1,0 +1,30 @@
+defaults: {}
+templates:
+  - req:
+      method: get
+      host: petstore.swagger.io
+      path: /v1/pets
+      pathname: /v1/pets
+      protocol: http
+      query: {}
+    parameters: {}
+  - req:
+      method: post
+      host: petstore.swagger.io
+      path: /v1/pets
+      pathname: /v1/pets
+      protocol: http
+      query: {}
+    parameters: {}
+  - req:
+      method: get
+      host: petstore.swagger.io
+      path: "/v1/pets/{petId}"
+      pathname: "/v1/pets/{petId}"
+      protocol: http
+      query: {}
+    parameters:
+      petId:
+        required: true
+        schema:
+          type: string
