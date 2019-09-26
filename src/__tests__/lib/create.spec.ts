@@ -1,7 +1,7 @@
 import * as fs from "fs";
 import * as jsYaml from "js-yaml";
 import * as path from "path";
-import create, { extractOps, generateFrom, readOpenAPI } from "../../lib/create";
+import create, { extractOps, generateFrom, readOpenAPI } from "../../lib/templates";
 import { OpenAPIObject } from "loas3/dist/generated/full";
 
 const RESOURCES_DIR = path.resolve(__dirname, "..", "resources");

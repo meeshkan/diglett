@@ -1,7 +1,7 @@
 import chalk from "chalk";
 import debug from "debug";
 import { Command, flags } from "@oclif/command";
-import create from "../lib/create";
+import createTemplates from "../lib/templates";
 import * as jsYaml from "js-yaml";
 
 const debugLog = debug("api-hitter");
@@ -28,7 +28,7 @@ export default class Create extends Command {
       `Reading from file "${chalk.bold.magenta(openapi)}" with configuration from "${chalk.bold.magenta(config)}"`
     );
 
-    const createResult = await create(openapi, config);
+    const createResult = await createTemplates(openapi, config);
 
     // Hack to avoid JSYaml exception with undefined type
     this.log(jsYaml.safeDump(createResult, { skipInvalid: true }));
