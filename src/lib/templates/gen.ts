@@ -35,7 +35,19 @@ const gen = (template: RequestTemplate): RequestSchema[] => {
 
       const { path: cleanPath, parameters: pathParameters } = pathToJinja(path);
 
-      const parameterNameToSchema = fromPairs(
+      const queryParameterToSchema = fromPairs(
+        template.parameters
+          .filter(parameter => parameter.in === "query")
+          .map(param => {
+            const schema = param.schema;
+            if (!isSchema(schema)) {
+              throw Error(`Not a schema: ${JSON.stringify(schema)}`);
+            }
+            return [param.name, { required: param.required || false, schema }];
+          })
+      );
+
+      const pathParameterToSchema = fromPairs(
         pathParameters.map(parameter => {
           const param = template.parameters.find(param => param.name === parameter);
           if (!param) {
@@ -59,24 +71,37 @@ const gen = (template: RequestTemplate): RequestSchema[] => {
           return [
             parameter,
             {
-              required: param.required || false,
+              required: param.required || true, // Path parameters always required
               schema: schemaWithPattern,
             },
           ];
         })
       );
 
+      const query = fromPairs(Object.keys(queryParameterToSchema).map(key => [key, `{{ ${key} }}`]));
+
+      const queryParameter: string =
+        Object.keys(query).length === 0
+          ? ""
+          : "?" +
+            Object.entries(query)
+              .map(([key, value]) => `${key}=${value}`)
+              .join("&");
+
       const requestSchema: RequestSchema = {
         req: {
           method: template.method,
           host: serverUrl.hostname!,
-          path: cleanPath,
+          path: cleanPath + queryParameter,
           pathname: cleanPath,
           protocol,
-          query: {}, // TODO Fill in
+          query,
           body: undefined, // TODO  Fill in
         },
-        parameters: parameterNameToSchema,
+        parameters: {
+          ...pathParameterToSchema,
+          ...queryParameterToSchema,
+        },
       };
       return requestSchema;
     })

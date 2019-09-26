@@ -17,6 +17,18 @@
 $ api-hitter --help
 ```
 
+## Generate template for generating requests
+
+```sh-session
+$ api-hitter generate:templates openapi/petstore.yaml
+```
+
+## Generate requests from template
+
+```sh-session
+$ api-hitter generate:requests templates/petstore-templates.yaml
+```
+
 <!-- usagestop -->
 
 ## Development

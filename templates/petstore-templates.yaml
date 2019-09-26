@@ -3,11 +3,17 @@ templates:
   - req:
       method: get
       host: petstore.swagger.io
-      path: /v1/pets
+      path: '/v1/pets?limit={{ limit }}'
       pathname: /v1/pets
       protocol: http
-      query: {}
-    parameters: {}
+      query:
+        limit: '{{ limit }}'
+    parameters:
+      limit:
+        required: false
+        schema:
+          type: integer
+          format: int32
   - req:
       method: post
       host: petstore.swagger.io

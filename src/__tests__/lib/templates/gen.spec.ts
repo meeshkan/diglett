@@ -1,4 +1,4 @@
-import { pathToJinja } from "../../lib/templates/gen";
+import { pathToJinja } from "../../../lib/templates/gen";
 
 describe("Generating request schemas", () => {
   it("should find parameters from path with braces", () => {

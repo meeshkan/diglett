@@ -1,10 +1,10 @@
-import gen from "../../lib/requests";
+import gen from "../../../lib/requests";
 import * as fs from "fs";
 import * as jsYaml from "js-yaml";
 import * as path from "path";
 
 const PETSTORE_TEMPLATES = jsYaml.safeLoad(
-  fs.readFileSync(path.join(__dirname, "..", "resources", "petstore-templates.yaml")).toString()
+  fs.readFileSync(path.join(__dirname, "..", "..", "..", "..", "templates", "petstore-templates.yaml")).toString()
 );
 
 describe("Generating requests", () => {
