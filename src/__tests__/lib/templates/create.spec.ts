@@ -80,7 +80,7 @@ describe("creating requests from OpenAPI", () => {
       const requestSchema = requestsTemplate.templates[0];
       const req = requestSchema.req;
       expect(req).toHaveProperty("host", "petstore.swagger.io");
-      expect(req).toHaveProperty("path", "/v1/pets");
+      expect(req).toHaveProperty("path", "/v1/pets?limit={{ limit }}");
       expect(req).toHaveProperty("protocol", "http");
       expect(req).toHaveProperty("method", "get");
       expect(requestSchema).toHaveProperty("parameters", {

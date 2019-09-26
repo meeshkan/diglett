@@ -78,14 +78,24 @@ const gen = (template: RequestTemplate): RequestSchema[] => {
         })
       );
 
+      const query = fromPairs(Object.keys(queryParameterToSchema).map(key => [key, `{{ ${key} }}`]));
+
+      const queryParameter: string =
+        Object.keys(query).length === 0
+          ? ""
+          : "?" +
+            Object.entries(query)
+              .map(([key, value]) => `${key}=${value}`)
+              .join("&");
+
       const requestSchema: RequestSchema = {
         req: {
           method: template.method,
           host: serverUrl.hostname!,
-          path: cleanPath,
+          path: cleanPath + queryParameter,
           pathname: cleanPath,
           protocol,
-          query: fromPairs(Object.keys(queryParameterToSchema).map(key => [key, `{{ ${key} }}`])),
+          query,
           body: undefined, // TODO  Fill in
         },
         parameters: {
