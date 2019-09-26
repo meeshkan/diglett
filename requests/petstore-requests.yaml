@@ -1,0 +1,21 @@
+- method: get
+  host: petstore.swagger.io
+  path: /v1/pets?limit=-39105330
+  pathname: /v1/pets
+  protocol: http
+  query:
+    limit: '-39105330'
+- method: post
+  host: petstore.swagger.io
+  path: /v1/pets
+  pathname: /v1/pets
+  protocol: http
+  query: {}
+  body: '{"id":-82108450,"name":"in proident consectetur"}'
+- method: get
+  host: petstore.swagger.io
+  path: /v1/pets/AA4Rvg
+  pathname: /v1/pets/AA4Rvg
+  protocol: http
+  query: {}
+
