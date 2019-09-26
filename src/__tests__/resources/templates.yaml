@@ -19,8 +19,8 @@ templates:
   - req:
       method: get
       host: petstore.swagger.io
-      path: "/v1/pets/{petId}"
-      pathname: "/v1/pets/{petId}"
+      path: "/v1/pets/{{ petId }}"
+      pathname: "/v1/pets/{{ petId }}"
       protocol: http
       query: {}
     parameters:
