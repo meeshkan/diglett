@@ -1,4 +1,4 @@
-import gen from "../../../lib/requests";
+import gen, { renderObject } from "../../../lib/requests";
 import * as fs from "fs";
 import * as jsYaml from "js-yaml";
 import * as path from "path";
@@ -16,6 +16,13 @@ describe("Generating requests", () => {
     const req = requests[0];
     expect(req).toHaveProperty("host", "petstore.swagger.io");
   });
+  it("should generate request when there's post request body", () => {
+    const req = requests[1];
+    expect(req).toHaveProperty("body");
+    const body = JSON.parse(req.body as any);
+    expect(body).toHaveProperty("id");
+    expect(body).toHaveProperty("name");
+  });
   it("should generate request when there are parameters to fill in", () => {
     const req = requests[2];
     expect(req).toHaveProperty("host", "petstore.swagger.io");
@@ -23,5 +30,26 @@ describe("Generating requests", () => {
     // Zoom in more
     const generatedValue = req.path.split("/")[3];
     expect(generatedValue.length).toBeGreaterThan(0);
+  });
+});
+
+describe("Rendering object", () => {
+  it("renders nested object", () => {
+    const testObj = {
+      number: 1,
+      string: "something",
+      obj: {
+        string: "Hello {{ name }}",
+      },
+    };
+    const name = "Jick";
+    const rendered = renderObject(testObj, { name });
+    expect(rendered).toEqual({
+      number: 1,
+      string: "something",
+      obj: {
+        string: `Hello ${name}`,
+      },
+    });
   });
 });

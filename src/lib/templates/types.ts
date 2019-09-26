@@ -72,24 +72,8 @@ export interface ParameterSchema {
   schema: Schema;
 }
 
-export const exampleSchema: RequestSchema = {
-  req: {
-    method: "get",
-    host: "petstore.swagger.io",
-    protocol: "https",
-    path: "/v1/pets/{petId}",
-    pathname: "/v1/pets/{petId}",
-    query: {},
-  },
-
-  parameters: {
-    petId: {
-      required: true,
-      schema: {
-        type: "string",
-      },
-    },
-  },
+export type RequestSchema = {
+  req: ISerializedRequest;
+  parameters: Record<string, ParameterSchema>;
+  body?: RequestBody;
 };
-
-export type RequestSchema = { req: ISerializedRequest; parameters: Record<string, ParameterSchema> };

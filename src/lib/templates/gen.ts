@@ -88,6 +88,9 @@ const gen = (template: RequestTemplate): RequestSchema[] => {
               .map(([key, value]) => `${key}=${value}`)
               .join("&");
 
+      const body = template.body ? template.body : undefined;
+      const bodySchema = template.body ? template.body : undefined;
+
       const requestSchema: RequestSchema = {
         req: {
           method: template.method,
@@ -96,12 +99,13 @@ const gen = (template: RequestTemplate): RequestSchema[] => {
           pathname: cleanPath,
           protocol,
           query,
-          body: undefined, // TODO  Fill in
+          body: bodySchema ? "{{ body }}" : undefined,
         },
         parameters: {
           ...pathParameterToSchema,
           ...queryParameterToSchema,
         },
+        body: bodySchema,
       };
       return requestSchema;
     })
