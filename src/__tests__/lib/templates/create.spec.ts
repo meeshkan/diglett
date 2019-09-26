@@ -62,7 +62,10 @@ describe("creating requests from OpenAPI", () => {
       const req = reqTemplate.req;
       expect(req).toHaveProperty("query", { state: "{{ state }}" });
       const parameters = reqTemplate.parameters;
-      expect(parameters).toHaveProperty("state", { schema: { type: "string", enum: ["open", "merged", "decline"] } });
+      expect(parameters).toHaveProperty("state", {
+        required: false,
+        schema: { type: "string", enum: ["open", "merged", "declined"] },
+      });
     });
   });
 
@@ -72,7 +75,7 @@ describe("creating requests from OpenAPI", () => {
       expect(requestsTemplate.templates).toHaveLength(3);
     });
 
-    it("generates requests template with no parameters as fixed", () => {
+    it("generates requests template with query parameters", () => {
       const requestsTemplate = generateFrom(petstore);
       const requestSchema = requestsTemplate.templates[0];
       const req = requestSchema.req;
@@ -80,7 +83,9 @@ describe("creating requests from OpenAPI", () => {
       expect(req).toHaveProperty("path", "/v1/pets");
       expect(req).toHaveProperty("protocol", "http");
       expect(req).toHaveProperty("method", "get");
-      expect(requestSchema).toHaveProperty("parameters", {});
+      expect(requestSchema).toHaveProperty("parameters", {
+        limit: { required: false, schema: { format: "int32", type: "integer" } },
+      });
     });
 
     it("generates request with parameters having schema", () => {
