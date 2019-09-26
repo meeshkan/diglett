@@ -6,6 +6,9 @@ import { OpenAPIObject } from "loas3/dist/generated/full";
 
 const RESOURCES_DIR = path.resolve(__dirname, "..", "resources");
 const PETSTORE_YAML = path.join(RESOURCES_DIR, "petstore.yaml");
+const PETSTORE_TEMPLATES = jsYaml.safeLoad(
+  fs.readFileSync(path.join(__dirname, "..", "resources", "petstore-templates.yaml")).toString()
+);
 
 describe("Creating request templates", () => {
   it("creates three templates for petstore", async () => {
@@ -64,7 +67,7 @@ describe("creating requests from OpenAPI", () => {
     const requestSchema = requestSchemas.templates[2];
     const req = requestSchema.req;
     expect(req).toHaveProperty("host", "petstore.swagger.io");
-    expect(req).toHaveProperty("path", "/v1/pets/{petId}");
+    expect(req).toHaveProperty("path", "/v1/pets/{{ petId }}");
     expect(req).toHaveProperty("protocol", "http");
     expect(req).toHaveProperty("method", "get");
 
@@ -80,10 +83,7 @@ describe("creating requests from OpenAPI", () => {
   });
 
   it("should produce the expected template", () => {
-    const expectedTemplate = jsYaml.safeLoad(
-      fs.readFileSync(path.join(__dirname, "..", "resources", "templates.yaml")).toString()
-    );
     const requestSchemas = generateFrom(petstore);
-    expect(requestSchemas).toEqual(expectedTemplate);
+    expect(requestSchemas).toEqual(PETSTORE_TEMPLATES);
   });
 });
