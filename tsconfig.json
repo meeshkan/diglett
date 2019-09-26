@@ -3,7 +3,7 @@
     "declaration": true,
     "importHelpers": true,
     "module": "commonjs",
-    "outDir": "build",
+    "outDir": "lib",
     "rootDir": "src",
     "strict": true,
     "target": "es2017"
