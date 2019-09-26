@@ -37,28 +37,45 @@ const generateBody = (body: RequestBody): any => {
 
 nunjucks.configure({ autoescape: true });
 
+/**
+ * Render all values of an object, including nested
+ * @param obj
+ * @param context
+ */
+export const renderObject = (obj: any, context: any): any => {
+  return fromPairs(
+    Object.entries(obj).map(([key, value]) => {
+      if (typeof value === "object") {
+        return [key, renderObject(value, context)];
+      }
+      if (typeof value === "string") {
+        return [key, nunjucks.renderString(value, context)];
+      }
+
+      return [key, value];
+    })
+  );
+};
+
 export function* generate(requestsTemplate: RequestsTemplate): IterableIterator<ISerializedRequest> {
   for (const template of requestsTemplate.templates) {
     const nunjucksTemplate = template.req;
     const parameters = template.parameters;
+
+    // Generate value for every parameter
     const nunjucksContext = fromPairs(
       Object.entries(parameters).map(([parameter, schema]) => [parameter, generateValue(schema)])
     );
+
     // const bodyContext = template.body ? { body: generateBody(template.body) } : {};
     // const fullContext = { ...nunjucksContext, ...bodyContext };
     const fullContext = nunjucksContext;
-    // Render every field with nunjucks if they're strings
-    // TODO Nested values
-    const rendered = fromPairs(
-      Object.entries(nunjucksTemplate).map(([key, value]) => {
-        if (typeof value !== "string") {
-          return [key, value];
-        }
-        return [key, nunjucks.renderString(value, fullContext)];
-      })
-    ) as ISerializedRequest;
 
-    // Hack to set body without nunjucks, JSONs just don't work nicely...
+    // Render every field with nunjucks if they're strings
+    // TODO Handle nested values
+    const rendered = renderObject(nunjucksTemplate, fullContext) as ISerializedRequest;
+
+    // Hack to set body directly without nunjucks, JSONs just don't work nicely...
     if (template.body) {
       rendered.body = generateBody(template.body);
     }

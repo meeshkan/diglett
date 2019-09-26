@@ -1,4 +1,4 @@
-import gen from "../../../lib/requests";
+import gen, { renderObject } from "../../../lib/requests";
 import * as fs from "fs";
 import * as jsYaml from "js-yaml";
 import * as path from "path";
@@ -30,5 +30,26 @@ describe("Generating requests", () => {
     // Zoom in more
     const generatedValue = req.path.split("/")[3];
     expect(generatedValue.length).toBeGreaterThan(0);
+  });
+});
+
+describe("Rendering object", () => {
+  it("renders nested object", () => {
+    const testObj = {
+      number: 1,
+      string: "something",
+      obj: {
+        string: "Hello {{ name }}",
+      },
+    };
+    const name = "Jick";
+    const rendered = renderObject(testObj, { name });
+    expect(rendered).toEqual({
+      number: 1,
+      string: "something",
+      obj: {
+        string: `Hello ${name}`,
+      },
+    });
   });
 });
