@@ -21,8 +21,8 @@ steps:
     displayName: "Initialize yarn"
 
   - script: |
-      yarn build
-    displayName: "Build"
+      yarn compile
+    displayName: "compile"
 
   - script: |
       yarn test
