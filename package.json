@@ -12,6 +12,7 @@
     "@oclif/plugin-help": "^2",
     "@types/debug": "^4.1.5",
     "@types/js-yaml": "^3.12.1",
+    "@types/json-schema": "^7.0.3",
     "@types/lodash": "^4.14.139",
     "chalk": "^2.4.2",
     "debug": "^4.1.1",
