@@ -46,14 +46,14 @@ describe("creating requests from OpenAPI", () => {
     petstore = await readOpenAPI(PETSTORE_YAML);
   });
 
-  it("generates three requests from petstore", () => {
-    const requestSchemas = generateFrom(petstore);
-    expect(requestSchemas.templates).toHaveLength(3);
+  it("generates template with three request templates from petstore", () => {
+    const requestsTemplate = generateFrom(petstore);
+    expect(requestsTemplate.templates).toHaveLength(3);
   });
 
-  it("generates request with no parameters as fixed", () => {
-    const requestSchemas = generateFrom(petstore);
-    const requestSchema = requestSchemas.templates[0];
+  it("generates requests template with no parameters as fixed", () => {
+    const requestsTemplate = generateFrom(petstore);
+    const requestSchema = requestsTemplate.templates[0];
     const req = requestSchema.req;
     expect(req).toHaveProperty("host", "petstore.swagger.io");
     expect(req).toHaveProperty("path", "/v1/pets");
@@ -76,6 +76,7 @@ describe("creating requests from OpenAPI", () => {
         required: true,
         schema: {
           type: "string",
+          pattern: "^\\w+$",
         },
       },
     };

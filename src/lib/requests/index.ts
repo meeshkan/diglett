@@ -3,6 +3,8 @@ import { fromPairs } from "lodash";
 import * as jsYaml from "js-yaml";
 import * as fs from "fs";
 import * as nunjucks from "nunjucks";
+// @ts-ignore
+import * as jsf from "json-schema-faker";
 
 const readTemplate = (path: string) => {
   if (!fs.existsSync(path)) {
@@ -12,7 +14,7 @@ const readTemplate = (path: string) => {
 };
 
 const generateValue = (parameter: ParameterSchema): any => {
-  return "fake";
+  return jsf.generate(parameter.schema);
 };
 
 nunjucks.configure({ autoescape: true });
