@@ -65,7 +65,7 @@ export type RequestTemplate = PartialRequestTemplate & {
   path: string;
 };
 
-export type CreateResult = { defaults: Partial<ISerializedRequest>; templates: RequestSchema[] };
+export type RequestsTemplate = { defaults: Partial<ISerializedRequest>; templates: RequestSchema[] };
 
 export interface ParameterSchema {
   required: boolean;

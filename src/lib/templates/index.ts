@@ -137,7 +137,7 @@ export const readOpenAPI = async (openapiPath: string): Promise<OpenAPIObject> =
   return schema;
 };
 
-export const generateFrom = (openapi: OpenAPIObject): types.CreateResult => {
+export const generateFrom = (openapi: OpenAPIObject): types.RequestsTemplate => {
   const requestTemplates = extractOps(openapi);
   const templates = flatten(requestTemplates.map(template => gen(template)));
   return { defaults: {}, templates };
@@ -148,7 +148,7 @@ export const generateFrom = (openapi: OpenAPIObject): types.CreateResult => {
  * @param openapiPath Path to OpenAPI schema
  * @param config Configuration
  */
-const create = async (openapiPath: string, config: any): Promise<types.CreateResult> => {
+const create = async (openapiPath: string, config: any): Promise<types.RequestsTemplate> => {
   const openapi = await readOpenAPI(openapiPath);
   debugLog("Got OpenAPI", JSON.stringify(openapi));
   return generateFrom(openapi);
