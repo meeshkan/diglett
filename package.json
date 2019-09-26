@@ -60,6 +60,7 @@
   },
   "repository": "meeshkan/api-hitter",
   "scripts": {
+    "compile": "tsc",
     "start": "node bin/run",
     "postpack": "rm -f oclif.manifest.json",
     "prepack": "rm -rf lib && tsc -b && oclif-dev manifest && oclif-dev readme",

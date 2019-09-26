@@ -41,3 +41,23 @@ OPTIONS
 _See code: [src/commands/scrape.ts](https://github.com/meeshkan/api-client-cli/blob/v0.0.0/src/commands/scrape.ts)_
 
 <!-- commandsstop -->
+
+## Development
+
+Install dependencies:
+
+```sh
+$ yarn
+```
+
+Run tests:
+
+```sh
+$ yarn test
+```
+
+Execute CLI:
+
+```sh
+./bin/run --help
+```
