@@ -1,6 +1,8 @@
 import { RequestsTemplate, ISerializedRequest } from "../templates/types";
+import { fromPairs } from "lodash";
 import * as jsYaml from "js-yaml";
 import * as fs from "fs";
+import * as nunjucks from "nunjucks";
 
 const readTemplate = (path: string) => {
   if (!fs.existsSync(path)) {
@@ -9,9 +11,15 @@ const readTemplate = (path: string) => {
   return jsYaml.safeLoad(fs.readFileSync(path).toString());
 };
 
+nunjucks.configure({ autoescape: true });
+
 export function* generate(requestsTemplate: RequestsTemplate): IterableIterator<ISerializedRequest> {
-  for (const req of requestsTemplate.templates) {
-    yield req.req; // TODO Fill in etc.
+  for (const template of requestsTemplate.templates) {
+    const nunjucksTemplate = template.req;
+    const parameters = template.parameters;
+    const context = fromPairs(Object.entries(parameters).map(([parameter, schema]) => [parameter, parameter]));
+    const rendered = nunjucks.renderString(JSON.stringify(nunjucksTemplate), context); // TODO Fill in etc.
+    yield JSON.parse(rendered);
   }
 }
 
