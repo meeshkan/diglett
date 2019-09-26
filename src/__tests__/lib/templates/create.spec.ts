@@ -1,13 +1,13 @@
 import * as fs from "fs";
 import * as jsYaml from "js-yaml";
 import * as path from "path";
-import create, { extractOps, generateFrom, readOpenAPI } from "../../lib/templates";
+import create, { extractOps, generateFrom, readOpenAPI } from "../../../lib/templates";
 import { OpenAPIObject } from "loas3/dist/generated/full";
 
-const OPENAPI_DIR = path.resolve(__dirname, "..", "..", "..", "openapi");
+const OPENAPI_DIR = path.resolve(__dirname, "..", "..", "..", "..", "openapi");
 const PETSTORE_YAML = path.join(OPENAPI_DIR, "petstore.yaml");
 const PETSTORE_TEMPLATES = jsYaml.safeLoad(
-  fs.readFileSync(path.join(__dirname, "..", "..", "..", "templates", "petstore-templates.yaml")).toString()
+  fs.readFileSync(path.join(__dirname, "..", "..", "..", "..", "templates", "petstore-templates.yaml")).toString()
 );
 
 describe("Creating request templates", () => {
