@@ -1,10 +1,13 @@
-import gen, { findParameters } from "../../lib/create/gen";
+import gen, { pathToJinja } from "../../lib/create/gen";
 
 describe("Generating request schemas", () => {
-  it("should find parameters from path", () => {
+  it("should find parameters from path with braces", () => {
     const string = "/v1/pets/{petId}/{id}";
-    expect(findParameters(string)).toEqual(["petId", "id"]);
+    expect(pathToJinja(string)).toEqual({ path: "/v1/pets/{{ petId }}/{{ id }}", parameters: ["petId", "id"] });
   });
 
-  it("should generate schema from given template", () => {});
+  it("should find parameters from path with colons", () => {
+    const string = "/v1/pets/:petId/:id";
+    expect(pathToJinja(string)).toEqual({ path: "/v1/pets/{{ petId }}/{{ id }}", parameters: ["petId", "id"] });
+  });
 });

@@ -4,19 +4,22 @@ import * as url from "url";
 import { RequestSchema } from "./types";
 import { Schema } from "loas3/dist/generated/full";
 
+const PATH_PARAMETER_PATTERN = /(?:\/{(\w+)})/g;
+
 /**
- * Find parameters from path.
+ * Find parameters from path and replace the string with jinja format
  * Example: /v1/pets/{petId}/{id} => ["petId", "id"]
  */
-export const findParameters = (s: string): string[] => {
-  const pattern = /(?:\/{(\w+)})/g;
-  let match = pattern.exec(s);
+export const pathToJinja = (path: string): { path: string; parameters: string[] } => {
+  let match = PATH_PARAMETER_PATTERN.exec(path);
   const matches = [];
+  let outPath = path;
   while (match != null) {
     matches.push(match[1]);
-    match = pattern.exec(s);
+    outPath = outPath.replace(match[0], `/{{ ${match[1]} }}`);
+    match = PATH_PARAMETER_PATTERN.exec(path);
   }
-  return matches;
+  return { path: outPath, parameters: matches };
 };
 
 const gen = (template: RequestTemplate): RequestSchema[] => {
@@ -29,7 +32,7 @@ const gen = (template: RequestTemplate): RequestSchema[] => {
 
       const protocol = (isProtocol(trimmedProtocol) && trimmedProtocol) || "https";
 
-      const pathParameters = findParameters(path);
+      const { path: cleanPath, parameters: pathParameters } = pathToJinja(path);
 
       const parameterNameToSchema = fromPairs(
         pathParameters.map(parameter => {
@@ -56,8 +59,8 @@ const gen = (template: RequestTemplate): RequestSchema[] => {
         req: {
           method: template.method,
           host: serverUrl.hostname!,
-          path,
-          pathname: path,
+          path: cleanPath,
+          pathname: cleanPath,
           protocol,
           query: {}, // TODO Fill in
           body: undefined, // TODO  Fill in
