@@ -2,7 +2,7 @@ import { flatten, fromPairs } from "lodash";
 import { RequestTemplate, isProtocol } from "./types";
 import * as url from "url";
 import { RequestSchema } from "./types";
-import { Schema } from "loas3/dist/generated/full";
+import { isSchema, Schema } from "loas3/dist/generated/full";
 
 const PATH_PARAMETER_PATTERN = /(?:\/(?:{(\w+)}|:(\w+)))/g;
 
@@ -46,11 +46,21 @@ const gen = (template: RequestTemplate): RequestSchema[] => {
             throw Error(`No schema found for ${parameter}`);
           }
 
+          // Tweak schema
+          const pathParamSchema = param.schema;
+          if (!isSchema(pathParamSchema)) {
+            throw Error(`Not a schema: ${JSON.stringify(pathParamSchema)}`);
+          }
+
+          const schemaWithPattern = pathParamSchema.pattern
+            ? pathParamSchema
+            : { ...pathParamSchema, pattern: "^\\w+$" };
+
           return [
             parameter,
             {
               required: param.required || false,
-              schema: param.schema as Schema,
+              schema: schemaWithPattern,
             },
           ];
         })
