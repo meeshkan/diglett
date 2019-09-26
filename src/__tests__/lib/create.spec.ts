@@ -7,7 +7,7 @@ const petstoreYaml = path.join(__dirname, "..", "resources", "petstore.yaml");
 describe("Creating request templates", () => {
   it("creates three templates for petstore", async () => {
     const templates = await create(petstoreYaml, {});
-    expect(templates).toHaveLength(3);
+    expect(templates.templates).toHaveLength(3);
   });
 });
 
@@ -42,12 +42,12 @@ describe("creating requests from OpenAPI", () => {
 
   it("generates three requests from petstore", () => {
     const requestSchemas = generateFrom(petstore);
-    expect(requestSchemas).toHaveLength(3);
+    expect(requestSchemas.templates).toHaveLength(3);
   });
 
   it("generates request with no parameters as fixed", () => {
     const requestSchemas = generateFrom(petstore);
-    const requestSchema = requestSchemas[0];
+    const requestSchema = requestSchemas.templates[0];
     const req = requestSchema.req;
     expect(req).toHaveProperty("host", "petstore.swagger.io");
     expect(req).toHaveProperty("path", "/v1/pets");
@@ -58,7 +58,7 @@ describe("creating requests from OpenAPI", () => {
 
   it("generates request with parameters having schema", () => {
     const requestSchemas = generateFrom(petstore);
-    const requestSchema = requestSchemas[2];
+    const requestSchema = requestSchemas.templates[2];
     const req = requestSchema.req;
     expect(req).toHaveProperty("host", "petstore.swagger.io");
     expect(req).toHaveProperty("path", "/v1/pets/{petId}");

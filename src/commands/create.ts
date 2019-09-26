@@ -31,6 +31,6 @@ export default class Create extends Command {
     const createResult = await create(openapi, config);
 
     // Hack to avoid JSYaml exception with undefined type
-    this.log(jsYaml.safeDump(JSON.parse(JSON.stringify(createResult))));
+    this.log(jsYaml.safeDump(createResult, { skipInvalid: true }));
   }
 }

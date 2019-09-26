@@ -139,7 +139,8 @@ export const readOpenAPI = async (openapiPath: string): Promise<OpenAPIObject> =
 
 export const generateFrom = (openapi: OpenAPIObject): types.CreateResult => {
   const requestTemplates = extractOps(openapi);
-  return flatten(requestTemplates.map(template => gen(template)));
+  const templates = flatten(requestTemplates.map(template => gen(template)));
+  return { defaults: {}, templates };
 };
 
 const create = async (openapiPath: string, config: any): Promise<types.CreateResult> => {
