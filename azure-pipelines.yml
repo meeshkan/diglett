@@ -1,0 +1,29 @@
+# Node.js
+# Build a general Node.js project with npm.
+# Add steps that analyze code, save build artifacts, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
+
+trigger:
+  - master # Only build for changes in master branch (and pull requests)
+
+pool:
+  vmImage: "Ubuntu 16.04"
+
+steps:
+  - task: NodeTool@0
+    inputs:
+      versionSpec: "10.x"
+    displayName: "Install Node.js"
+
+  - script: |
+      npm install -g yarn
+      yarn
+    displayName: "Initialize yarn"
+
+  - script: |
+      yarn build
+    displayName: "Build"
+
+  - script: |
+      yarn test
+    displayName: "Test"
