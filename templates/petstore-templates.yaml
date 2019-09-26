@@ -3,11 +3,11 @@ templates:
   - req:
       method: get
       host: petstore.swagger.io
-      path: /v1/pets
+      path: /v1/pets?limit={{ limit }}
       pathname: /v1/pets
       protocol: http
       query:
-        limit: '{{ limit }}'
+        limit: "{{ limit }}"
     parameters:
       limit:
         required: false
@@ -25,8 +25,8 @@ templates:
   - req:
       method: get
       host: petstore.swagger.io
-      path: '/v1/pets/{{ petId }}'
-      pathname: '/v1/pets/{{ petId }}'
+      path: "/v1/pets/{{ petId }}"
+      pathname: "/v1/pets/{{ petId }}"
       protocol: http
       query: {}
     parameters:
@@ -35,4 +35,3 @@ templates:
         schema:
           type: string
           pattern: ^\w+$
-
