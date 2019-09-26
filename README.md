@@ -36,3 +36,9 @@ Execute CLI:
 ```sh
 ./bin/run --help
 ```
+
+Link the executable so it's available as `api-hitter`:
+
+```sh
+yarn link
+```
