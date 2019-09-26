@@ -16,6 +16,13 @@ describe("Generating requests", () => {
     const req = requests[0];
     expect(req).toHaveProperty("host", "petstore.swagger.io");
   });
+  it("should generate request when there's post request body", () => {
+    const req = requests[1];
+    expect(req).toHaveProperty("body");
+    const body = JSON.parse(req.body as any);
+    expect(body).toHaveProperty("id");
+    expect(body).toHaveProperty("name");
+  });
   it("should generate request when there are parameters to fill in", () => {
     const req = requests[2];
     expect(req).toHaveProperty("host", "petstore.swagger.io");

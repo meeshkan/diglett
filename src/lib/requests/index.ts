@@ -1,10 +1,14 @@
 import { RequestsTemplate, ISerializedRequest, ParameterSchema } from "../templates/types";
 import { fromPairs } from "lodash";
+import debug from "debug";
 import * as jsYaml from "js-yaml";
 import * as fs from "fs";
 import * as nunjucks from "nunjucks";
+import { RequestBody } from "loas3/dist/generated/full";
 // @ts-ignore
 import * as jsf from "json-schema-faker";
+
+const debugLog = debug("api-hitter:requests");
 
 const readTemplate = (path: string) => {
   if (!fs.existsSync(path)) {
@@ -14,7 +18,21 @@ const readTemplate = (path: string) => {
 };
 
 const generateValue = (parameter: ParameterSchema): any => {
+  debugLog(`Generating value from: ${JSON.stringify(parameter)}`);
   return jsf.generate(parameter.schema);
+};
+
+const generateBody = (body: RequestBody): any => {
+  const applicationJsonContent = body.content["application/json"];
+  if (!applicationJsonContent) {
+    throw Error(`No application/json found: ${JSON.stringify(body)}`);
+  }
+  const generated = jsf.generate(applicationJsonContent.schema);
+  debugLog(`Generating body: ${JSON.stringify(generated)}`);
+  if (typeof generated === "object") {
+    return JSON.stringify(generated);
+  }
+  return generated;
 };
 
 nunjucks.configure({ autoescape: true });
@@ -26,8 +44,26 @@ export function* generate(requestsTemplate: RequestsTemplate): IterableIterator<
     const nunjucksContext = fromPairs(
       Object.entries(parameters).map(([parameter, schema]) => [parameter, generateValue(schema)])
     );
-    const rendered = nunjucks.renderString(JSON.stringify(nunjucksTemplate), nunjucksContext);
-    yield JSON.parse(rendered);
+    // const bodyContext = template.body ? { body: generateBody(template.body) } : {};
+    // const fullContext = { ...nunjucksContext, ...bodyContext };
+    const fullContext = nunjucksContext;
+    // Render every field with nunjucks if they're strings
+    // TODO Nested values
+    const rendered = fromPairs(
+      Object.entries(nunjucksTemplate).map(([key, value]) => {
+        if (typeof value !== "string") {
+          return [key, value];
+        }
+        return [key, nunjucks.renderString(value, fullContext)];
+      })
+    ) as ISerializedRequest;
+
+    // Hack to set body without nunjucks, JSONs just don't work nicely...
+    if (template.body) {
+      rendered.body = generateBody(template.body);
+    }
+
+    yield rendered;
   }
 }
 
