@@ -1,4 +1,10 @@
 import { ISerializedRequest } from "../types";
+import { RequestSender } from "./request-sender";
+import debug from "debug";
+import { Either, either, isLeft } from "fp-ts/lib/Either";
+import { array, zip } from "fp-ts/lib/Array";
+
+const debugLog = debug("api-hitter:bombard");
 
 export interface ISerializedResponse {
   code: number;
@@ -9,8 +15,19 @@ export type RequestResponsePair = {
   res: ISerializedResponse;
 };
 
-const bombard = (requests: ISerializedRequest[], config: any): RequestResponsePair[] => {
-  return [];
+const send = async (req: ISerializedRequest): Promise<ISerializedResponse> => {
+  debugLog(`Faking sending request: ${JSON.stringify(req)}`);
+  return Promise.resolve({ code: 200 });
+};
+
+const bombard = async (requests: ISerializedRequest[], config: any): Promise<RequestResponsePair[]> => {
+  const requestSender = new RequestSender(send);
+  const responses: Array<Either<Error, ISerializedResponse>> = await requestSender.sendBatch(requests);
+  const collect: Either<Error, ISerializedResponse[]> = array.sequence(either)(responses);
+  if (isLeft(collect)) {
+    throw collect.left; // TODO More graceful handling of errors
+  }
+  return zip(requests, collect.right).map(([req, res]) => ({ req, res }));
 };
 
 export default bombard;
