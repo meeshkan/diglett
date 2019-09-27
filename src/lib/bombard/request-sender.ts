@@ -57,11 +57,19 @@ export class BatchSender {
     return Promise.resolve({ code: 200 });
   }
 
+  /**
+   * Get array of tasks for sending request-response pairs.
+   * Tasks are not squashed into `TaskEither<Error, Array<ISerializedResponse>>`
+   * to ensure the tasks can be easily linked to the corresponding requests.
+   * @param reqs Requests to send
+   * @return Array of tasks
+   */
+  sendBatchFp(reqs: ISerializedRequest[]): Array<TaskEither<Error, ISerializedResponse>> {
+    return reqs.map((req: ISerializedRequest) => tryCatch(() => this.queue.push(req), toError));
+  }
+
   async sendBatch(reqs: ISerializedRequest[]): Promise<Array<Either<Error, ISerializedResponse>>> {
-    const tasks: Array<TaskEither<Error, ISerializedResponse>> = reqs.map((req: ISerializedRequest) => {
-      const task: TaskEither<Error, ISerializedResponse> = tryCatch(() => this.queue.push(req), toError);
-      return task;
-    });
+    const tasks = this.sendBatchFp(reqs);
     return Promise.all(tasks.map(task => task()));
   }
 
