@@ -28,7 +28,7 @@ export default class Bombard extends Command {
       `Reading from file "${chalk.bold.magenta(requestsYaml)}" with configuration from "${chalk.bold.magenta(config)}"`
     );
 
-    const result = await bombard(requestsYaml, config);
+    const result = await bombard(requestsYaml);
     debugLog("Finished.");
   }
 }
