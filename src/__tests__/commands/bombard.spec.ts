@@ -17,9 +17,9 @@ describe("Bombard command", () => {
     processStdoutSpy.mockRestore();
   });
 
-  it("does not write anything to stdout when given a path to file with empty array", async () => {
+  it("logs empty array to stdout when given a path to file with empty array", async () => {
     await Bombard.run(["requests/empty.yaml"]);
-    expect(writtenStdout).toBe("");
+    expect(writtenStdout).toEqual("[]\n\n"); // Some extra lines added by Bombard.log?
   });
   it("throws when given a path to non-existing openapi yaml", async () => {
     await expect(Bombard.run(["dfhsdgsd.yaml"])).rejects.toThrow("File not found");

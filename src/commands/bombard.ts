@@ -29,6 +29,7 @@ export default class Bombard extends Command {
     );
 
     const result = await bombard(requestsYaml);
+    this.log(jsYaml.safeDump(result));
     debugLog("Finished.");
   }
 }
