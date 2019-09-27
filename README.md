@@ -17,6 +17,8 @@
 $ api-hitter --help
 ```
 
+For development, create link to `api-hitter` by running `yarn link` in the repository root.
+
 ## Generate template for generating requests
 
 ```sh-session
@@ -32,7 +34,7 @@ $ DEBUG=* api-hitter generate:requests templates/petstore-templates.yaml
 ## Send requests from file
 
 ```sh-session
-$ DEBUG=* node ./bin/run bombard requests/petstore-requests.yaml
+$ DEBUG=* api-hitter bombard requests/petstore-requests.yaml
 ```
 
 <!-- usagestop -->
