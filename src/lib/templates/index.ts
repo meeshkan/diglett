@@ -16,6 +16,7 @@ import {
   Server,
 } from "loas3/dist/generated/full";
 import * as types from "./types";
+import { HTTPMethod, RESTMethodTypes } from "../types";
 import { Fold, Iso, Lens, Optional, Prism, Traversal, fromTraversable } from "monocle-ts";
 import { array, getMonoid } from "fp-ts/lib/Array";
 import gen from "./gen";
@@ -23,7 +24,7 @@ import gen from "./gen";
 const debugLog = debug("api-client:scrape");
 
 export function parseRequest(op: {
-  name: types.HTTPMethod;
+  name: HTTPMethod;
   operation: Operation;
   pathItem: PathItem;
   pathName: string;
@@ -52,9 +53,9 @@ export const extractOpsForPath = ({
     debugLog(`No operations`);
     return [];
   }
-  const operations = types.RESTMethodTypes.map(opName => ({ name: opName, operation: pathItem[opName] })).filter(
+  const operations = RESTMethodTypes.map(opName => ({ name: opName, operation: pathItem[opName] })).filter(
     op => typeof op.operation !== "undefined"
-  ) as { name: types.HTTPMethod; operation: Operation }[];
+  ) as { name: HTTPMethod; operation: Operation }[];
 
   debugLog("Operations", operations);
 

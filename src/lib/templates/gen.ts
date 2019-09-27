@@ -1,5 +1,6 @@
 import { flatten, fromPairs } from "lodash";
-import { RequestTemplate, isProtocol } from "./types";
+import { RequestTemplate } from "./types";
+import { isProtocol } from "../types";
 import * as url from "url";
 import { RequestSchema } from "./types";
 import { isSchema, Schema } from "loas3/dist/generated/full";

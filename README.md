@@ -20,13 +20,19 @@ $ api-hitter --help
 ## Generate template for generating requests
 
 ```sh-session
-$ api-hitter generate:templates openapi/petstore.yaml
+$ DEBUG=* api-hitter generate:templates openapi/petstore.yaml
 ```
 
 ## Generate requests from template
 
 ```sh-session
-$ api-hitter generate:requests templates/petstore-templates.yaml
+$ DEBUG=* api-hitter generate:requests templates/petstore-templates.yaml
+```
+
+## Send requests from file
+
+```sh-session
+$ DEBUG=* node ./bin/run bombard requests/petstore-requests.yaml
 ```
 
 <!-- usagestop -->
