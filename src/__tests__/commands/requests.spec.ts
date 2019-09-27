@@ -1,6 +1,6 @@
 import GenerateRequests from "../../commands/generate/requests";
 
-describe("Creating templates command", () => {
+describe("Creating requests command", () => {
   let processStdoutSpy: jest.SpyInstance;
   let writtenStdout: string;
 

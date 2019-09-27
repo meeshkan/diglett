@@ -24,13 +24,18 @@ export const send = async (req: ISerializedRequest): Promise<ISerializedResponse
 export const bombard = async (requests: ISerializedRequest[], config: any): Promise<RequestResponsePair[]> => {
   debugLog(`Sending ${requests.length} requests`);
   const requestSender = new BatchSender(send);
-  const responses: Array<Either<Error, ISerializedResponse>> = await requestSender.sendBatch(requests);
-  requestSender.stop();
-  const collect: Either<Error, ISerializedResponse[]> = array.sequence(either)(responses);
-  if (isLeft(collect)) {
-    throw collect.left; // TODO More graceful handling of errors
+  try {
+    const batchResult: Either<Error, ISerializedResponse>[] = await requestSender.sendBatch(requests);
+    const collect: Either<Error, ISerializedResponse[]> = array.sequence(either)(batchResult);
+    if (isLeft(collect)) {
+      throw collect.left; // TODO More graceful handling of errors
+    }
+    return zip(requests, collect.right).map(([req, res]) => ({ req, res }));
+  } catch (err) {
+    throw err;
+  } finally {
+    await requestSender.stop();
   }
-  return zip(requests, collect.right).map(([req, res]) => ({ req, res }));
 };
 
 export const bombardFromFile = async (path: string): Promise<RequestResponsePair[]> => {
