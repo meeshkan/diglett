@@ -10,7 +10,7 @@ const debugLog = debug("api-hitter:request-sender");
 
 export class RequestQueue<I, O> {
   private readonly queue: BetterQueue;
-  private static config = { afterProcessDelay: 1000 };
+  private static config = { afterProcessDelay: 5000 };
   constructor(processTask: (i: I) => Promise<O>) {
     const processFn: BetterQueue.ProcessFunction<I, O> = async (task: I, cb: (error?: any, result?: O) => void) => {
       try {
@@ -38,9 +38,15 @@ export class RequestQueue<I, O> {
         });
     });
   }
+
+  async stop() {
+    return new Promise<void>(resolve => {
+      this.queue.destroy(resolve);
+    });
+  }
 }
 
-export class RequestSender {
+export class BatchSender {
   private readonly queue: RequestQueue<ISerializedRequest, ISerializedResponse>;
   constructor(send: (req: ISerializedRequest) => Promise<ISerializedResponse>) {
     this.queue = new RequestQueue(send);
@@ -57,5 +63,9 @@ export class RequestSender {
       return task;
     });
     return Promise.all(tasks.map(task => task()));
+  }
+
+  async stop() {
+    await this.queue.stop();
   }
 }
