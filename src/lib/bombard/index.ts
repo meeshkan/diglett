@@ -23,7 +23,7 @@ export type FailedRequest = {
   err: Error;
 };
 
-export const send = async (req: ISerializedRequest): Promise<ISerializedResponse> => {
+export const fakeSendRequest = async (req: ISerializedRequest): Promise<ISerializedResponse> => {
   debugLog(`Faking sending request: ${JSON.stringify(req)}`);
   return Promise.resolve({ code: 200 });
 };
@@ -63,7 +63,7 @@ export const send = async (req: ISerializedRequest): Promise<ISerializedResponse
 }; */
 
 interface BombardOptions {
-  requestSender?: BatchSender;
+  sendRequest?: (req: ISerializedRequest) => Promise<ISerializedResponse>;
 }
 
 export const bombard = async (
@@ -71,9 +71,10 @@ export const bombard = async (
   config?: BombardOptions
 ): Promise<RequestResponsePair[]> => {
   debugLog(`Sending ${requests.length} requests`);
-  const requestSender = (config && config.requestSender) || new BatchSender(send);
+  const sendRequest = (config && config.sendRequest) || fakeSendRequest;
+  const batchSender = new BatchSender(sendRequest);
   try {
-    const batchResult: Either<Error, ISerializedResponse>[] = await requestSender.sendBatch(requests);
+    const batchResult: Either<Error, ISerializedResponse>[] = await batchSender.sendBatch(requests);
     const collect: Either<Error, ISerializedResponse[]> = array.sequence(either)(batchResult);
     if (isLeft(collect)) {
       throw collect.left; // TODO More graceful handling of errors
@@ -82,7 +83,7 @@ export const bombard = async (
   } catch (err) {
     throw err;
   } finally {
-    await requestSender.stop();
+    await batchSender.stop();
   }
 };
 

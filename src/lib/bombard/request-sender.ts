@@ -10,7 +10,7 @@ const debugLog = debug("api-hitter:request-sender");
 
 export class RequestQueue<I, O> {
   private readonly queue: BetterQueue;
-  private static config = { afterProcessDelay: 5000 };
+  private static config = { afterProcessDelay: 500 };
   constructor(processTask: (i: I) => Promise<O>) {
     const processFn: BetterQueue.ProcessFunction<I, O> = async (task: I, cb: (error?: any, result?: O) => void) => {
       try {
