@@ -62,9 +62,16 @@ export const send = async (req: ISerializedRequest): Promise<ISerializedResponse
     });
 }; */
 
-export const bombard = async (requests: ISerializedRequest[], config: any): Promise<RequestResponsePair[]> => {
+interface BombardOptions {
+  requestSender?: BatchSender;
+}
+
+export const bombard = async (
+  requests: ISerializedRequest[],
+  config?: BombardOptions
+): Promise<RequestResponsePair[]> => {
   debugLog(`Sending ${requests.length} requests`);
-  const requestSender = new BatchSender(send);
+  const requestSender = (config && config.requestSender) || new BatchSender(send);
   try {
     const batchResult: Either<Error, ISerializedResponse>[] = await requestSender.sendBatch(requests);
     const collect: Either<Error, ISerializedResponse[]> = array.sequence(either)(batchResult);
