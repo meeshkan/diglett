@@ -1,4 +1,5 @@
-import { RequestsTemplate, ISerializedRequest, ParameterSchema } from "../templates/types";
+import { RequestsTemplate, ParameterSchema } from "../templates/types";
+import { ISerializedRequest } from "../types";
 import { fromPairs } from "lodash";
 import debug from "debug";
 import * as jsYaml from "js-yaml";
