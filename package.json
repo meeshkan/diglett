@@ -68,7 +68,8 @@
     "postpack": "rm -f oclif.manifest.json",
     "prepack": "rm -rf lib && tsc -b && oclif-dev manifest && oclif-dev readme",
     "test": "jest",
-    "version": "oclif-dev readme && git add README.md"
+    "version": "oclif-dev readme && git add README.md",
+    "gen": "node ./bin/run generate:templates openapi/petstore.yaml > templates/petstore-templates.yaml"
   },
   "types": "lib/index.d.ts"
 }
