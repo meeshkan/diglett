@@ -3,8 +3,7 @@ import { ISerializedResponse } from ".";
 import debug from "debug";
 import * as BetterQueue from "better-queue";
 import { Either, toError } from "fp-ts/lib/Either";
-import { map, taskEither, TaskEither, tryCatch } from "fp-ts/lib/TaskEither";
-import { array } from "fp-ts/lib/array";
+import { TaskEither, tryCatch } from "fp-ts/lib/TaskEither";
 
 const debugLog = debug("api-hitter:request-sender");
 

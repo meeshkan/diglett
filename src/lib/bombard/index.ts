@@ -4,8 +4,6 @@ import debug from "debug";
 import { Either, either, isLeft } from "fp-ts/lib/Either";
 import { array, zip } from "fp-ts/lib/Array";
 import { readYaml } from "../utils";
-import { TaskEither, ap, map as mapTe, mapLeft, taskEither, fold } from "fp-ts/lib/TaskEither";
-import { Task, task } from "fp-ts/lib/Task";
 
 const debugLog = debug("api-hitter:bombard");
 
