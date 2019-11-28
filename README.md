@@ -34,7 +34,11 @@ $ DEBUG=* api-hitter generate:requests templates/petstore-templates.yaml
 ## Send requests from file
 
 ```sh-session
+# Dry-run by default
 $ DEBUG=* api-hitter bombard requests/petstore-requests.yaml
+
+# Actually send requests by adding "-f" option
+api-hitter bombard -f requests/petstore-requests.yaml
 ```
 
 <!-- usagestop -->

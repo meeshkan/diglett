@@ -4,8 +4,9 @@ import debug from "debug";
 
 const debugLog = debug("api-hitter:request-sender");
 
-export const sendRequest = (request: ISerializedRequest): Promise<ISerializedResponse> => {
-  return Promise.resolve({ code: 200 });
+export const sendRequest = (_: ISerializedRequest): Promise<ISerializedResponse> => {
+  // TODO
+  return Promise.reject(Error("Failure"));
 };
 
 export const fakeSendRequest = async (req: ISerializedRequest): Promise<ISerializedResponse> => {

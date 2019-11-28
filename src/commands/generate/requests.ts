@@ -13,14 +13,12 @@ export default class GenerateRequests extends Command {
     help: flags.help({ char: "h" }),
     // flag with a value (-n, --name=VALUE)
     config: flags.string({ char: "c", description: "Path to configuration JSON", default: "scrape-config.yaml" }),
-    // flag with no value (-f, --force)
-    force: flags.boolean({ char: "f" }),
   };
 
   static args = [{ name: "template", description: "Path to template", required: true }];
 
   async run() {
-    const { args, flags } = this.parse(GenerateRequests);
+    const { args } = this.parse(GenerateRequests);
 
     const template = args.template;
     debugLog(`Reading from file "${chalk.bold.magenta(template)}"`);

@@ -13,8 +13,6 @@ export default class GenerateTemplates extends Command {
     help: flags.help({ char: "h" }),
     // flag with a value (-n, --name=VALUE)
     config: flags.string({ char: "c", description: "Path to configuration JSON", default: "scrape-config.yaml" }),
-    // flag with no value (-f, --force)
-    force: flags.boolean({ char: "f" }),
   };
 
   static args = [{ name: "openapi", description: "Path to OpenAPI specification", required: true }];
