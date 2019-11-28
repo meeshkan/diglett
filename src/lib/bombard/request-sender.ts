@@ -1,78 +1,49 @@
 import { ISerializedRequest } from "../types";
 import { ISerializedResponse } from ".";
 import debug from "debug";
-import * as BetterQueue from "better-queue";
-import { Either, toError } from "fp-ts/lib/Either";
-import { TaskEither, tryCatch } from "fp-ts/lib/TaskEither";
+import fetch, { Headers } from "cross-fetch";
 
 const debugLog = debug("api-hitter:request-sender");
 
-export class RequestQueue<I, O> {
-  private readonly queue: BetterQueue;
-  private static config = { afterProcessDelay: 500 };
-  constructor(processTask: (i: I) => Promise<O>) {
-    const processFn: BetterQueue.ProcessFunction<I, O> = async (task: I, cb: (error?: any, result?: O) => void) => {
-      try {
-        debugLog(`Processing task: ${JSON.stringify(task)}`);
-        const result = await processTask(task);
-        debugLog(`Processed task: ${JSON.stringify(task)}`);
-        cb(null, result);
-      } catch (err) {
-        debugLog(`Failed processing task: ${JSON.stringify(task)}, error: ${err.message}`);
-        cb(err);
+export const buildHeaders = (request: ISerializedRequest): Headers => {
+  const headers = new Headers();
+  if (typeof request.headers !== "undefined") {
+    Object.entries(request.headers).forEach(([key, value]) => {
+      if (typeof value === "string") {
+        headers.append(key, value);
+      } else if (Array.isArray(value)) {
+        headers.append(key, value.join(","));
       }
+    });
+  }
+  return headers;
+};
+
+export const prepareFetch = (request: ISerializedRequest): [RequestInfo, RequestInit] => {
+  const url = `${request.protocol}://${request.host}${request.path}`;
+  const headers = buildHeaders(request);
+  const stringBody = typeof request.body === "object" ? JSON.stringify(request.body) : request.body;
+  return [url, { method: request.method, headers, body: stringBody }];
+};
+
+export const sendRequest = async (request: ISerializedRequest): Promise<ISerializedResponse> => {
+  const [url, init] = prepareFetch(request);
+  try {
+    debugLog("Sending request", JSON.stringify(url), JSON.stringify(init));
+    const response = await fetch(url, init);
+    const statusCode = response.status;
+    const text = await response.text();
+    return {
+      code: statusCode,
+      body: text,
     };
-    this.queue = new BetterQueue<I, O>({ process: processFn, ...RequestQueue.config });
+  } catch (err) {
+    debugLog("Failed sending request", err);
+    throw err;
   }
+};
 
-  async push(i: I): Promise<O> {
-    return new Promise((resolve, reject) => {
-      this.queue
-        .push(i)
-        .on("failed", (err: any) => {
-          reject(err);
-        })
-        .on("finish", (result: O) => {
-          resolve(result);
-        });
-    });
-  }
-
-  async stop() {
-    return new Promise<void>(resolve => {
-      this.queue.destroy(resolve);
-    });
-  }
-}
-
-export class BatchSender {
-  private readonly queue: RequestQueue<ISerializedRequest, ISerializedResponse>;
-  constructor(send: (req: ISerializedRequest) => Promise<ISerializedResponse>) {
-    this.queue = new RequestQueue(send);
-  }
-
-  async send(req: ISerializedRequest): Promise<ISerializedResponse> {
-    debugLog(`Sending request: ${JSON.stringify(req)}`);
-    return Promise.resolve({ code: 200 });
-  }
-
-  /**
-   * Get array of tasks for sending request-response pairs.
-   * Tasks are not squashed into `TaskEither<Error, Array<ISerializedResponse>>`
-   * to ensure the tasks can be easily linked to the corresponding requests.
-   * @param reqs Requests to send
-   * @return Array of tasks
-   */
-  sendBatchFp(reqs: ISerializedRequest[]): Array<TaskEither<Error, ISerializedResponse>> {
-    return reqs.map((req: ISerializedRequest) => tryCatch(() => this.queue.push(req), toError));
-  }
-
-  async sendBatch(reqs: ISerializedRequest[]): Promise<Array<Either<Error, ISerializedResponse>>> {
-    const tasks = this.sendBatchFp(reqs);
-    return Promise.all(tasks.map(task => task()));
-  }
-
-  async stop() {
-    await this.queue.stop();
-  }
-}
+export const fakeSendRequest = async (req: ISerializedRequest): Promise<ISerializedResponse> => {
+  debugLog(`Faking sending request: ${JSON.stringify(req)}`);
+  return Promise.resolve({ code: 200, body: '{ "message": "ok" }' });
+};

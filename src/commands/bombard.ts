@@ -2,6 +2,7 @@ import chalk from "chalk";
 import debug from "debug";
 import { Command, flags } from "@oclif/command";
 import bombard from "../lib/bombard";
+import { sendRequest as sendRequestReal, fakeSendRequest } from "../lib/bombard/request-sender";
 import * as jsYaml from "js-yaml";
 
 const debugLog = debug("api-hitter");
@@ -28,7 +29,11 @@ export default class Bombard extends Command {
       `Reading from file "${chalk.bold.magenta(requestsYaml)}" with configuration from "${chalk.bold.magenta(config)}"`
     );
 
-    const result = await bombard(requestsYaml);
+    const shouldRunForReal = !!flags.force;
+
+    const sendRequest = shouldRunForReal ? sendRequestReal : fakeSendRequest;
+
+    const result = await bombard(requestsYaml, { sendRequest });
     this.log(jsYaml.safeDump(result));
     debugLog("Finished.");
   }

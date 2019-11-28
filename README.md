@@ -25,16 +25,24 @@ For development, create link to `api-hitter` by running `yarn link` in the repos
 $ DEBUG=* api-hitter generate:templates openapi/petstore.yaml
 ```
 
+See example output in [petstore-templates.yaml](./templates/petstore-templates.yaml).
+
 ## Generate requests from template
 
 ```sh-session
 $ DEBUG=* api-hitter generate:requests templates/petstore-templates.yaml
 ```
 
+See example output in [petstore-requests.yaml](./requests/petstore-requests.yaml).
+
 ## Send requests from file
 
 ```sh-session
+# Dry-run by default
 $ DEBUG=* api-hitter bombard requests/petstore-requests.yaml
+
+# Add "-f" flag to send requests
+api-hitter bombard -f requests/petstore-requests.yaml
 ```
 
 <!-- usagestop -->
