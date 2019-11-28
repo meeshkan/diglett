@@ -1,5 +1,5 @@
 import { ISerializedRequest } from "../types";
-import { BatchSender } from "./request-sender";
+import { RequestQueueSender } from "./request-queue";
 import debug from "debug";
 import { Either, either, isLeft } from "fp-ts/lib/Either";
 import { array, zip } from "fp-ts/lib/Array";
@@ -36,7 +36,7 @@ export const fakeSendRequest = async (req: ISerializedRequest): Promise<ISeriali
 export const bombardFp = (requests: ISerializedRequest[], config?: BombardOptions): Task<BombardResult> => {
   debugLog(`Sending ${requests.length} requests`);
   const sendRequest = (config && config.sendRequest) || fakeSendRequest;
-  const batchSender = new BatchSender(sendRequest);
+  const batchSender = new RequestQueueSender(sendRequest);
   const taskEithers: TaskEither<Error, ISerializedResponse>[] = batchSender.sendBatchFp(requests);
   const results: TaskEither<FailedRequest, RequestResponsePair>[] = taskEithers
     .map((taskEither, i) => mapLeft((e: Error) => ({ req: requests[i], err: e }))(taskEither))

@@ -45,7 +45,7 @@ export class RequestQueue<I, O> {
   }
 }
 
-export class BatchSender {
+export class RequestQueueSender {
   private readonly queue: RequestQueue<ISerializedRequest, ISerializedResponse>;
   constructor(send: (req: ISerializedRequest) => Promise<ISerializedResponse>) {
     this.queue = new RequestQueue(send);
