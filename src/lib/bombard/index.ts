@@ -23,15 +23,17 @@ export type FailedRequest = {
   err: Error;
 };
 
+export interface BombardResult {
+  failed: Array<FailedRequest>;
+  succeeded: Array<RequestResponsePair>;
+}
+
 export const fakeSendRequest = async (req: ISerializedRequest): Promise<ISerializedResponse> => {
   debugLog(`Faking sending request: ${JSON.stringify(req)}`);
   return Promise.resolve({ code: 200 });
 };
 
-export const bombardFp = (
-  requests: ISerializedRequest[],
-  config?: BombardOptions
-): Task<{ failed: Array<FailedRequest>; succeeded: Array<RequestResponsePair> }> => {
+export const bombardFp = (requests: ISerializedRequest[], config?: BombardOptions): Task<BombardResult> => {
   debugLog(`Sending ${requests.length} requests`);
   const sendRequest = (config && config.sendRequest) || fakeSendRequest;
   const batchSender = new BatchSender(sendRequest);
@@ -75,7 +77,6 @@ export const bombard = async (
   config?: BombardOptions
 ): Promise<RequestResponsePair[]> => {
   const results = await bombardFp(requests, config)();
-
   // TODO More graceful handling of successes and failures
   if (results.failed.length > 0) {
     throw Error(`Failed: ${results.failed.map(err => err.err.message).join(", ")}`);
@@ -84,10 +85,10 @@ export const bombard = async (
   return results.succeeded;
 };
 
-export const bombardFromFile = async (path: string): Promise<RequestResponsePair[]> => {
+export const bombardFromFile = async (path: string, config?: BombardOptions): Promise<RequestResponsePair[]> => {
   const requests = readYaml(path);
   // TODO Validate requests
-  return bombard(requests, {});
+  return bombard(requests, config);
 };
 
 export default bombardFromFile;
