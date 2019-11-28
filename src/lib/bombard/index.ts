@@ -12,6 +12,7 @@ const debugLog = debug("api-hitter:bombard");
 
 export interface ISerializedResponse {
   code: number;
+  body?: string;
 }
 
 export type RequestResponsePair = {
