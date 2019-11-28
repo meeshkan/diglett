@@ -1,5 +1,6 @@
 import { bombard } from "../../../lib/bombard";
 import { ISerializedRequest } from "../../../lib/types";
+import { fakeSendRequest } from "../../../lib/bombard/request-sender";
 
 const req: ISerializedRequest = {
   host: "example.com",
@@ -13,7 +14,8 @@ const res = { code: 200 };
 
 describe("Bombard", () => {
   it("works for empty requests file", async () => {
-    const result = await bombard([]);
+    const sendMock = jest.fn().mockReturnValue(Promise.resolve(res));
+    const result = await bombard([], { sendRequest: sendMock });
     expect(result).toEqual([]);
   });
 

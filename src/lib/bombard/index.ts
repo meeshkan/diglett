@@ -6,6 +6,7 @@ import { array, zip } from "fp-ts/lib/Array";
 import { readYaml } from "../utils";
 import { TaskEither, map as mapTe, mapLeft } from "fp-ts/lib/TaskEither";
 import { Task } from "fp-ts/lib/Task";
+import { fakeSendRequest } from "./request-sender";
 
 const debugLog = debug("api-hitter:bombard");
 
@@ -28,14 +29,9 @@ export interface BombardResult {
   succeeded: Array<RequestResponsePair>;
 }
 
-export const fakeSendRequest = async (req: ISerializedRequest): Promise<ISerializedResponse> => {
-  debugLog(`Faking sending request: ${JSON.stringify(req)}`);
-  return Promise.resolve({ code: 200 });
-};
-
-export const bombardFp = (requests: ISerializedRequest[], config?: BombardOptions): Task<BombardResult> => {
+export const bombardFp = (requests: ISerializedRequest[], config: BombardOptions): Task<BombardResult> => {
   debugLog(`Sending ${requests.length} requests`);
-  const sendRequest = (config && config.sendRequest) || fakeSendRequest;
+  const sendRequest = config.sendRequest;
   const batchSender = new RequestQueueSender(sendRequest);
   const taskEithers: TaskEither<Error, ISerializedResponse>[] = batchSender.sendBatchFp(requests);
   const results: TaskEither<FailedRequest, RequestResponsePair>[] = taskEithers
@@ -69,12 +65,12 @@ export const bombardFp = (requests: ISerializedRequest[], config?: BombardOption
 };
 
 interface BombardOptions {
-  sendRequest?: (req: ISerializedRequest) => Promise<ISerializedResponse>;
+  sendRequest: (req: ISerializedRequest) => Promise<ISerializedResponse>;
 }
 
 export const bombard = async (
   requests: ISerializedRequest[],
-  config?: BombardOptions
+  config: BombardOptions
 ): Promise<RequestResponsePair[]> => {
   const results = await bombardFp(requests, config)();
   // TODO More graceful handling of successes and failures
@@ -85,9 +81,10 @@ export const bombard = async (
   return results.succeeded;
 };
 
-export const bombardFromFile = async (path: string, config?: BombardOptions): Promise<RequestResponsePair[]> => {
+export const bombardFromFile = async (path: string, configOpt?: BombardOptions): Promise<RequestResponsePair[]> => {
   const requests = readYaml(path);
   // TODO Validate requests
+  const config = { sendRequest: (configOpt && configOpt.sendRequest) || fakeSendRequest };
   return bombard(requests, config);
 };
 
