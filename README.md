@@ -39,10 +39,10 @@ See example output in [petstore-requests.yaml](./requests/petstore-requests.yaml
 
 ```sh-session
 # Dry-run by default
-$ DEBUG=* diglett bombard requests/petstore-requests.yaml
+$ DEBUG=* diglett send requests/petstore-requests.yaml
 
 # Add "-f" flag to send requests
-diglett bombard -f requests/petstore-requests.yaml
+diglett send -f requests/petstore-requests.yaml
 ```
 
 <!-- usagestop -->

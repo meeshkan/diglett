@@ -1,6 +1,5 @@
-import { bombard } from "../../../lib/bombard";
+import { bombard } from "../../../lib/send";
 import { ISerializedRequest } from "../../../lib/types";
-import { fakeSendRequest } from "../../../lib/bombard/request-sender";
 
 const req: ISerializedRequest = {
   host: "example.com",

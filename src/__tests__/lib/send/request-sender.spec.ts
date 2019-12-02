@@ -1,4 +1,4 @@
-import { prepareFetch } from "../../../lib/bombard/request-sender";
+import { prepareFetch } from "../../../lib/send/request-sender";
 import { ISerializedRequest } from "../../../lib/types";
 
 const req: ISerializedRequest = {

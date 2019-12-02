@@ -1,14 +1,14 @@
 import chalk from "chalk";
 import debug from "debug";
 import { Command, flags } from "@oclif/command";
-import bombard from "../lib/bombard";
-import { sendRequest as sendRequestReal, fakeSendRequest } from "../lib/bombard/request-sender";
+import bombard from "../lib/send";
+import { sendRequest as sendRequestReal, fakeSendRequest } from "../lib/send/request-sender";
 import * as jsYaml from "js-yaml";
 
 const debugLog = debug("diglett");
 
-export default class Bombard extends Command {
-  static description = "Send requests to an API";
+export default class Send extends Command {
+  static description = "Send requests to an API, also supports dry-run";
 
   static flags = {
     help: flags.help({ char: "h" }),
@@ -21,7 +21,7 @@ export default class Bombard extends Command {
   static args = [{ name: "requests", description: "Path to requests.yaml", required: true }];
 
   async run() {
-    const { args, flags } = this.parse(Bombard);
+    const { args, flags } = this.parse(Send);
 
     const requestsYaml = args.requests;
     const config = flags.config;
