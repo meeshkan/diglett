@@ -5,7 +5,7 @@ import bombard from "../lib/bombard";
 import { sendRequest as sendRequestReal, fakeSendRequest } from "../lib/bombard/request-sender";
 import * as jsYaml from "js-yaml";
 
-const debugLog = debug("api-hitter");
+const debugLog = debug("diglett");
 
 export default class Bombard extends Command {
   static description = "Send requests to an API";

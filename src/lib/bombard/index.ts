@@ -8,7 +8,7 @@ import { TaskEither, map as mapTe, mapLeft } from "fp-ts/lib/TaskEither";
 import { Task } from "fp-ts/lib/Task";
 import { fakeSendRequest } from "./request-sender";
 
-const debugLog = debug("api-hitter:bombard");
+const debugLog = debug("diglett:bombard");
 
 export interface ISerializedResponse {
   code: number;

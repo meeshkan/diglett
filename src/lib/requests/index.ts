@@ -9,7 +9,7 @@ import { RequestBody } from "loas3/dist/generated/full";
 // @ts-ignore
 import * as jsf from "json-schema-faker";
 
-const debugLog = debug("api-hitter:requests");
+const debugLog = debug("diglett:requests");
 
 const readTemplate = (path: string) => {
   if (!fs.existsSync(path)) {

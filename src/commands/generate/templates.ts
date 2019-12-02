@@ -4,7 +4,7 @@ import { Command, flags } from "@oclif/command";
 import createTemplates from "../../lib/templates";
 import * as jsYaml from "js-yaml";
 
-const debugLog = debug("api-hitter");
+const debugLog = debug("diglett");
 
 export default class GenerateTemplates extends Command {
   static description = "Create templates for creating requests based on OpenAPI specification";
