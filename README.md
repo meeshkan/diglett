@@ -14,6 +14,10 @@
 <!-- usage -->
 
 ```sh-session
+# In the repository root
+# Install dependencies
+$ yarn
+# Invoke the CLI
 $ diglett --help
 ```
 
@@ -71,4 +75,5 @@ Link the executable so it's available as `diglett`:
 
 ```sh
 yarn link
+diglett --help  # Local version
 ```
