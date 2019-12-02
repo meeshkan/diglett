@@ -5,7 +5,7 @@ import * as BetterQueue from "better-queue";
 import { Either, toError } from "fp-ts/lib/Either";
 import { TaskEither, tryCatch } from "fp-ts/lib/TaskEither";
 
-const debugLog = debug("api-hitter:request-sender");
+const debugLog = debug("diglett:request-sender");
 
 export class RequestQueue<I, O> {
   private readonly queue: BetterQueue;

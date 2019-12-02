@@ -1,11 +1,11 @@
 {
-  "name": "api-hitter",
+  "name": "diglett",
   "version": "0.0.0",
   "author": "Meeshkan",
   "bin": {
-    "api-hitter": "./bin/run"
+    "diglett": "./bin/run"
   },
-  "bugs": "https://github.com/meeshkan/api-hitter/issues",
+  "bugs": "https://github.com/meeshkan/diglett/issues",
   "dependencies": {
     "@oclif/command": "^1",
     "@oclif/config": "^1",
@@ -51,20 +51,21 @@
     "/npm-shrinkwrap.json",
     "/oclif.manifest.json"
   ],
-  "homepage": "https://github.com/meeshkan/api-hitter",
+  "homepage": "https://github.com/meeshkan/diglett",
   "keywords": [
-    "oclif"
+    "oclif",
+    "http"
   ],
   "license": "MIT",
   "main": "lib/index.js",
   "oclif": {
     "commands": "./lib/commands",
-    "bin": "api-client-cli",
+    "bin": "diglett",
     "plugins": [
       "@oclif/plugin-help"
     ]
   },
-  "repository": "meeshkan/api-hitter",
+  "repository": "meeshkan/diglett",
   "scripts": {
     "compile": "tsc",
     "start": "node bin/run",

@@ -3,7 +3,7 @@ import { ISerializedResponse } from ".";
 import debug from "debug";
 import fetch, { Headers } from "cross-fetch";
 
-const debugLog = debug("api-hitter:request-sender");
+const debugLog = debug("diglett:request-sender");
 
 export const buildHeaders = (request: ISerializedRequest): Headers => {
   const headers = new Headers();

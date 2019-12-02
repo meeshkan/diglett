@@ -4,7 +4,7 @@ import { Command, flags } from "@oclif/command";
 import createRequests from "../../lib/requests";
 import * as jsYaml from "js-yaml";
 
-const debugLog = debug("api-hitter:generate:requests");
+const debugLog = debug("diglett:generate:requests");
 
 export default class GenerateRequests extends Command {
   static description = "Create fake requests based on the template";
