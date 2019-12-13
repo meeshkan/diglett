@@ -45,7 +45,40 @@ $ diglett --help
 
 <!-- usage -->
 
-### Generate template for generating requests
+### Generate request templates
+
+Request templates are templates for generating HTTP requests. For example, a request template could specify that a query parameter `id` needs to be a number. A request generated from this template could, for example, generate a random number for `id`, creating a HTTP request.
+
+A [RequestsTemplate](./src/lib/templates/types.ts) object looks like this:
+
+```yaml
+defaults: {}
+templates:
+  - req:
+      method: get
+      host: petstore.swagger.io
+      path: "/v1/pets?limit={{ limit }}"
+      pathname: /v1/pets
+      protocol: http
+      query:
+        limit: "{{ limit }}"
+    parameters:
+      limit:
+        required: false
+        schema:
+          type: integer
+          format: int32
+```
+
+For a full example of a templates file, see [templates/petstore-templates.yaml](./templates/petstore-templates.yaml).
+
+`defaults` field specifies defaults that should be used in all requests. `templates` contains the actual request templates. A request template contains the `req` and `parameters` fields. In `req` object, a parameter is identified by the `{{ parameter_name }}` syntax. These signal that the values are filled in the rendering phase.
+
+`parameters` is a dictionary with parameters as keys and [JSON schema](https://json-schema.org/) objects as values. From the JSON schema, values are generated in the rendering phase (see below) using [json-schema-faker](https://github.com/json-schema-faker/json-schema-faker). Templates are rendered (i.e., parameters filled) using [nunjucks](https://mozilla.github.io/nunjucks/).
+
+You can either create templates by hand or from OpenAPI schema.
+
+#### From OpenAPI
 
 If you have an OpenAPI schema of an API, you can create "request templates" from the schema with `generate:templates` command.
 
@@ -63,11 +96,13 @@ Once you have created request templates, you can generate actual requests from t
 $ DEBUG=* diglett generate:requests templates/petstore-templates.yaml
 ```
 
-This will create a YAML file, where every object is an `ISerializedRequest` object defined in [types.ts](./src/lib/types.ts). For an example of a file containing requests, see the example in [petstore-requests.yaml](./requests/petstore-requests.yaml).
+As explained above, requests are rendered using [nunjucks](https://mozilla.github.io/nunjucks/) and [json-schema-faker](https://github.com/json-schema-faker/json-schema-faker).
+
+`generate:requests` command outputs a YAML array, where every object is an `ISerializedRequest` object defined in [types.ts](./src/lib/types.ts). For an example file containing requests, see the example in [petstore-requests.yaml](./requests/petstore-requests.yaml).
 
 ### Send requests from file
 
-To send all the HTTP requests from a file, use the `send` command. Before performing the requests, you should perform a "dry-run" showing what will be done instead of sending any HTTP requests:
+To send all the rendered HTTP requests from a file, use the `send` command. Before performing the requests, you should perform a "dry-run" showing what will be done instead of sending any HTTP requests:
 
 ```bash
 # Dry-run by default
