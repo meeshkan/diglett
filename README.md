@@ -130,6 +130,12 @@ Install dependencies:
 $ yarn
 ```
 
+Compile TypeScript:
+
+```bash
+$ yarn compile
+```
+
 Run tests:
 
 ```sh

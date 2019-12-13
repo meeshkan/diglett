@@ -1,6 +1,6 @@
-import GenerateRequests from "../../commands/generate/requests";
+import RenderCommand from "../../commands/render";
 
-describe("Creating requests command", () => {
+describe("Rendering requests command", () => {
   let processStdoutSpy: jest.SpyInstance;
   let writtenStdout: string;
 
@@ -18,10 +18,10 @@ describe("Creating requests command", () => {
   });
 
   it("does not throw when given a path to existing templates yaml", async () => {
-    await GenerateRequests.run(["templates/petstore-templates.yaml"]);
+    await RenderCommand.run(["templates/petstore-templates.yaml"]);
     expect(writtenStdout).toMatch(/^-/);
   });
   it("throws when given a path to non-existing templates yaml", async () => {
-    await expect(GenerateRequests.run(["dfhsdgsd.yaml"])).rejects.toThrow("File not found");
+    await expect(RenderCommand.run(["dfhsdgsd.yaml"])).rejects.toThrow("File not found");
   });
 });
