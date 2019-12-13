@@ -81,7 +81,7 @@
   "types": "lib/index.d.ts",
   "husky": {
     "hooks": {
-      "pre-commit": "yarn build:docs"
+      "pre-push": "yarn build:docs"
     }
   }
 }
