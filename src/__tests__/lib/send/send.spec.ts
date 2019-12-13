@@ -1,5 +1,8 @@
-import { bombard } from "../../../lib/send";
+import { bombard, bombardFromFile } from "../../../lib/send";
 import { ISerializedRequest } from "../../../lib/types";
+import * as path from "path";
+
+const REQUESTS_JSONL = path.resolve(__dirname, "..", "..", "..", "..", "requests", "petstore-requests.jsonl");
 
 const req: ISerializedRequest = {
   host: "example.com",
@@ -11,8 +14,8 @@ const req: ISerializedRequest = {
 };
 const res = { code: 200 };
 
-describe("Bombard", () => {
-  it("works for empty requests file", async () => {
+describe("Sending requests", () => {
+  it("returns empty array for no requests", async () => {
     const sendMock = jest.fn().mockReturnValue(Promise.resolve(res));
     const result = await bombard([], { sendRequest: sendMock });
     expect(result).toEqual([]);
@@ -24,5 +27,14 @@ describe("Bombard", () => {
     expect(sendMock).toHaveBeenCalledTimes(1);
     expect(sendMock).toHaveBeenCalledWith(req);
     expect(result).toEqual([{ req, res }]);
+  });
+});
+
+describe("Sending requests from file", () => {
+  it("works for empty requests file", async () => {
+    const sendMock = jest.fn().mockReturnValue(Promise.resolve(res));
+    const result = await bombardFromFile(REQUESTS_JSONL, { sendRequest: sendMock });
+    expect(result).toHaveLength(3);
+    expect(sendMock).toHaveBeenCalledTimes(3);
   });
 });
