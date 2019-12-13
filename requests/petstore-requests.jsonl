@@ -1,0 +1,3 @@
+{"method":"get","host":"petstore.swagger.io","path":"/v1/pets?limit=97477987","pathname":"/v1/pets","protocol":"http","query":{"limit":"97477987"}}
+{"method":"post","host":"petstore.swagger.io","path":"/v1/pets","pathname":"/v1/pets","protocol":"http","query":{},"body":"{\"id\":-37923945,\"name\":\"in cu\"}"}
+{"method":"get","host":"petstore.swagger.io","path":"/v1/pets/QZGvqLS","pathname":"/v1/pets/QZGvqLS","protocol":"http","query":{}}

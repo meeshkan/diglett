@@ -19,7 +19,7 @@ describe("Rendering requests command", () => {
 
   it("does not throw when given a path to existing templates yaml", async () => {
     await RenderCommand.run(["templates/petstore-templates.yaml"]);
-    expect(writtenStdout).toMatch(/^-/);
+    expect(writtenStdout).toMatch(/^{/);
   });
   it("throws when given a path to non-existing templates yaml", async () => {
     await expect(RenderCommand.run(["dfhsdgsd.yaml"])).rejects.toThrow("File not found");

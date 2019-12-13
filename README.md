@@ -98,7 +98,7 @@ $ DEBUG=* diglett render templates/petstore-templates.yaml
 
 As explained above, requests are rendered using [nunjucks](https://mozilla.github.io/nunjucks/) and [json-schema-faker](https://github.com/json-schema-faker/json-schema-faker).
 
-`render` command outputs a YAML array, where every object is an `ISerializedRequest` object defined in [types.ts](./src/lib/types.ts). For an example file containing requests, see the example in [petstore-requests.yaml](./requests/petstore-requests.yaml).
+`render` command outputs requests in JSONL format, where every line is an `ISerializedRequest` object defined in [types.ts](./src/lib/types.ts). For an example file containing requests, see the example in [petstore-requests.jsonl](./requests/petstore-requests.jsonl).
 
 ### Send requests from file
 
@@ -106,14 +106,14 @@ To send all the rendered HTTP requests from a file, use the `send` command. Befo
 
 ```bash
 # Dry-run by default
-$ DEBUG=* diglett send requests/petstore-requests.yaml
+$ DEBUG=diglett* diglett send requests/petstore-requests.jsonl
 ```
 
 If everything looks good, send the requests by adding the `-f` flag:
 
 ```bash
 # Add "-f" flag to send requests
-diglett send requests/petstore-requests.yaml -f
+diglett send requests/petstore-requests.jsonl -f
 ```
 
 `diglett` will send all the requests from the file using [RequestQueue](./lib/send/request-queue.ts) with a 500 ms delay between requests.

@@ -7,3 +7,14 @@ export const readYaml = (path: string) => {
   }
   return jsYaml.safeLoad(fs.readFileSync(path).toString());
 };
+
+export const readJsonl = (path: string) => {
+  if (!fs.existsSync(path)) {
+    throw Error(`File not found: ${path}`);
+  }
+  const contents = fs.readFileSync(path, "utf-8");
+  return contents
+    .split(/\r?\n/)
+    .filter(line => line != "")
+    .map(line => JSON.parse(line));
+};

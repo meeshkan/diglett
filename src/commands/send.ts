@@ -12,22 +12,17 @@ export default class Send extends Command {
 
   static flags = {
     help: flags.help({ char: "h" }),
-    // flag with a value (-n, --name=VALUE)
-    config: flags.string({ char: "c", description: "Path to configuration JSON", default: "scrape-config.yaml" }),
     // flag with no value (-f, --force)
     force: flags.boolean({ char: "f" }),
   };
 
-  static args = [{ name: "requests", description: "Path to requests.yaml", required: true }];
+  static args = [{ name: "requests", description: "Path to requests file", required: true }];
 
   async run() {
     const { args, flags } = this.parse(Send);
 
     const requestsYaml = args.requests;
-    const config = flags.config;
-    debugLog(
-      `Reading from file "${chalk.bold.magenta(requestsYaml)}" with configuration from "${chalk.bold.magenta(config)}"`
-    );
+    debugLog(`Reading from file "${chalk.bold.magenta(requestsYaml)}`);
 
     const shouldRunForReal = !!flags.force;
 

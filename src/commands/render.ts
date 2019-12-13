@@ -23,8 +23,6 @@ export default class RenderCommand extends Command {
 
     const createResult = createRequests(template);
 
-    // `skipInvalid` hack to avoid JSYaml exception with undefined type
-    const as_string = jsYaml.safeDump(createResult, { skipInvalid: true });
-    this.log(as_string);
+    createResult.forEach(line => this.log(JSON.stringify(line)));
   }
 }

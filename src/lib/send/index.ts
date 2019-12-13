@@ -1,9 +1,8 @@
 import { ISerializedRequest } from "../types";
 import { RequestQueueSender } from "./request-queue";
 import debug from "debug";
-import { Either, either, isLeft } from "fp-ts/lib/Either";
-import { array, zip } from "fp-ts/lib/Array";
-import { readYaml } from "../utils";
+import { isLeft } from "fp-ts/lib/Either";
+import { readJsonl, readYaml } from "../utils";
 import { TaskEither, map as mapTe, mapLeft } from "fp-ts/lib/TaskEither";
 import { Task } from "fp-ts/lib/Task";
 import { fakeSendRequest } from "./request-sender";
@@ -83,7 +82,12 @@ export const bombard = async (
 };
 
 export const bombardFromFile = async (path: string, configOpt?: BombardOptions): Promise<RequestResponsePair[]> => {
-  const requests = readYaml(path);
+  if (!(path.endsWith(".yaml") || path.endsWith(".jsonl"))) {
+    throw Error(`Unknown requests file format ${path}`);
+  }
+
+  const requests = path.endsWith(".yaml") ? readYaml(path) : readJsonl(path);
+
   // TODO Validate requests
   const config = { sendRequest: (configOpt && configOpt.sendRequest) || fakeSendRequest };
   return bombard(requests, config);
