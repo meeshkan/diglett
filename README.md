@@ -109,6 +109,8 @@ To send all the rendered HTTP requests from a file, use the `send` command. Befo
 $ DEBUG=diglett* diglett send requests/petstore-requests.jsonl
 ```
 
+The command outputs request-response pairs to `stdout` in JSONL format.
+
 If everything looks good, send the requests by adding the `-f` flag:
 
 ```bash

@@ -29,7 +29,7 @@ export default class Send extends Command {
     const sendRequest = shouldRunForReal ? sendRequestReal : fakeSendRequest;
 
     const result = await bombard(requestsYaml, { sendRequest });
-    this.log(jsYaml.safeDump(result));
+    result.forEach(line => this.log(JSON.stringify(line)));
     debugLog("Finished.");
   }
 }
