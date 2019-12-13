@@ -31,7 +31,7 @@ describe("Sending requests", () => {
 });
 
 describe("Sending requests from file", () => {
-  it("works for empty requests file", async () => {
+  it("works for a JSONL file containing requests", async () => {
     const sendMock = jest.fn().mockReturnValue(Promise.resolve(res));
     const result = await bombardFromFile(REQUESTS_JSONL, { sendRequest: sendMock });
     expect(result).toHaveLength(3);
