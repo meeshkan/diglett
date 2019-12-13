@@ -1,4 +1,4 @@
-import gen, { renderObject } from "../../../lib/requests";
+import gen, { renderObject } from "../../../lib/render";
 import * as fs from "fs";
 import * as jsYaml from "js-yaml";
 import * as path from "path";

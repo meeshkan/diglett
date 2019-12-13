@@ -1,7 +1,7 @@
 import chalk from "chalk";
 import debug from "debug";
 import { Command, flags } from "@oclif/command";
-import createRequests from "../lib/requests";
+import createRequests from "../lib/render";
 import * as jsYaml from "js-yaml";
 
 const debugLog = debug("diglett:render");
