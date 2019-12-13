@@ -142,16 +142,16 @@ $ diglett --<span class="hljs-built_in">help</span></code></pre>
 				<p>Once you have created a file containing request templates, you can generate actual requests from them using the <code>render</code> command.</p>
 				<pre><code class="language-bash">$ DEBUG=* diglett render templates/petstore-templates.yaml</code></pre>
 				<p>As explained above, requests are rendered using <a href="https://mozilla.github.io/nunjucks/">nunjucks</a> and <a href="https://github.com/json-schema-faker/json-schema-faker">json-schema-faker</a>.</p>
-				<p><code>render</code> command outputs a YAML array, where every object is an <code>ISerializedRequest</code> object defined in <a href="./src/lib/types.ts">types.ts</a>. For an example file containing requests, see the example in <a href="./requests/petstore-requests.yaml">petstore-requests.yaml</a>.</p>
+				<p><code>render</code> command outputs requests in JSONL format, where every line is an <code>ISerializedRequest</code> object defined in <a href="./src/lib/types.ts">types.ts</a>. For an example file containing requests, see the example in <a href="./requests/petstore-requests.jsonl">petstore-requests.jsonl</a>.</p>
 				<a href="#send-requests-from-file" id="send-requests-from-file" style="color: inherit; text-decoration: none;">
 					<h3>Send requests from file</h3>
 				</a>
 				<p>To send all the rendered HTTP requests from a file, use the <code>send</code> command. Before performing the requests, you should perform a &quot;dry-run&quot; showing what will be done instead of sending any HTTP requests:</p>
 				<pre><code class="language-bash"><span class="hljs-comment"># Dry-run by default</span>
-$ DEBUG=* diglett send requests/petstore-requests.yaml</code></pre>
+$ DEBUG=diglett* diglett send requests/petstore-requests.jsonl</code></pre>
 				<p>If everything looks good, send the requests by adding the <code>-f</code> flag:</p>
 				<pre><code class="language-bash"><span class="hljs-comment"># Add "-f" flag to send requests</span>
-diglett send requests/petstore-requests.yaml -f</code></pre>
+diglett send requests/petstore-requests.jsonl -f</code></pre>
 				<p><code>diglett</code> will send all the requests from the file using <a href="./lib/send/request-queue.ts">RequestQueue</a> with a 500 ms delay between requests.</p>
 				<!-- usagestop -->
 				<a href="#development" id="development" style="color: inherit; text-decoration: none;">
