@@ -76,7 +76,7 @@
     "test": "jest",
     "version": "oclif-dev readme && git add README.md",
     "gen": "node ./bin/run generate:templates openapi/petstore.yaml > templates/petstore-templates.yaml",
-    "build:docs": "typedoc --out docs src --exclude \"**/*+(.spec|.e2e).ts\" --gitRevision master"
+    "build:docs": "typedoc --out docs src --exclude \"**/*+(.spec|.e2e).ts\" --gitRevision master && cp gh-pages.config.yml docs/config.yml"
   },
   "types": "lib/index.d.ts",
   "husky": {
