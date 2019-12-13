@@ -47,7 +47,7 @@ $ diglett --help
 
 ### Basic concepts
 
-Working with `Diglett` involves three concepts: _request templates_, _requests_, and _ request-response pairs_.
+Working with `Diglett` involves three concepts: _request templates_, _requests_, and _request-response pairs_.
 
 Request templates are templates for HTTP requests. For example, a request template could specify that a query parameter `id` needs to be a number.
 
