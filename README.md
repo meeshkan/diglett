@@ -1,6 +1,6 @@
 # Diglett
 
-[![Build Status](https://dev.azure.com/meeshkan/meeshkan-node-apps/_apis/build/status/Meeshkan.diglett?branchName=master)](https://dev.azure.com/meeshkan/meeshkan-node-apps/_build/latest?definitionId=26&branchName=master)
+[![CircleCI](https://circleci.com/gh/Meeshkan/diglett.svg?style=svg)](https://circleci.com/gh/Meeshkan/diglett)
 [![oclif](https://img.shields.io/badge/cli-oclif-brightgreen.svg)](https://oclif.io)
 
 <!-- toc -->
