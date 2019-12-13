@@ -45,9 +45,17 @@ $ diglett --help
 
 <!-- usage -->
 
-### Generate request templates
+### Basic concepts
 
-Request templates are templates for generating HTTP requests. For example, a request template could specify that a query parameter `id` needs to be a number. A request generated from this template could, for example, generate a random number for `id`, creating a HTTP request.
+Working with `Diglett` involves three concepts: _request templates_, _requests_, and _ request-response pairs_.
+
+Request templates are templates for HTTP requests. For example, a request template could specify that a query parameter `id` needs to be a number.
+
+From request template, `diglett` can _render_ a request. In the example above, the query parameter would be filled by an actual number, creating a valid HTTP request that can be sent to the target host.
+
+As a final step, `diglett` can send the HTTP requests and record the corresponding response, creating a request-response pair.
+
+### Generating request templates
 
 A [RequestsTemplate](./src/lib/templates/types.ts) object looks like this:
 
@@ -88,7 +96,7 @@ $ DEBUG=* diglett generate:templates openapi/petstore.yaml
 
 This will create a YAML file containing templates from which requests can be built. See an example in [petstore-templates.yaml](./templates/petstore-templates.yaml) built from [petstore.yaml](./openapi/petstore.yaml).
 
-### Render requests
+### Rendering requests
 
 Once you have created a file containing request templates, you can generate actual requests from them using the `render` command.
 
@@ -100,7 +108,7 @@ As explained above, requests are rendered using [nunjucks](https://mozilla.githu
 
 `render` command outputs requests in JSONL format, where every line is an `ISerializedRequest` object defined in [types.ts](./src/lib/types.ts). For an example file containing requests, see the example in [petstore-requests.jsonl](./requests/petstore-requests.jsonl).
 
-### Send requests from file
+### Sending requests
 
 To send all the rendered HTTP requests from a file, use the `send` command. Before performing the requests, you should perform a "dry-run" showing what will be done instead of sending any HTTP requests:
 
