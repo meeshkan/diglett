@@ -149,6 +149,7 @@ $ diglett --<span class="hljs-built_in">help</span></code></pre>
 				<p>To send all the rendered HTTP requests from a file, use the <code>send</code> command. Before performing the requests, you should perform a &quot;dry-run&quot; showing what will be done instead of sending any HTTP requests:</p>
 				<pre><code class="language-bash"><span class="hljs-comment"># Dry-run by default</span>
 $ DEBUG=diglett* diglett send requests/petstore-requests.jsonl</code></pre>
+				<p>The command outputs request-response pairs to <code>stdout</code> in JSONL format.</p>
 				<p>If everything looks good, send the requests by adding the <code>-f</code> flag:</p>
 				<pre><code class="language-bash"><span class="hljs-comment"># Add "-f" flag to send requests</span>
 diglett send requests/petstore-requests.jsonl -f</code></pre>
