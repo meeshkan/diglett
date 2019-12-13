@@ -7,9 +7,9 @@ Command-line tool for automating HTTP requests.
 
 <!-- toc -->
 
-- [Installation](#installation)
-- [Usage](#usage)
-- [Development](#development)
+1. [Installation](#installation)
+1. [Usage](#usage)
+1. [Development](#development)
 
 <!-- tocstop -->
 
