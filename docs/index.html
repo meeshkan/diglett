@@ -105,10 +105,16 @@ $ diglett --<span class="hljs-built_in">help</span></code></pre>
 					<h2>Usage</h2>
 				</a>
 				<!-- usage -->
-				<a href="#generate-request-templates" id="generate-request-templates" style="color: inherit; text-decoration: none;">
-					<h3>Generate request templates</h3>
+				<a href="#basic-concepts" id="basic-concepts" style="color: inherit; text-decoration: none;">
+					<h3>Basic concepts</h3>
 				</a>
-				<p>Request templates are templates for generating HTTP requests. For example, a request template could specify that a query parameter <code>id</code> needs to be a number. A request generated from this template could, for example, generate a random number for <code>id</code>, creating a HTTP request.</p>
+				<p>Working with <code>Diglett</code> involves three concepts: <em>request templates</em>, <em>requests</em>, and _ request-response pairs_.</p>
+				<p>Request templates are templates for HTTP requests. For example, a request template could specify that a query parameter <code>id</code> needs to be a number.</p>
+				<p>From request template, <code>diglett</code> can <em>render</em> a request. In the example above, the query parameter would be filled by an actual number, creating a valid HTTP request that can be sent to the target host.</p>
+				<p>As a final step, <code>diglett</code> can send the HTTP requests and record the corresponding response, creating a request-response pair.</p>
+				<a href="#generating-request-templates" id="generating-request-templates" style="color: inherit; text-decoration: none;">
+					<h3>Generating request templates</h3>
+				</a>
 				<p>A <a href="./src/lib/templates/types.ts">RequestsTemplate</a> object looks like this:</p>
 				<pre><code class="language-yaml"><span class="hljs-attr">defaults:</span> <span class="hljs-string">{}</span>
 <span class="hljs-attr">templates:</span>
@@ -136,15 +142,15 @@ $ diglett --<span class="hljs-built_in">help</span></code></pre>
 				<p>If you have an OpenAPI schema of an API, you can create &quot;request templates&quot; from the schema with <code>generate:templates</code> command.</p>
 				<pre><code class="language-bash">$ DEBUG=* diglett generate:templates openapi/petstore.yaml</code></pre>
 				<p>This will create a YAML file containing templates from which requests can be built. See an example in <a href="./templates/petstore-templates.yaml">petstore-templates.yaml</a> built from <a href="./openapi/petstore.yaml">petstore.yaml</a>.</p>
-				<a href="#render-requests" id="render-requests" style="color: inherit; text-decoration: none;">
-					<h3>Render requests</h3>
+				<a href="#rendering-requests" id="rendering-requests" style="color: inherit; text-decoration: none;">
+					<h3>Rendering requests</h3>
 				</a>
 				<p>Once you have created a file containing request templates, you can generate actual requests from them using the <code>render</code> command.</p>
 				<pre><code class="language-bash">$ DEBUG=* diglett render templates/petstore-templates.yaml</code></pre>
 				<p>As explained above, requests are rendered using <a href="https://mozilla.github.io/nunjucks/">nunjucks</a> and <a href="https://github.com/json-schema-faker/json-schema-faker">json-schema-faker</a>.</p>
 				<p><code>render</code> command outputs requests in JSONL format, where every line is an <code>ISerializedRequest</code> object defined in <a href="./src/lib/types.ts">types.ts</a>. For an example file containing requests, see the example in <a href="./requests/petstore-requests.jsonl">petstore-requests.jsonl</a>.</p>
-				<a href="#send-requests-from-file" id="send-requests-from-file" style="color: inherit; text-decoration: none;">
-					<h3>Send requests from file</h3>
+				<a href="#sending-requests" id="sending-requests" style="color: inherit; text-decoration: none;">
+					<h3>Sending requests</h3>
 				</a>
 				<p>To send all the rendered HTTP requests from a file, use the <code>send</code> command. Before performing the requests, you should perform a &quot;dry-run&quot; showing what will be done instead of sending any HTTP requests:</p>
 				<pre><code class="language-bash"><span class="hljs-comment"># Dry-run by default</span>
