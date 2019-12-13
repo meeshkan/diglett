@@ -40,6 +40,7 @@
     "oclif": "^1.13.6",
     "ts-jest": "^24.1.0",
     "ts-node": "^8",
+    "typedoc": "^0.15.4",
     "typescript": "^3.3"
   },
   "engines": {
@@ -73,7 +74,8 @@
     "prepack": "rm -rf lib && tsc -b && oclif-dev manifest && oclif-dev readme",
     "test": "jest",
     "version": "oclif-dev readme && git add README.md",
-    "gen": "node ./bin/run generate:templates openapi/petstore.yaml > templates/petstore-templates.yaml"
+    "gen": "node ./bin/run generate:templates openapi/petstore.yaml > templates/petstore-templates.yaml",
+    "build:docs": "typedoc --out docs src --exclude \"**/*+(.spec|.e2e).ts\""
   },
   "types": "lib/index.d.ts"
 }
