@@ -88,9 +88,9 @@ $ DEBUG=* diglett generate:templates openapi/petstore.yaml
 
 This will create a YAML file containing templates from which requests can be built. See an example in [petstore-templates.yaml](./templates/petstore-templates.yaml) built from [petstore.yaml](./openapi/petstore.yaml).
 
-### Generate requests from template
+### Render requests
 
-Once you have created request templates, you can generate actual requests from them using the `render` command.
+Once you have created a file containing request templates, you can generate actual requests from them using the `render` command.
 
 ```bash
 $ DEBUG=* diglett render templates/petstore-templates.yaml
