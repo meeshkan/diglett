@@ -6,15 +6,14 @@ import createRequests from "../lib/render";
 const debugLog = debug("diglett:render");
 
 export default class RenderCommand extends Command {
-  static description = "Render requests from template";
+  static description = "Render requests";
 
   static flags = {
     help: flags.help({ char: "h" }),
     filterDuplicates: flags.boolean({
       char: "d",
-      description: "Filter duplicates",
+      description: "Remove duplicate requests. Defaults to false.",
       default: false,
-      name: "remove-duplicates",
     }),
     items: flags.integer({
       char: "n",

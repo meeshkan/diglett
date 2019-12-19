@@ -30,20 +30,24 @@ const parseHeaderArgument = (line: string) => {
 };
 
 export default class Send extends Command {
-  static description = "Send requests to an API, also supports dry-run";
+  static description = "Send HTTP requests using a queue";
 
   static flags = {
     help: flags.help({ char: "h" }),
     // flag with no value (-f, --force)
-    force: flags.boolean({ char: "f" }),
+    force: flags.boolean({
+      char: "f",
+      description: "Send network requests. Defaults to false (dry-run).",
+      default: false,
+    }),
     headers: flags.string({
       char: "H",
       multiple: true,
-      description: "request headers in form 'X-My-Header:123'",
+      description: "Header to add to every request. For example, 'X-My-Header:123'",
     }),
   };
 
-  static args = [{ name: "requests", description: "Path to requests file", required: true }];
+  static args = [{ name: "requests", description: "Path to requests file in JSONL or YAML format", required: true }];
 
   async run() {
     const { args, flags } = this.parse(Send);

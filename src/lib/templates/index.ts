@@ -149,7 +149,7 @@ export const generateFrom = (openapi: OpenAPIObject): types.RequestsTemplate => 
  * @param openapiPath Path to OpenAPI schema
  * @param config Configuration
  */
-const create = async (openapiPath: string, config: any): Promise<types.RequestsTemplate> => {
+const create = async (openapiPath: string): Promise<types.RequestsTemplate> => {
   const openapi = await readOpenAPI(openapiPath);
   debugLog("Got OpenAPI", JSON.stringify(openapi));
   return generateFrom(openapi);

@@ -282,18 +282,18 @@
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-overwrite tsd-is-static">
 					<a name="args" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagStatic">Static</span> args</h3>
-					<div class="tsd-signature tsd-kind-icon">args<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> =&nbsp;[{ name: &quot;requests&quot;, description: &quot;Path to requests file&quot;, required: true }]</span></div>
+					<div class="tsd-signature tsd-kind-icon">args<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> =&nbsp;[{ name: &quot;requests&quot;, description: &quot;Path to requests file in JSONL or YAML format&quot;, required: true }]</span></div>
 					<aside class="tsd-sources">
 						<p>Overrides Command.args</p>
 						<ul>
-							<li>Defined in <a href="https://github.com/Meeshkan/diglett/blob/master/src/commands/send.ts#L46">src/commands/send.ts:46</a></li>
+							<li>Defined in <a href="https://github.com/Meeshkan/diglett/blob/master/src/commands/send.ts#L50">src/commands/send.ts:50</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-overwrite tsd-is-static">
 					<a name="description" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagStatic">Static</span> description</h3>
-					<div class="tsd-signature tsd-kind-icon">description<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;Send requests to an API, also supports dry-run&quot;</span></div>
+					<div class="tsd-signature tsd-kind-icon">description<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;Send HTTP requests using a queue&quot;</span></div>
 					<aside class="tsd-sources">
 						<p>Overrides Command.description</p>
 						<ul>
@@ -751,7 +751,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides Command.run</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/Meeshkan/diglett/blob/master/src/commands/send.ts#L48">src/commands/send.ts:48</a></li>
+									<li>Defined in <a href="https://github.com/Meeshkan/diglett/blob/master/src/commands/send.ts#L52">src/commands/send.ts:52</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -798,7 +798,7 @@
 					<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
 						<a name="flags.force" class="tsd-anchor"></a>
 						<h3>force</h3>
-						<div class="tsd-signature tsd-kind-icon">force<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol"> =&nbsp;flags.boolean({ char: &quot;f&quot; })</span></div>
+						<div class="tsd-signature tsd-kind-icon">force<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol"> =&nbsp;flags.boolean({char: &quot;f&quot;,description: &quot;Send network requests. Defaults to false (dry-run).&quot;,default: false,})</span></div>
 						<aside class="tsd-sources">
 							<ul>
 								<li>Defined in <a href="https://github.com/Meeshkan/diglett/blob/master/src/commands/send.ts#L38">src/commands/send.ts:38</a></li>
@@ -808,10 +808,10 @@
 					<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
 						<a name="flags.headers" class="tsd-anchor"></a>
 						<h3>headers</h3>
-						<div class="tsd-signature tsd-kind-icon">headers<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol"> =&nbsp;flags.string({char: &quot;H&quot;,multiple: true,description: &quot;request headers in form &#x27;X-My-Header:123&#x27;&quot;,})</span></div>
+						<div class="tsd-signature tsd-kind-icon">headers<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol"> =&nbsp;flags.string({char: &quot;H&quot;,multiple: true,description: &quot;Header to add to every request. For example, &#x27;X-My-Header:123&#x27;&quot;,})</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/Meeshkan/diglett/blob/master/src/commands/send.ts#L39">src/commands/send.ts:39</a></li>
+								<li>Defined in <a href="https://github.com/Meeshkan/diglett/blob/master/src/commands/send.ts#L43">src/commands/send.ts:43</a></li>
 							</ul>
 						</aside>
 					</section>
