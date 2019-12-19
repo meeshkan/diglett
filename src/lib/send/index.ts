@@ -102,7 +102,7 @@ export const send = async (
 
   const augmentedRequests = requests.map(req => addHeaders(req, config.headers));
 
-  console.log("Augmented requests", augmentedRequests);
+  debugLog("Augmented requests", augmentedRequests);
 
   const results = await sendFp(augmentedRequests, config.sendRequest)();
 
