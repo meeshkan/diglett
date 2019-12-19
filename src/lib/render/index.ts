@@ -121,7 +121,7 @@ export const resolveOptions = (options?: Partial<IRenderOptions>): IRenderOption
 
 export const render = (
   pathOrRequestsTemplate: string | RequestsTemplate,
-  options: IRenderOptions
+  options?: Partial<IRenderOptions>
 ): ISerializedRequest[] => {
   const template =
     typeof pathOrRequestsTemplate === "string" ? readTemplate(pathOrRequestsTemplate) : pathOrRequestsTemplate;

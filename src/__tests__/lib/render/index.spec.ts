@@ -1,4 +1,4 @@
-import gen, { renderObject } from "../../../lib/render";
+import render, { renderObject } from "../../../lib/render";
 import * as fs from "fs";
 import * as jsYaml from "js-yaml";
 import * as path from "path";
@@ -8,7 +8,7 @@ const PETSTORE_TEMPLATES = jsYaml.safeLoad(
 );
 
 describe("Rendering requests", () => {
-  const requests = gen(PETSTORE_TEMPLATES);
+  const requests = render(PETSTORE_TEMPLATES);
   it("should render three requests", () => {
     expect(requests).toHaveLength(3);
   });
