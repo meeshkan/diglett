@@ -1,4 +1,4 @@
-# [Diglett](https://meeshkan.github.io/diglett/)&nbsp;![diglett](./diglett.png)
+# [Diglett](https://meeshkan.github.io/diglett/)&nbsp;&nbsp;![diglett](https://github.com/Meeshkan/diglett/raw/master/diglett.png)
 
 [![CircleCI](https://circleci.com/gh/Meeshkan/diglett.svg?style=svg)](https://circleci.com/gh/Meeshkan/diglett)
 [![oclif](https://img.shields.io/badge/cli-oclif-brightgreen.svg)](https://oclif.io)
