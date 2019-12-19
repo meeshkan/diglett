@@ -1,7 +1,7 @@
 import chalk from "chalk";
 import debug from "debug";
 import { Command, flags } from "@oclif/command";
-import send from "../lib/send";
+import { sendFromFile } from "../lib/send";
 import { sendRequest as sendRequestReal, fakeSendRequest } from "../lib/send/request-sender";
 import { IIncomingHeaders } from "../lib/types";
 
@@ -63,7 +63,7 @@ export default class Send extends Command {
 
     const options = { sendRequest, headers: parsedHeaders };
 
-    const result = await send(requestsYaml, options);
+    const result = await sendFromFile(requestsYaml, options);
 
     result.forEach(line => this.log(JSON.stringify(line)));
 

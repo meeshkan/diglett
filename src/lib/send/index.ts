@@ -7,6 +7,7 @@ import { TaskEither, map as mapTe, mapLeft } from "fp-ts/lib/TaskEither";
 import { Task } from "fp-ts/lib/Task";
 import { fakeSendRequest } from "./request-sender";
 import { IIncomingHeaders } from "../types";
+import Send from "../../commands/send";
 
 const debugLog = debug("diglett:bombard");
 
@@ -67,13 +68,23 @@ export const bombardFp = (requests: ISerializedRequest[], config: SendOptions): 
 
 interface SendOptions {
   sendRequest: (req: ISerializedRequest) => Promise<ISerializedResponse>;
-  headers?: IIncomingHeaders;
+  headers: IIncomingHeaders;
 }
 
-export const send = async (requests: ISerializedRequest[], config: SendOptions): Promise<RequestResponsePair[]> => {
-  const a: string | number = 1;
+export const resolveConfig = (configOpt?: Partial<SendOptions>): SendOptions => {
+  const defaults = {
+    sendRequest: fakeSendRequest,
+    headers: {},
+  };
 
-  const b = typeof a === "string" ? a : "b";
+  return configOpt ? { ...defaults, ...configOpt } : defaults;
+};
+
+export const send = async (
+  requests: ISerializedRequest[],
+  configOpt?: Partial<SendOptions>
+): Promise<RequestResponsePair[]> => {
+  const config = resolveConfig(configOpt);
 
   const headers = config.headers ? config.headers : {};
 
@@ -99,16 +110,11 @@ const addHeaders = (req: ISerializedRequest, headers: IIncomingHeaders): ISerial
   return { ...req, headers: merged };
 };
 
-export const sendFromFile = async (path: string, configOpt?: SendOptions): Promise<RequestResponsePair[]> => {
+export const sendFromFile = async (path: string, configOpt?: Partial<SendOptions>): Promise<RequestResponsePair[]> => {
   if (!(path.endsWith(".yaml") || path.endsWith(".jsonl"))) {
     throw Error(`Unknown requests file format ${path}`);
   }
 
   const requests: ISerializedRequest[] = path.endsWith(".yaml") ? readYaml(path) : readJsonl(path);
-
-  // TODO Validate requests
-  const config = { ...(configOpt || {}), sendRequest: (configOpt && configOpt.sendRequest) || fakeSendRequest };
-  return send(requests, config);
+  return send(requests, configOpt);
 };
-
-export default sendFromFile;
