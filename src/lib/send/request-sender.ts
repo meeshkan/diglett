@@ -1,6 +1,6 @@
 import { ISerializedRequest, ISerializedResponse } from "../types";
 import debug from "debug";
-import fetch, { Headers } from "cross-fetch";
+import { fetch, Headers } from "../fetch-types";
 
 const debugLog = debug("diglett:request-sender");
 

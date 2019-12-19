@@ -11,7 +11,9 @@ const req: ISerializedRequest = {
   pathname: "/v1",
   query: {},
   protocol: "https",
-  headers: {},
+  headers: {
+    "x-test": "x-value",
+  },
 };
 const res = { code: 200 };
 
@@ -35,7 +37,7 @@ describe("Sending requests", () => {
     const headers = { "X-API-KEY": "VALUE" };
     const result = await send([req], { sendRequest: sendMock, headers });
     expect(sendMock).toHaveBeenCalledTimes(1);
-    const expectedReq = { ...req, headers };
+    const expectedReq = { ...req, headers: { ...req.headers, ...headers } };
     expect(sendMock).toHaveBeenCalledWith(expectedReq);
     expect(result).toEqual([{ req: expectedReq, res }]);
   });
