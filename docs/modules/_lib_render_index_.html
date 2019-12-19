@@ -70,6 +70,12 @@
 				<h2>Index</h2>
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
+						<section class="tsd-index-section ">
+							<h3>Interfaces</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-interface tsd-parent-kind-external-module"><a href="../interfaces/_lib_render_index_.irenderoptions.html" class="tsd-kind-icon">IRender<wbr>Options</a></li>
+							</ul>
+						</section>
 						<section class="tsd-index-section tsd-is-not-exported">
 							<h3>Variables</h3>
 							<ul class="tsd-index-list">
@@ -80,11 +86,18 @@
 							<h3>Functions</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_lib_render_index_.html#generate" class="tsd-kind-icon">generate</a></li>
-								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_lib_render_index_.html#generatearray" class="tsd-kind-icon">generate<wbr>Array</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported"><a href="_lib_render_index_.html#generatebody" class="tsd-kind-icon">generate<wbr>Body</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported"><a href="_lib_render_index_.html#generatevalue" class="tsd-kind-icon">generate<wbr>Value</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported"><a href="_lib_render_index_.html#readtemplate" class="tsd-kind-icon">read<wbr>Template</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_lib_render_index_.html#render" class="tsd-kind-icon">render</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_lib_render_index_.html#renderobject" class="tsd-kind-icon">render<wbr>Object</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_lib_render_index_.html#resolveoptions" class="tsd-kind-icon">resolve<wbr>Options</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section tsd-is-not-exported">
+							<h3>Object literals</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-object-literal tsd-parent-kind-external-module tsd-is-not-exported"><a href="_lib_render_index_.html#default_options" class="tsd-kind-icon">DEFAULT_<wbr>OPTIONS</a></li>
 							</ul>
 						</section>
 					</div>
@@ -98,7 +111,7 @@
 					<div class="tsd-signature tsd-kind-icon">debug<wbr>Log<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Debugger</span><span class="tsd-signature-symbol"> =&nbsp;debug(&quot;diglett:requests&quot;)</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/Meeshkan/diglett/blob/master/src/lib/render/index.ts#L12">src/lib/render/index.ts:12</a></li>
+							<li>Defined in <a href="https://github.com/Meeshkan/diglett/blob/master/src/lib/render/index.ts#L13">src/lib/render/index.ts:13</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -109,13 +122,13 @@
 					<a name="generate" class="tsd-anchor"></a>
 					<h3>generate</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module">
-						<li class="tsd-signature tsd-kind-icon">generate<span class="tsd-signature-symbol">(</span>requestsTemplate<span class="tsd-signature-symbol">: </span><a href="_lib_templates_types_.html#requeststemplate" class="tsd-signature-type">RequestsTemplate</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">IterableIterator</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/_lib_types_.iserializedrequest.html" class="tsd-signature-type">ISerializedRequest</a><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">generate<span class="tsd-signature-symbol">(</span>requestsTemplate<span class="tsd-signature-symbol">: </span><a href="_lib_templates_types_.html#requeststemplate" class="tsd-signature-type">RequestsTemplate</a>, options<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/_lib_render_index_.irenderoptions.html" class="tsd-signature-type">IRenderOptions</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">IterableIterator</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/_lib_types_.iserializedrequest.html" class="tsd-signature-type">ISerializedRequest</a><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Meeshkan/diglett/blob/master/src/lib/render/index.ts#L61">src/lib/render/index.ts:61</a></li>
+									<li>Defined in <a href="https://github.com/Meeshkan/diglett/blob/master/src/lib/render/index.ts#L62">src/lib/render/index.ts:62</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -123,31 +136,11 @@
 								<li>
 									<h5>requestsTemplate: <a href="_lib_templates_types_.html#requeststemplate" class="tsd-signature-type">RequestsTemplate</a></h5>
 								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">IterableIterator</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/_lib_types_.iserializedrequest.html" class="tsd-signature-type">ISerializedRequest</a><span class="tsd-signature-symbol">&gt;</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-external-module">
-					<a name="generatearray" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagConst">Const</span> generate<wbr>Array</h3>
-					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module">
-						<li class="tsd-signature tsd-kind-icon">generate<wbr>Array<span class="tsd-signature-symbol">(</span>pathOrRequestsTemplate<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><a href="_lib_templates_types_.html#requeststemplate" class="tsd-signature-type">RequestsTemplate</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/_lib_types_.iserializedrequest.html" class="tsd-signature-type">ISerializedRequest</a><span class="tsd-signature-symbol">[]</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/Meeshkan/diglett/blob/master/src/lib/render/index.ts#L88">src/lib/render/index.ts:88</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
 								<li>
-									<h5>pathOrRequestsTemplate: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><a href="_lib_templates_types_.html#requeststemplate" class="tsd-signature-type">RequestsTemplate</a></h5>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> options: <span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/_lib_render_index_.irenderoptions.html" class="tsd-signature-type">IRenderOptions</a><span class="tsd-signature-symbol">&gt;</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="../interfaces/_lib_types_.iserializedrequest.html" class="tsd-signature-type">ISerializedRequest</a><span class="tsd-signature-symbol">[]</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">IterableIterator</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/_lib_types_.iserializedrequest.html" class="tsd-signature-type">ISerializedRequest</a><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -161,7 +154,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Meeshkan/diglett/blob/master/src/lib/render/index.ts#L26">src/lib/render/index.ts:26</a></li>
+									<li>Defined in <a href="https://github.com/Meeshkan/diglett/blob/master/src/lib/render/index.ts#L27">src/lib/render/index.ts:27</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -184,7 +177,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Meeshkan/diglett/blob/master/src/lib/render/index.ts#L21">src/lib/render/index.ts:21</a></li>
+									<li>Defined in <a href="https://github.com/Meeshkan/diglett/blob/master/src/lib/render/index.ts#L22">src/lib/render/index.ts:22</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -207,7 +200,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Meeshkan/diglett/blob/master/src/lib/render/index.ts#L14">src/lib/render/index.ts:14</a></li>
+									<li>Defined in <a href="https://github.com/Meeshkan/diglett/blob/master/src/lib/render/index.ts#L15">src/lib/render/index.ts:15</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -221,6 +214,32 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-external-module">
+					<a name="render" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> render</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module">
+						<li class="tsd-signature tsd-kind-icon">render<span class="tsd-signature-symbol">(</span>pathOrRequestsTemplate<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><a href="_lib_templates_types_.html#requeststemplate" class="tsd-signature-type">RequestsTemplate</a>, options<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/_lib_render_index_.irenderoptions.html" class="tsd-signature-type">IRenderOptions</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/_lib_types_.iserializedrequest.html" class="tsd-signature-type">ISerializedRequest</a><span class="tsd-signature-symbol">[]</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/Meeshkan/diglett/blob/master/src/lib/render/index.ts#L122">src/lib/render/index.ts:122</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>pathOrRequestsTemplate: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><a href="_lib_templates_types_.html#requeststemplate" class="tsd-signature-type">RequestsTemplate</a></h5>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> options: <span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/_lib_render_index_.irenderoptions.html" class="tsd-signature-type">IRenderOptions</a><span class="tsd-signature-symbol">&gt;</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="../interfaces/_lib_types_.iserializedrequest.html" class="tsd-signature-type">ISerializedRequest</a><span class="tsd-signature-symbol">[]</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-external-module">
 					<a name="renderobject" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagConst">Const</span> render<wbr>Object</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module">
@@ -230,7 +249,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Meeshkan/diglett/blob/master/src/lib/render/index.ts#L46">src/lib/render/index.ts:46</a></li>
+									<li>Defined in <a href="https://github.com/Meeshkan/diglett/blob/master/src/lib/render/index.ts#L47">src/lib/render/index.ts:47</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -254,6 +273,62 @@
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
 						</li>
 					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-external-module">
+					<a name="resolveoptions" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> resolve<wbr>Options</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module">
+						<li class="tsd-signature tsd-kind-icon">resolve<wbr>Options<span class="tsd-signature-symbol">(</span>options<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/_lib_render_index_.irenderoptions.html" class="tsd-signature-type">IRenderOptions</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/_lib_render_index_.irenderoptions.html" class="tsd-signature-type">IRenderOptions</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/Meeshkan/diglett/blob/master/src/lib/render/index.ts#L118">src/lib/render/index.ts:118</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> options: <span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/_lib_render_index_.irenderoptions.html" class="tsd-signature-type">IRenderOptions</a><span class="tsd-signature-symbol">&gt;</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="../interfaces/_lib_render_index_.irenderoptions.html" class="tsd-signature-type">IRenderOptions</a></h4>
+						</li>
+					</ul>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group tsd-is-not-exported">
+				<h2>Object literals</h2>
+				<section class="tsd-panel tsd-member tsd-kind-object-literal tsd-parent-kind-external-module tsd-is-not-exported">
+					<a name="default_options" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> DEFAULT_<wbr>OPTIONS</h3>
+					<div class="tsd-signature tsd-kind-icon">DEFAULT_<wbr>OPTIONS<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/Meeshkan/diglett/blob/master/src/lib/render/index.ts#L113">src/lib/render/index.ts:113</a></li>
+						</ul>
+					</aside>
+					<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal tsd-is-not-exported">
+						<a name="default_options.nitems" class="tsd-anchor"></a>
+						<h3>n<wbr>Items</h3>
+						<div class="tsd-signature tsd-kind-icon">n<wbr>Items<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;1</span></div>
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in <a href="https://github.com/Meeshkan/diglett/blob/master/src/lib/render/index.ts#L115">src/lib/render/index.ts:115</a></li>
+							</ul>
+						</aside>
+					</section>
+					<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal tsd-is-not-exported">
+						<a name="default_options.removeduplicates" class="tsd-anchor"></a>
+						<h3>remove<wbr>Duplicates</h3>
+						<div class="tsd-signature tsd-kind-icon">remove<wbr>Duplicates<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">true</span><span class="tsd-signature-symbol"> =&nbsp;true</span></div>
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in <a href="https://github.com/Meeshkan/diglett/blob/master/src/lib/render/index.ts#L114">src/lib/render/index.ts:114</a></li>
+							</ul>
+						</aside>
+					</section>
 				</section>
 			</section>
 		</div>
@@ -309,14 +384,14 @@
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
+						<a href="../interfaces/_lib_render_index_.irenderoptions.html" class="tsd-kind-icon">IRender<wbr>Options</a>
+					</li>
 					<li class=" tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported">
 						<a href="_lib_render_index_.html#debuglog" class="tsd-kind-icon">debug<wbr>Log</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-external-module">
 						<a href="_lib_render_index_.html#generate" class="tsd-kind-icon">generate</a>
-					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-external-module">
-						<a href="_lib_render_index_.html#generatearray" class="tsd-kind-icon">generate<wbr>Array</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported">
 						<a href="_lib_render_index_.html#generatebody" class="tsd-kind-icon">generate<wbr>Body</a>
@@ -328,7 +403,16 @@
 						<a href="_lib_render_index_.html#readtemplate" class="tsd-kind-icon">read<wbr>Template</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-external-module">
+						<a href="_lib_render_index_.html#render" class="tsd-kind-icon">render</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
 						<a href="_lib_render_index_.html#renderobject" class="tsd-kind-icon">render<wbr>Object</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
+						<a href="_lib_render_index_.html#resolveoptions" class="tsd-kind-icon">resolve<wbr>Options</a>
+					</li>
+					<li class=" tsd-kind-object-literal tsd-parent-kind-external-module tsd-is-not-exported">
+						<a href="_lib_render_index_.html#default_options" class="tsd-kind-icon">DEFAULT_<wbr>OPTIONS</a>
 					</li>
 				</ul>
 			</nav>

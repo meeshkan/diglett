@@ -1,14 +1,16 @@
-import gen, { renderObject } from "../../../lib/render";
+import render, { renderObject } from "../../../lib/render";
 import * as fs from "fs";
 import * as jsYaml from "js-yaml";
 import * as path from "path";
+import { RequestsTemplate } from "../../../lib/templates/types";
+import { ISerializedRequest } from "../../../lib/types";
 
 const PETSTORE_TEMPLATES = jsYaml.safeLoad(
   fs.readFileSync(path.join(__dirname, "..", "..", "..", "..", "templates", "petstore-templates.yaml")).toString()
 );
 
-describe("Rendering requests", () => {
-  const requests = gen(PETSTORE_TEMPLATES);
+describe("Rendering requests from petstore", () => {
+  const requests = render(PETSTORE_TEMPLATES);
   it("should render three requests", () => {
     expect(requests).toHaveLength(3);
   });
@@ -31,25 +33,62 @@ describe("Rendering requests", () => {
     const generatedValue = req.path.split("/")[3];
     expect(generatedValue.length).toBeGreaterThan(0);
   });
+
+  describe("rendering multiple", () => {
+    it("should render as many requests per template as instructed", () => {
+      const rendered = render(PETSTORE_TEMPLATES, { nItems: 5 });
+      expect(rendered).toHaveLength(15); // Three templates times five
+    });
+  });
 });
 
-describe("Rendering object", () => {
-  it("renders nested object", () => {
-    const testObj = {
-      number: 1,
-      string: "something",
-      obj: {
-        string: "Hello {{ name }}",
-      },
+const req: ISerializedRequest = {
+  host: "api.swagger.io",
+  path: "/v1",
+  pathname: "/v1/users",
+  query: {},
+  protocol: "https",
+  method: "get",
+};
+
+describe("Rendering", () => {
+  describe("removing duplicates", () => {
+    const schema: RequestsTemplate = {
+      defaults: {},
+      templates: [
+        {
+          req,
+          parameters: {},
+        },
+      ],
     };
-    const name = "Jick";
-    const rendered = renderObject(testObj, { name });
-    expect(rendered).toEqual({
-      number: 1,
-      string: "something",
-      obj: {
-        string: `Hello ${name}`,
-      },
+    it("should not remove if flagged off", () => {
+      const rendered = render(schema, { removeDuplicates: false, nItems: 5 });
+      expect(rendered).toHaveLength(5);
+    });
+    it("should remove if flagged on", () => {
+      const rendered = render(schema, { removeDuplicates: true, nItems: 5 });
+      expect(rendered).toHaveLength(1);
+    });
+  });
+  describe("object", () => {
+    it("renders nested object", () => {
+      const testObj = {
+        number: 1,
+        string: "something",
+        obj: {
+          string: "Hello {{ name }}",
+        },
+      };
+      const name = "Jick";
+      const rendered = renderObject(testObj, { name });
+      expect(rendered).toEqual({
+        number: 1,
+        string: "something",
+        obj: {
+          string: `Hello ${name}`,
+        },
+      });
     });
   });
 });

@@ -108,6 +108,22 @@ As explained above, requests are rendered using [nunjucks](https://mozilla.githu
 
 `render` command outputs requests in JSONL format, where every line is an `ISerializedRequest` object defined in [types.ts](./src/lib/types.ts). For an example file containing requests, see the example in [petstore-requests.jsonl](./requests/petstore-requests.jsonl).
 
+#### Removing duplicates
+
+Skip duplicate requests by adding the `-d` flag:
+
+```bash
+diglett render templates/petstore-templates.yaml -d
+```
+
+#### Rendering multiple requests per template
+
+Render `nItems` requests per template by adding the `-n {N_ITEMS}` flag:
+
+```bash
+diglett render templates/petstore-templates.yaml -n 5  # Create five requests per every template
+```
+
 ### Sending requests
 
 To send all the rendered HTTP requests from a file, use the `send` command. Before performing the requests, you should perform a "dry-run" showing what will be done instead of sending any HTTP requests:

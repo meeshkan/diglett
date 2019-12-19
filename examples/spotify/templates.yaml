@@ -1,0 +1,15 @@
+defaults: {}
+templates:
+  - req:
+      method: get
+      host: api.spotify.com
+      path: /v1/users/{{ name }}
+      pathname: /v1/users/{{ name }}
+      protocol: https
+      query: {}
+    parameters:
+      name:
+        required: true
+        schema:
+          type: string
+          enum: ["saaskis", "someguy"]

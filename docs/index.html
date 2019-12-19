@@ -149,6 +149,16 @@ $ diglett --<span class="hljs-built_in">help</span></code></pre>
 				<pre><code class="language-bash">$ DEBUG=* diglett render templates/petstore-templates.yaml</code></pre>
 				<p>As explained above, requests are rendered using <a href="https://mozilla.github.io/nunjucks/">nunjucks</a> and <a href="https://github.com/json-schema-faker/json-schema-faker">json-schema-faker</a>.</p>
 				<p><code>render</code> command outputs requests in JSONL format, where every line is an <code>ISerializedRequest</code> object defined in <a href="./src/lib/types.ts">types.ts</a>. For an example file containing requests, see the example in <a href="./requests/petstore-requests.jsonl">petstore-requests.jsonl</a>.</p>
+				<a href="#removing-duplicates" id="removing-duplicates" style="color: inherit; text-decoration: none;">
+					<h4>Removing duplicates</h4>
+				</a>
+				<p>Skip duplicate requests by adding the <code>-d</code> flag:</p>
+				<pre><code class="language-bash">diglett render templates/petstore-templates.yaml -d</code></pre>
+				<a href="#rendering-multiple-requests-per-template" id="rendering-multiple-requests-per-template" style="color: inherit; text-decoration: none;">
+					<h4>Rendering multiple requests per template</h4>
+				</a>
+				<p>Render <code>nItems</code> requests per template by adding the <code>-n {N_ITEMS}</code> flag:</p>
+				<pre><code class="language-bash">diglett render templates/petstore-templates.yaml -n 5  <span class="hljs-comment"># Create five requests per every template</span></code></pre>
 				<a href="#sending-requests" id="sending-requests" style="color: inherit; text-decoration: none;">
 					<h3>Sending requests</h3>
 				</a>

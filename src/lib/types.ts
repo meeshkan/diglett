@@ -59,7 +59,7 @@ export type PartialRequestTemplate = {
 };
 
 export interface ISerializedResponse {
-  code: number;
+  statusCode: number;
   body?: string;
   headers?: IIncomingHeaders;
 }

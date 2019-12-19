@@ -8,6 +8,7 @@ import * as nunjucks from "nunjucks";
 import { RequestBody } from "loas3/dist/generated/full";
 // @ts-ignore
 import * as jsf from "json-schema-faker";
+import * as _ from "lodash";
 
 const debugLog = debug("diglett:requests");
 
@@ -58,40 +59,76 @@ export const renderObject = (obj: any, context: any): any => {
   );
 };
 
-export function* generate(requestsTemplate: RequestsTemplate): IterableIterator<ISerializedRequest> {
+export function* generate(
+  requestsTemplate: RequestsTemplate,
+  options?: Partial<IRenderOptions>
+): IterableIterator<ISerializedRequest> {
+  const opts = resolveOptions(options);
+
+  const generatedUnique: ISerializedRequest[] = [];
+
   for (const template of requestsTemplate.templates) {
-    const nunjucksTemplate = template.req;
-    const parameters = template.parameters;
+    for (let i = 0; i < opts.nItems; i++) {
+      const nunjucksTemplate = template.req;
+      const parameters = template.parameters;
 
-    // Generate value for every parameter
-    const nunjucksContext = fromPairs(
-      Object.entries(parameters).map(([parameter, schema]) => [parameter, generateValue(schema)])
-    );
+      // Generate value for every parameter
+      const nunjucksContext = fromPairs(
+        Object.entries(parameters).map(([parameter, schema]) => [parameter, generateValue(schema)])
+      );
 
-    // const bodyContext = template.body ? { body: generateBody(template.body) } : {};
-    // const fullContext = { ...nunjucksContext, ...bodyContext };
-    const fullContext = nunjucksContext;
+      // const bodyContext = template.body ? { body: generateBody(template.body) } : {};
+      // const fullContext = { ...nunjucksContext, ...bodyContext };
+      const fullContext = nunjucksContext;
 
-    // Render every field with nunjucks if they're strings
-    // TODO Handle nested values
-    const rendered = renderObject(nunjucksTemplate, fullContext) as ISerializedRequest;
+      // Render every field with nunjucks if they're strings
+      // TODO Handle nested values
+      const rendered = renderObject(nunjucksTemplate, fullContext) as ISerializedRequest;
 
-    // Hack to set body directly without nunjucks, JSONs just don't work nicely...
-    if (template.body) {
-      rendered.body = generateBody(template.body);
+      // Hack to set body directly without nunjucks, JSONs just don't work nicely...
+      if (template.body) {
+        rendered.body = generateBody(template.body);
+      }
+
+      if (opts.removeDuplicates) {
+        debugLog("Searching existing", generatedUnique, rendered);
+        const existing = _.find(generatedUnique, item => _.isEqual(item, rendered));
+        if (existing) {
+          debugLog("Found an existing request, skipping request");
+          continue;
+        }
+        generatedUnique.push(rendered);
+      }
+
+      yield rendered;
     }
-
-    yield rendered;
   }
 }
 
-export const generateArray = (pathOrRequestsTemplate: string | RequestsTemplate): ISerializedRequest[] => {
+export interface IRenderOptions {
+  removeDuplicates: boolean;
+  nItems: number;
+}
+
+const DEFAULT_OPTIONS: IRenderOptions = {
+  removeDuplicates: true,
+  nItems: 1,
+};
+
+export const resolveOptions = (options?: Partial<IRenderOptions>): IRenderOptions => {
+  return options ? { ...DEFAULT_OPTIONS, ...options } : DEFAULT_OPTIONS;
+};
+
+export const render = (
+  pathOrRequestsTemplate: string | RequestsTemplate,
+  options?: Partial<IRenderOptions>
+): ISerializedRequest[] => {
   const template =
     typeof pathOrRequestsTemplate === "string" ? readTemplate(pathOrRequestsTemplate) : pathOrRequestsTemplate;
 
-  const generator = generate(template);
+  const generator = generate(template, options);
 
   return Array.from(generator);
 };
 
-export default generateArray;
+export default render;

@@ -52,7 +52,7 @@ export class RequestQueueSender {
 
   async send(req: ISerializedRequest): Promise<ISerializedResponse> {
     debugLog(`Sending request: ${JSON.stringify(req)}`);
-    return Promise.resolve({ code: 200 });
+    return Promise.resolve({ statusCode: 200 });
   }
 
   /**
