@@ -57,3 +57,9 @@ export type PartialRequestTemplate = {
   parameters: Parameter[];
   servers: Server[];
 };
+
+export interface ISerializedResponse {
+  code: number;
+  body?: string;
+  headers?: IIncomingHeaders;
+}

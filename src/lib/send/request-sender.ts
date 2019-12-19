@@ -1,10 +1,13 @@
-import { ISerializedRequest } from "../types";
-import { ISerializedResponse } from ".";
+import { ISerializedRequest, ISerializedResponse } from "../types";
 import debug from "debug";
 import fetch, { Headers } from "cross-fetch";
 
 const debugLog = debug("diglett:request-sender");
 
+/**
+ * Build a `Headers` object from request headers.
+ * @param request Serialized request.
+ */
 export const buildHeaders = (request: ISerializedRequest): Headers => {
   const headers = new Headers();
   if (typeof request.headers !== "undefined") {
@@ -19,6 +22,11 @@ export const buildHeaders = (request: ISerializedRequest): Headers => {
   return headers;
 };
 
+/**
+ * Create a `Fetch` API compliant request from {@link ISerializedRequest}.
+ * @param request Serialized request.
+ * @returns URL and init.
+ */
 export const prepareFetch = (request: ISerializedRequest): [RequestInfo, RequestInit] => {
   const url = `${request.protocol}://${request.host}${request.path}`;
   const headers = buildHeaders(request);
@@ -26,6 +34,10 @@ export const prepareFetch = (request: ISerializedRequest): [RequestInfo, Request
   return [url, { method: request.method, headers, body: stringBody }];
 };
 
+/**
+ * Send a serialized request with `fetch`.
+ * @param request Serialized request.
+ */
 export const sendRequest = async (request: ISerializedRequest): Promise<ISerializedResponse> => {
   const [url, init] = prepareFetch(request);
   try {

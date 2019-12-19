@@ -1,5 +1,4 @@
-import { ISerializedRequest } from "../types";
-import { ISerializedResponse } from ".";
+import { ISerializedRequest, ISerializedResponse } from "../types";
 import debug from "debug";
 import * as BetterQueue from "better-queue";
 import { Either, toError } from "fp-ts/lib/Either";

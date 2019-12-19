@@ -6,14 +6,9 @@ import { readJsonl, readYaml } from "../utils";
 import { TaskEither, map as mapTe, mapLeft } from "fp-ts/lib/TaskEither";
 import { Task } from "fp-ts/lib/Task";
 import { fakeSendRequest } from "./request-sender";
-import { IIncomingHeaders } from "../types";
+import { IIncomingHeaders, ISerializedResponse } from "../types";
 
 const debugLog = debug("diglett:send");
-
-export interface ISerializedResponse {
-  code: number;
-  body?: string;
-}
 
 export type RequestResponsePair = {
   req: ISerializedRequest;
@@ -34,8 +29,8 @@ export type SendRequest = (req: ISerializedRequest) => Promise<ISerializedRespon
 
 /**
  * Send requests via `RequestQueue`.
- * @param requests
- * @param config
+ * @param requests Array of fully resolved requests.
+ * @param sendRequest Function taking `ISerializationRequest` and returning an `ISerializedResponse` promise.
  */
 export const sendFp = (requests: ISerializedRequest[], sendRequest: SendRequest): Task<SendResult> => {
   debugLog(`Sending ${requests.length} requests`);
@@ -71,6 +66,9 @@ export const sendFp = (requests: ISerializedRequest[], sendRequest: SendRequest)
     });
 };
 
+/**
+ * Options for sending requests.
+ */
 export interface SendOptions {
   sendRequest: (req: ISerializedRequest) => Promise<ISerializedResponse>;
   headers: IIncomingHeaders;
@@ -90,9 +88,9 @@ export const resolveConfig = (configOpt?: Partial<SendOptions>): SendOptions => 
 };
 
 /**
- * Send requests
- * @param requests
- * @param configOpt
+ * Send requests. Augment request with the given run-time options by, for example, adding headers.
+ * @param requests Array of requests.
+ * @param configOpt Optional partial configuration, resolved against {@link DEFAULT_OPTIONS}.
  */
 export const send = async (
   requests: ISerializedRequest[],
@@ -121,8 +119,13 @@ export const addHeaders = (req: ISerializedRequest, headers: IIncomingHeaders): 
   return { ...req, headers: merged };
 };
 
+/**
+ * Send requests from file.
+ * @param path Path to JSONL or YAML file.
+ * @param configOpt Optional partial configuration, resolved against {@link DEFAULT_OPTIONS}.
+ */
 export const sendFromFile = async (path: string, configOpt?: Partial<SendOptions>): Promise<RequestResponsePair[]> => {
-  if (!(path.endsWith(".yaml") || path.endsWith(".jsonl"))) {
+  if (!(path.match(/\.ya?ml$/) || path.endsWith(".jsonl"))) {
     throw Error(`Unknown requests file format ${path}`);
   }
 
