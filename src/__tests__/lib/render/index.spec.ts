@@ -7,7 +7,7 @@ const PETSTORE_TEMPLATES = jsYaml.safeLoad(
   fs.readFileSync(path.join(__dirname, "..", "..", "..", "..", "templates", "petstore-templates.yaml")).toString()
 );
 
-describe("Rendering requests", () => {
+describe("Rendering requests from petstore", () => {
   const requests = render(PETSTORE_TEMPLATES);
   it("should render three requests", () => {
     expect(requests).toHaveLength(3);
@@ -30,6 +30,13 @@ describe("Rendering requests", () => {
     // Zoom in more
     const generatedValue = req.path.split("/")[3];
     expect(generatedValue.length).toBeGreaterThan(0);
+  });
+
+  describe("rendering multiple", () => {
+    it("should render as many requests per template as instructed", () => {
+      const rendered = render(PETSTORE_TEMPLATES, { nItems: 5 });
+      expect(rendered).toHaveLength(15); // Three templates times five
+    });
   });
 });
 
