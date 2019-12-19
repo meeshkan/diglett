@@ -46,7 +46,7 @@ export const sendRequest = async (request: ISerializedRequest): Promise<ISeriali
     const statusCode = response.status;
     const text = await response.text();
     return {
-      code: statusCode,
+      statusCode,
       body: text,
     };
   } catch (err) {
@@ -59,5 +59,5 @@ export const fakeSendRequest = async (req: ISerializedRequest): Promise<ISeriali
   debugLog("Serialized request", JSON.stringify(req));
   const [url, init] = prepareFetch(req);
   debugLog("Faking sending request", JSON.stringify(url), JSON.stringify(init));
-  return Promise.resolve({ code: 200, body: '{ "message": "ok" }' });
+  return Promise.resolve({ statusCode: 200, body: '{ "message": "ok" }' });
 };
