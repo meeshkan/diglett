@@ -1,0 +1,2 @@
+{"method":"get","host":"api.spotify.com","path":"/v1/users/someguy","pathname":"/v1/users/someguy","protocol":"https","query":{}}
+{"method":"get","host":"api.spotify.com","path":"/v1/users/saaskis","pathname":"/v1/users/saaskis","protocol":"https","query":{}}
