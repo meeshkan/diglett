@@ -128,6 +128,17 @@ diglett send requests/petstore-requests.jsonl -f
 
 `diglett` will send all the requests from the file using [RequestQueue](./lib/send/request-queue.ts) with a 500 ms delay between requests.
 
+#### Adding headers
+
+One can define headers used for all requests with the `-H` flag:
+
+```bash
+# Add "-f" flag to send requests
+diglett send requests/petstore-requests.jsonl -H 'Authorization: Basic XXX'
+```
+
+This is useful for APIs requiring, for example, authentication.
+
 <!-- usagestop -->
 
 ## Development

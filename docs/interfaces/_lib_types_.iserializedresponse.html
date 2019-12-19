@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>SendOptions | diglett</title>
+	<title>ISerializedResponse | diglett</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -56,31 +56,24 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="../modules/_lib_send_index_.html">&quot;lib/send/index&quot;</a>
+					<a href="../modules/_lib_types_.html">&quot;lib/types&quot;</a>
 				</li>
 				<li>
-					<a href="_lib_send_index_.sendoptions.html">SendOptions</a>
+					<a href="_lib_types_.iserializedresponse.html">ISerializedResponse</a>
 				</li>
 			</ul>
-			<h1>Interface SendOptions</h1>
+			<h1>Interface ISerializedResponse</h1>
 		</div>
 	</div>
 </header>
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
-			<section class="tsd-panel tsd-comment">
-				<div class="tsd-comment tsd-typography">
-					<div class="lead">
-						<p>Options for sending requests.</p>
-					</div>
-				</div>
-			</section>
 			<section class="tsd-panel tsd-hierarchy">
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">SendOptions</span>
+						<span class="target">ISerializedResponse</span>
 					</li>
 				</ul>
 			</section>
@@ -91,8 +84,9 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_lib_send_index_.sendoptions.html#headers" class="tsd-kind-icon">headers</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_lib_send_index_.sendoptions.html#sendrequest" class="tsd-kind-icon">send<wbr>Request</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_lib_types_.iserializedresponse.html#body" class="tsd-kind-icon">body</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_lib_types_.iserializedresponse.html#code" class="tsd-kind-icon">code</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_lib_types_.iserializedresponse.html#headers" class="tsd-kind-icon">headers</a></li>
 							</ul>
 						</section>
 					</div>
@@ -101,45 +95,34 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="headers" class="tsd-anchor"></a>
-					<h3>headers</h3>
-					<div class="tsd-signature tsd-kind-icon">headers<span class="tsd-signature-symbol">:</span> <a href="_lib_types_.iincomingheaders.html" class="tsd-signature-type">IIncomingHeaders</a></div>
+					<a name="body" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> body</h3>
+					<div class="tsd-signature tsd-kind-icon">body<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/Meeshkan/diglett/blob/master/src/lib/send/index.ts#L74">src/lib/send/index.ts:74</a></li>
+							<li>Defined in <a href="https://github.com/Meeshkan/diglett/blob/master/src/lib/types.ts#L63">src/lib/types.ts:63</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="sendrequest" class="tsd-anchor"></a>
-					<h3>send<wbr>Request</h3>
-					<div class="tsd-signature tsd-kind-icon">send<wbr>Request<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
+					<a name="code" class="tsd-anchor"></a>
+					<h3>code</h3>
+					<div class="tsd-signature tsd-kind-icon">code<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/Meeshkan/diglett/blob/master/src/lib/send/index.ts#L73">src/lib/send/index.ts:73</a></li>
+							<li>Defined in <a href="https://github.com/Meeshkan/diglett/blob/master/src/lib/types.ts#L62">src/lib/types.ts:62</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-type-declaration">
-						<h4>Type declaration</h4>
-						<ul class="tsd-parameters">
-							<li class="tsd-parameter-siganture">
-								<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-property tsd-is-not-exported">
-									<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>req<span class="tsd-signature-symbol">: </span><a href="_lib_types_.iserializedrequest.html" class="tsd-signature-type">ISerializedRequest</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="_lib_types_.iserializedresponse.html" class="tsd-signature-type">ISerializedResponse</a><span class="tsd-signature-symbol">&gt;</span></li>
-								</ul>
-								<ul class="tsd-descriptions">
-									<li class="tsd-description">
-										<h4 class="tsd-parameters-title">Parameters</h4>
-										<ul class="tsd-parameters">
-											<li>
-												<h5>req: <a href="_lib_types_.iserializedrequest.html" class="tsd-signature-type">ISerializedRequest</a></h5>
-											</li>
-										</ul>
-										<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="_lib_types_.iserializedresponse.html" class="tsd-signature-type">ISerializedResponse</a><span class="tsd-signature-symbol">&gt;</span></h4>
-									</li>
-								</ul>
-							</li>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="headers" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> headers</h3>
+					<div class="tsd-signature tsd-kind-icon">headers<span class="tsd-signature-symbol">:</span> <a href="_lib_types_.iincomingheaders.html" class="tsd-signature-type">IIncomingHeaders</a></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/Meeshkan/diglett/blob/master/src/lib/types.ts#L64">src/lib/types.ts:64</a></li>
 						</ul>
-					</div>
+					</aside>
 				</section>
 			</section>
 		</div>
@@ -167,7 +150,7 @@
 					<li class=" tsd-kind-external-module">
 						<a href="../modules/_lib_render_index_.html">&quot;lib/render/index&quot;</a>
 					</li>
-					<li class="current tsd-kind-external-module">
+					<li class=" tsd-kind-external-module">
 						<a href="../modules/_lib_send_index_.html">&quot;lib/send/index&quot;</a>
 					</li>
 					<li class=" tsd-kind-external-module">
@@ -185,7 +168,7 @@
 					<li class=" tsd-kind-external-module">
 						<a href="../modules/_lib_templates_types_.html">&quot;lib/templates/types&quot;</a>
 					</li>
-					<li class=" tsd-kind-external-module">
+					<li class="current tsd-kind-external-module">
 						<a href="../modules/_lib_types_.html">&quot;lib/types&quot;</a>
 					</li>
 					<li class=" tsd-kind-external-module">
@@ -195,53 +178,50 @@
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
+						<a href="_lib_types_.iincomingheaders.html" class="tsd-kind-icon">IIncoming<wbr>Headers</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
+						<a href="_lib_types_.iincomingquery.html" class="tsd-kind-icon">IIncoming<wbr>Query</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
+						<a href="_lib_types_.ioutgoingheaders.html" class="tsd-kind-icon">IOutgoing<wbr>Headers</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
+						<a href="_lib_types_.iserializedrequest.html" class="tsd-kind-icon">ISerialized<wbr>Request</a>
+					</li>
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="_lib_send_index_.sendoptions.html" class="tsd-kind-icon">Send<wbr>Options</a>
+						<a href="_lib_types_.iserializedresponse.html" class="tsd-kind-icon">ISerialized<wbr>Response</a>
 						<ul>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_lib_send_index_.sendoptions.html#headers" class="tsd-kind-icon">headers</a>
+								<a href="_lib_types_.iserializedresponse.html#body" class="tsd-kind-icon">body</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_lib_send_index_.sendoptions.html#sendrequest" class="tsd-kind-icon">send<wbr>Request</a>
+								<a href="_lib_types_.iserializedresponse.html#code" class="tsd-kind-icon">code</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="_lib_types_.iserializedresponse.html#headers" class="tsd-kind-icon">headers</a>
 							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="_lib_send_index_.sendresult.html" class="tsd-kind-icon">Send<wbr>Result</a>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module">
+						<a href="../modules/_lib_types_.html#httpmethod" class="tsd-kind-icon">HTTPMethod</a>
 					</li>
 					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module">
-						<a href="../modules/_lib_send_index_.html#failedrequest" class="tsd-kind-icon">Failed<wbr>Request</a>
+						<a href="../modules/_lib_types_.html#iprotocol" class="tsd-kind-icon">IProtocol</a>
 					</li>
 					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module">
-						<a href="../modules/_lib_send_index_.html#requestresponsepair" class="tsd-kind-icon">Request<wbr>Response<wbr>Pair</a>
+						<a href="../modules/_lib_types_.html#partialrequesttemplate" class="tsd-kind-icon">Partial<wbr>Request<wbr>Template</a>
 					</li>
-					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module">
-						<a href="../modules/_lib_send_index_.html#sendrequest" class="tsd-kind-icon">Send<wbr>Request</a>
-					</li>
-					<li class=" tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="../modules/_lib_send_index_.html#debuglog" class="tsd-kind-icon">debug<wbr>Log</a>
+					<li class=" tsd-kind-variable tsd-parent-kind-external-module">
+						<a href="../modules/_lib_types_.html#restmethodtypes" class="tsd-kind-icon">RESTMethod<wbr>Types</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-external-module">
-						<a href="../modules/_lib_send_index_.html#addheaders" class="tsd-kind-icon">add<wbr>Headers</a>
-					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-external-module">
-						<a href="../modules/_lib_send_index_.html#resolveconfig" class="tsd-kind-icon">resolve<wbr>Config</a>
-					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-external-module">
-						<a href="../modules/_lib_send_index_.html#send" class="tsd-kind-icon">send</a>
-					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-external-module">
-						<a href="../modules/_lib_send_index_.html#sendfp" class="tsd-kind-icon">send<wbr>Fp</a>
-					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-external-module">
-						<a href="../modules/_lib_send_index_.html#sendfromfile" class="tsd-kind-icon">send<wbr>From<wbr>File</a>
-					</li>
-					<li class=" tsd-kind-object-literal tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="../modules/_lib_send_index_.html#default_options" class="tsd-kind-icon">DEFAULT_<wbr>OPTIONS</a>
+						<a href="../modules/_lib_types_.html#isprotocol" class="tsd-kind-icon">is<wbr>Protocol</a>
 					</li>
 				</ul>
 			</nav>
