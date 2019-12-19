@@ -44,6 +44,8 @@ export const sendRequest = async (request: ISerializedRequest): Promise<ISeriali
 };
 
 export const fakeSendRequest = async (req: ISerializedRequest): Promise<ISerializedResponse> => {
-  debugLog(`Faking sending request: ${JSON.stringify(req)}`);
+  debugLog("Serialized request", JSON.stringify(req));
+  const [url, init] = prepareFetch(req);
+  debugLog("Faking sending request", JSON.stringify(url), JSON.stringify(init));
   return Promise.resolve({ code: 200, body: '{ "message": "ok" }' });
 };
