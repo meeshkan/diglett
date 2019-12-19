@@ -11,10 +11,11 @@ export default class RenderCommand extends Command {
 
   static flags = {
     help: flags.help({ char: "h" }),
-    duplicatesFilter: flags.boolean({
+    filterDuplicates: flags.boolean({
       char: "d",
       description: "Filter duplicates",
       default: false,
+      name: "remove-duplicates",
     }),
     items: flags.integer({
       char: "n",
@@ -29,7 +30,7 @@ export default class RenderCommand extends Command {
     const { args, flags } = this.parse(RenderCommand);
 
     const nItems = flags.items;
-    const removeDuplicates = flags.duplicatesFilter;
+    const removeDuplicates = flags.filterDuplicates;
 
     if (nItems < 0) {
       throw Error(`Invalid number of items: ${nItems}`);

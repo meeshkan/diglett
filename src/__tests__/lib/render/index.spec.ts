@@ -2,6 +2,8 @@ import render, { renderObject } from "../../../lib/render";
 import * as fs from "fs";
 import * as jsYaml from "js-yaml";
 import * as path from "path";
+import { RequestsTemplate } from "../../../lib/templates/types";
+import { ISerializedRequest } from "../../../lib/types";
 
 const PETSTORE_TEMPLATES = jsYaml.safeLoad(
   fs.readFileSync(path.join(__dirname, "..", "..", "..", "..", "templates", "petstore-templates.yaml")).toString()
@@ -40,23 +42,53 @@ describe("Rendering requests from petstore", () => {
   });
 });
 
-describe("Rendering object", () => {
-  it("renders nested object", () => {
-    const testObj = {
-      number: 1,
-      string: "something",
-      obj: {
-        string: "Hello {{ name }}",
-      },
+const req: ISerializedRequest = {
+  host: "api.swagger.io",
+  path: "/v1",
+  pathname: "/v1/users",
+  query: {},
+  protocol: "https",
+  method: "get",
+};
+
+describe("Rendering", () => {
+  describe("removing duplicates", () => {
+    const schema: RequestsTemplate = {
+      defaults: {},
+      templates: [
+        {
+          req,
+          parameters: {},
+        },
+      ],
     };
-    const name = "Jick";
-    const rendered = renderObject(testObj, { name });
-    expect(rendered).toEqual({
-      number: 1,
-      string: "something",
-      obj: {
-        string: `Hello ${name}`,
-      },
+    it("should not remove if flagged off", () => {
+      const rendered = render(schema, { removeDuplicates: false, nItems: 5 });
+      expect(rendered).toHaveLength(5);
+    });
+    it("should remove if flagged on", () => {
+      const rendered = render(schema, { removeDuplicates: true, nItems: 5 });
+      expect(rendered).toHaveLength(1);
+    });
+  });
+  describe("object", () => {
+    it("renders nested object", () => {
+      const testObj = {
+        number: 1,
+        string: "something",
+        obj: {
+          string: "Hello {{ name }}",
+        },
+      };
+      const name = "Jick";
+      const rendered = renderObject(testObj, { name });
+      expect(rendered).toEqual({
+        number: 1,
+        string: "something",
+        obj: {
+          string: `Hello ${name}`,
+        },
+      });
     });
   });
 });
