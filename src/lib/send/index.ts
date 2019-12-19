@@ -6,13 +6,9 @@ import { readJsonl, readYaml } from "../utils";
 import { TaskEither, map as mapTe, mapLeft } from "fp-ts/lib/TaskEither";
 import { Task } from "fp-ts/lib/Task";
 import { fakeSendRequest } from "./request-sender";
+import { IIncomingHeaders, ISerializedResponse } from "../types";
 
-const debugLog = debug("diglett:bombard");
-
-export interface ISerializedResponse {
-  code: number;
-  body?: string;
-}
+const debugLog = debug("diglett:send");
 
 export type RequestResponsePair = {
   req: ISerializedRequest;
@@ -24,14 +20,20 @@ export type FailedRequest = {
   err: Error;
 };
 
-export interface BombardResult {
+export interface SendResult {
   failed: Array<FailedRequest>;
   succeeded: Array<RequestResponsePair>;
 }
 
-export const bombardFp = (requests: ISerializedRequest[], config: BombardOptions): Task<BombardResult> => {
+export type SendRequest = (req: ISerializedRequest) => Promise<ISerializedResponse>;
+
+/**
+ * Send requests via `RequestQueue`.
+ * @param requests Array of fully resolved requests.
+ * @param sendRequest Function taking `ISerializationRequest` and returning an `ISerializedResponse` promise.
+ */
+export const sendFp = (requests: ISerializedRequest[], sendRequest: SendRequest): Task<SendResult> => {
   debugLog(`Sending ${requests.length} requests`);
-  const sendRequest = config.sendRequest;
   const batchSender = new RequestQueueSender(sendRequest);
   const taskEithers: TaskEither<Error, ISerializedResponse>[] = batchSender.sendBatchFp(requests);
   const results: TaskEither<FailedRequest, RequestResponsePair>[] = taskEithers
@@ -64,15 +66,44 @@ export const bombardFp = (requests: ISerializedRequest[], config: BombardOptions
     });
 };
 
-interface BombardOptions {
+/**
+ * Options for sending requests.
+ */
+export interface SendOptions {
   sendRequest: (req: ISerializedRequest) => Promise<ISerializedResponse>;
+  headers: IIncomingHeaders;
 }
 
-export const bombard = async (
+const DEFAULT_OPTIONS: SendOptions = {
+  sendRequest: fakeSendRequest,
+  headers: {},
+};
+
+/**
+ * Resolve optional or partial configuration to a configuration.
+ * @param configOpt Optional, partial {@link SendOptions}
+ */
+export const resolveConfig = (configOpt?: Partial<SendOptions>): SendOptions => {
+  return configOpt ? { ...DEFAULT_OPTIONS, ...configOpt } : DEFAULT_OPTIONS;
+};
+
+/**
+ * Send requests. Augment request with the given run-time options by, for example, adding headers.
+ * @param requests Array of requests.
+ * @param configOpt Optional partial configuration, resolved against {@link DEFAULT_OPTIONS}.
+ */
+export const send = async (
   requests: ISerializedRequest[],
-  config: BombardOptions
+  configOpt?: Partial<SendOptions>
 ): Promise<RequestResponsePair[]> => {
-  const results = await bombardFp(requests, config)();
+  const config = resolveConfig(configOpt);
+
+  const augmentedRequests = requests.map(req => addHeaders(req, config.headers));
+
+  debugLog("Augmented requests", augmentedRequests);
+
+  const results = await sendFp(augmentedRequests, config.sendRequest)();
+
   // TODO More graceful handling of successes and failures
   if (results.failed.length > 0) {
     throw Error(`Failed: ${results.failed.map(err => err.err.message).join(", ")}`);
@@ -81,16 +112,23 @@ export const bombard = async (
   return results.succeeded;
 };
 
-export const bombardFromFile = async (path: string, configOpt?: BombardOptions): Promise<RequestResponsePair[]> => {
-  if (!(path.endsWith(".yaml") || path.endsWith(".jsonl"))) {
+export const addHeaders = (req: ISerializedRequest, headers: IIncomingHeaders): ISerializedRequest => {
+  debugLog("Adding headers", headers);
+  const existingHeaders = req.headers || {};
+  const merged = { ...existingHeaders, ...headers };
+  return { ...req, headers: merged };
+};
+
+/**
+ * Send requests from file.
+ * @param path Path to JSONL or YAML file.
+ * @param configOpt Optional partial configuration, resolved against {@link DEFAULT_OPTIONS}.
+ */
+export const sendFromFile = async (path: string, configOpt?: Partial<SendOptions>): Promise<RequestResponsePair[]> => {
+  if (!(path.match(/\.ya?ml$/) || path.endsWith(".jsonl"))) {
     throw Error(`Unknown requests file format ${path}`);
   }
 
-  const requests = path.endsWith(".yaml") ? readYaml(path) : readJsonl(path);
-
-  // TODO Validate requests
-  const config = { sendRequest: (configOpt && configOpt.sendRequest) || fakeSendRequest };
-  return bombard(requests, config);
+  const requests: ISerializedRequest[] = path.endsWith(".yaml") ? readYaml(path) : readJsonl(path);
+  return send(requests, configOpt);
 };
-
-export default bombardFromFile;

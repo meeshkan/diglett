@@ -286,7 +286,7 @@
 					<aside class="tsd-sources">
 						<p>Overrides Command.args</p>
 						<ul>
-							<li>Defined in <a href="https://github.com/Meeshkan/diglett/blob/master/src/commands/send.ts#L19">src/commands/send.ts:19</a></li>
+							<li>Defined in <a href="https://github.com/Meeshkan/diglett/blob/master/src/commands/send.ts#L46">src/commands/send.ts:46</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -297,7 +297,7 @@
 					<aside class="tsd-sources">
 						<p>Overrides Command.description</p>
 						<ul>
-							<li>Defined in <a href="https://github.com/Meeshkan/diglett/blob/master/src/commands/send.ts#L11">src/commands/send.ts:11</a></li>
+							<li>Defined in <a href="https://github.com/Meeshkan/diglett/blob/master/src/commands/send.ts#L33">src/commands/send.ts:33</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -751,7 +751,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides Command.run</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/Meeshkan/diglett/blob/master/src/commands/send.ts#L21">src/commands/send.ts:21</a></li>
+									<li>Defined in <a href="https://github.com/Meeshkan/diglett/blob/master/src/commands/send.ts#L48">src/commands/send.ts:48</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -792,7 +792,7 @@
 					<aside class="tsd-sources">
 						<p>Overrides Command.flags</p>
 						<ul>
-							<li>Defined in <a href="https://github.com/Meeshkan/diglett/blob/master/src/commands/send.ts#L13">src/commands/send.ts:13</a></li>
+							<li>Defined in <a href="https://github.com/Meeshkan/diglett/blob/master/src/commands/send.ts#L35">src/commands/send.ts:35</a></li>
 						</ul>
 					</aside>
 					<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
@@ -801,7 +801,17 @@
 						<div class="tsd-signature tsd-kind-icon">force<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol"> =&nbsp;flags.boolean({ char: &quot;f&quot; })</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/Meeshkan/diglett/blob/master/src/commands/send.ts#L16">src/commands/send.ts:16</a></li>
+								<li>Defined in <a href="https://github.com/Meeshkan/diglett/blob/master/src/commands/send.ts#L38">src/commands/send.ts:38</a></li>
+							</ul>
+						</aside>
+					</section>
+					<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
+						<a name="flags.headers" class="tsd-anchor"></a>
+						<h3>headers</h3>
+						<div class="tsd-signature tsd-kind-icon">headers<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol"> =&nbsp;flags.string({char: &quot;H&quot;,multiple: true,description: &quot;request headers in form &#x27;X-My-Header:123&#x27;&quot;,})</span></div>
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in <a href="https://github.com/Meeshkan/diglett/blob/master/src/commands/send.ts#L39">src/commands/send.ts:39</a></li>
 							</ul>
 						</aside>
 					</section>
@@ -811,7 +821,7 @@
 						<div class="tsd-signature tsd-kind-icon">help<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol"> =&nbsp;flags.help({ char: &quot;h&quot; })</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/Meeshkan/diglett/blob/master/src/commands/send.ts#L14">src/commands/send.ts:14</a></li>
+								<li>Defined in <a href="https://github.com/Meeshkan/diglett/blob/master/src/commands/send.ts#L36">src/commands/send.ts:36</a></li>
 							</ul>
 						</aside>
 					</section>
@@ -835,6 +845,9 @@
 					</li>
 					<li class=" tsd-kind-external-module">
 						<a href="../modules/_index_.html">&quot;index&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/_lib_fetch_types_.html">&quot;lib/fetch-<wbr>types&quot;</a>
 					</li>
 					<li class=" tsd-kind-external-module">
 						<a href="../modules/_lib_render_index_.html">&quot;lib/render/index&quot;</a>
@@ -983,6 +996,12 @@
 				<ul class="after-current">
 					<li class=" tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported">
 						<a href="../modules/_commands_send_.html#debuglog" class="tsd-kind-icon">debug<wbr>Log</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported">
+						<a href="../modules/_commands_send_.html#parseheaderargument" class="tsd-kind-icon">parse<wbr>Header<wbr>Argument</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported">
+						<a href="../modules/_commands_send_.html#parseheaders" class="tsd-kind-icon">parse<wbr>Headers</a>
 					</li>
 				</ul>
 			</nav>
