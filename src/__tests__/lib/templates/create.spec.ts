@@ -14,7 +14,7 @@ const PETSTORE_TEMPLATES = jsYaml.safeLoad(
 
 describe("Creating request templates", () => {
   it("creates three templates for petstore", async () => {
-    const templates = await create(PETSTORE_YAML, {});
+    const templates = await create(PETSTORE_YAML);
     expect(templates.templates).toHaveLength(3);
   });
 });
