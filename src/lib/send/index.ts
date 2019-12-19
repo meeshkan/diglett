@@ -8,7 +8,7 @@ import { Task } from "fp-ts/lib/Task";
 import { fakeSendRequest } from "./request-sender";
 import { IIncomingHeaders } from "../types";
 
-const debugLog = debug("diglett:bombard");
+const debugLog = debug("diglett:send");
 
 export interface ISerializedResponse {
   code: number;
@@ -25,14 +25,20 @@ export type FailedRequest = {
   err: Error;
 };
 
-export interface BombardResult {
+export interface SendResult {
   failed: Array<FailedRequest>;
   succeeded: Array<RequestResponsePair>;
 }
 
-export const bombardFp = (requests: ISerializedRequest[], config: SendOptions): Task<BombardResult> => {
+export type SendRequest = (req: ISerializedRequest) => Promise<ISerializedResponse>;
+
+/**
+ * Send requests via `RequestQueue`.
+ * @param requests
+ * @param config
+ */
+export const sendFp = (requests: ISerializedRequest[], sendRequest: SendRequest): Task<SendResult> => {
   debugLog(`Sending ${requests.length} requests`);
-  const sendRequest = config.sendRequest;
   const batchSender = new RequestQueueSender(sendRequest);
   const taskEithers: TaskEither<Error, ISerializedResponse>[] = batchSender.sendBatchFp(requests);
   const results: TaskEither<FailedRequest, RequestResponsePair>[] = taskEithers
@@ -65,33 +71,40 @@ export const bombardFp = (requests: ISerializedRequest[], config: SendOptions): 
     });
 };
 
-interface SendOptions {
+export interface SendOptions {
   sendRequest: (req: ISerializedRequest) => Promise<ISerializedResponse>;
   headers: IIncomingHeaders;
 }
 
-export const resolveConfig = (configOpt?: Partial<SendOptions>): SendOptions => {
-  const defaults = {
-    sendRequest: fakeSendRequest,
-    headers: {},
-  };
-
-  return configOpt ? { ...defaults, ...configOpt } : defaults;
+const DEFAULT_OPTIONS: SendOptions = {
+  sendRequest: fakeSendRequest,
+  headers: {},
 };
 
+/**
+ * Resolve optional or partial configuration to a configuration.
+ * @param configOpt Optional, partial {@link SendOptions}
+ */
+export const resolveConfig = (configOpt?: Partial<SendOptions>): SendOptions => {
+  return configOpt ? { ...DEFAULT_OPTIONS, ...configOpt } : DEFAULT_OPTIONS;
+};
+
+/**
+ * Send requests
+ * @param requests
+ * @param configOpt
+ */
 export const send = async (
   requests: ISerializedRequest[],
   configOpt?: Partial<SendOptions>
 ): Promise<RequestResponsePair[]> => {
   const config = resolveConfig(configOpt);
 
-  const headers = config.headers ? config.headers : {};
+  const augmentedRequests = requests.map(req => addHeaders(req, config.headers));
 
-  const augmentedRequests = requests.map(req => addHeaders(req, headers));
+  console.log("Augmented requests", augmentedRequests);
 
-  console.log("Augmented", augmentedRequests);
-
-  const results = await bombardFp(augmentedRequests, config)();
+  const results = await sendFp(augmentedRequests, config.sendRequest)();
 
   // TODO More graceful handling of successes and failures
   if (results.failed.length > 0) {
@@ -101,10 +114,9 @@ export const send = async (
   return results.succeeded;
 };
 
-const addHeaders = (req: ISerializedRequest, headers: IIncomingHeaders): ISerializedRequest => {
+export const addHeaders = (req: ISerializedRequest, headers: IIncomingHeaders): ISerializedRequest => {
   debugLog("Adding headers", headers);
   const existingHeaders = req.headers || {};
-  // TODO
   const merged = { ...existingHeaders, ...headers };
   return { ...req, headers: merged };
 };

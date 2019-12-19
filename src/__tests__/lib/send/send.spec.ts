@@ -11,6 +11,7 @@ const req: ISerializedRequest = {
   pathname: "/v1",
   query: {},
   protocol: "https",
+  headers: {},
 };
 const res = { code: 200 };
 
