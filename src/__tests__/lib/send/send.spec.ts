@@ -29,6 +29,16 @@ describe("Sending requests", () => {
     expect(sendMock).toHaveBeenCalledWith(req);
     expect(result).toEqual([{ req, res }]);
   });
+
+  it("adds headers from configuration", async () => {
+    const sendMock = jest.fn().mockReturnValue(Promise.resolve(res));
+    const headers = { "X-API-KEY": "VALUE" };
+    const result = await send([req], { sendRequest: sendMock, headers });
+    expect(sendMock).toHaveBeenCalledTimes(1);
+    const expectedReq = { ...req, headers };
+    expect(sendMock).toHaveBeenCalledWith(expectedReq);
+    expect(result).toEqual([{ req: expectedReq, res }]);
+  });
 });
 
 describe("Sending requests from file", () => {
