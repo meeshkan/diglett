@@ -7,7 +7,6 @@ import { TaskEither, map as mapTe, mapLeft } from "fp-ts/lib/TaskEither";
 import { Task } from "fp-ts/lib/Task";
 import { fakeSendRequest } from "./request-sender";
 import { IIncomingHeaders } from "../types";
-import Send from "../../commands/send";
 
 const debugLog = debug("diglett:bombard");
 
