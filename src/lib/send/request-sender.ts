@@ -45,9 +45,11 @@ export const sendRequest = async (request: ISerializedRequest): Promise<ISeriali
     const response = await fetch(url, init);
     const statusCode = response.status;
     const text = await response.text();
+    const headers = {}; // TODO
     return {
       statusCode,
       body: text,
+      headers,
     };
   } catch (err) {
     debugLog("Failed sending request", err);
@@ -59,5 +61,5 @@ export const fakeSendRequest = async (req: ISerializedRequest): Promise<ISeriali
   debugLog("Serialized request", JSON.stringify(req));
   const [url, init] = prepareFetch(req);
   debugLog("Faking sending request", JSON.stringify(url), JSON.stringify(init));
-  return Promise.resolve({ statusCode: 200, body: '{ "message": "ok" }' });
+  return Promise.resolve({ statusCode: 200, body: '{ "message": "ok" }', headers: {} });
 };
